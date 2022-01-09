@@ -1,0 +1,213 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{AE109939-BCE8-358E-ACBE-252F30AC6483}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>ALL_BUILD</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Utility</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">$(Platform)\$(Configuration)\$(ProjectName)\</IntDir>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <Midl>
+      <AdditionalIncludeDirectories>%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Olcia\Studia\PAGI\OpenGLPAG\CMakeLists.txt">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeSystem.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\thirdparty.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeSystem.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\thirdparty.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeSystem.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\thirdparty.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\CMake\share\cmake-3.21\Modules\CMakeCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCXXInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeCommonLanguageInclude.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeGenericSystem.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeInitializeConfigs.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeLanguageInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeRCInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInformation.cmake;D:\CMake\share\cmake-3.21\Modules\CMakeSystemSpecificInitialize.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\CMakeCommonCompilerMacros.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Compiler\MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\FindOpenGL.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageHandleStandardArgs.cmake;D:\CMake\share\cmake-3.21\Modules\FindPackageMessage.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-C.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC-CXX.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows-MSVC.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\Windows.cmake;D:\CMake\share\cmake-3.21\Modules\Platform\WindowsPaths.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeCXXCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeRCCompiler.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\3.21.4\CMakeSystem.cmake;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\thirdparty.cmake;%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\ZERO_CHECK.vcxproj">
+      <Project>{B1C9BBB7-27F9-3C25-858B-D9A45B3EFBC6}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\contrib\irrXML\IrrXML.vcxproj">
+      <Project>{26C8E299-0469-3F1F-87E2-F446A369C5E5}</Project>
+      <Name>IrrXML</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\OpenGLPAG.vcxproj">
+      <Project>{E9F072FF-EC13-3339-BF4E-7C1087867B76}</Project>
+      <Name>OpenGLPAG</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\assimp.vcxproj">
+      <Project>{2152650B-0910-33F5-A29E-3E90C8A06A13}</Project>
+      <Name>assimp</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\glad.vcxproj">
+      <Project>{1D9EEA7D-7F82-34C4-B593-7DBB684BD57E}</Project>
+      <Name>glad</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\glfw\src\glfw.vcxproj">
+      <Project>{AB691172-D7C1-37CB-8FDF-550985EFB262}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\imgui.vcxproj">
+      <Project>{4C92F3F9-7744-3547-9811-D258F60E0514}</Project>
+      <Name>imgui</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\stb_image.vcxproj">
+      <Project>{24C97A91-1416-378F-87D6-C81495C1B5ED}</Project>
+      <Name>stb_image</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\contrib\zlib\zlib.vcxproj">
+      <Project>{F77B1A94-1D31-359A-8FD6-880B8ADA5A7D}</Project>
+      <Name>zlib</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\contrib\zlib\zlibstatic.vcxproj">
+      <Project>{F39F1465-04CD-3A09-852F-E53014C36252}</Project>
+      <Name>zlibstatic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

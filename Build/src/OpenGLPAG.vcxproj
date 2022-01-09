@@ -1,0 +1,429 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project DefaultTargets="Build" ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <PropertyGroup>
+    <PreferredToolArchitecture>x64</PreferredToolArchitecture>
+  </PropertyGroup>
+  <ItemGroup Label="ProjectConfigurations">
+    <ProjectConfiguration Include="Debug|x64">
+      <Configuration>Debug</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="Release|x64">
+      <Configuration>Release</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="MinSizeRel|x64">
+      <Configuration>MinSizeRel</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+    <ProjectConfiguration Include="RelWithDebInfo|x64">
+      <Configuration>RelWithDebInfo</Configuration>
+      <Platform>x64</Platform>
+    </ProjectConfiguration>
+  </ItemGroup>
+  <PropertyGroup Label="Globals">
+    <ProjectGuid>{E9F072FF-EC13-3339-BF4E-7C1087867B76}</ProjectGuid>
+    <WindowsTargetPlatformVersion>10.0.19041.0</WindowsTargetPlatformVersion>
+    <Keyword>Win32Proj</Keyword>
+    <Platform>x64</Platform>
+    <ProjectName>OpenGLPAG</ProjectName>
+    <VCProjectUpgraderObjectName>NoUpgrade</VCProjectUpgraderObjectName>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.Default.props" />
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'" Label="Configuration">
+    <ConfigurationType>Application</ConfigurationType>
+    <CharacterSet>MultiByte</CharacterSet>
+    <PlatformToolset>v142</PlatformToolset>
+  </PropertyGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.props" />
+  <ImportGroup Label="ExtensionSettings">
+  </ImportGroup>
+  <ImportGroup Label="PropertySheets">
+    <Import Project="$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props" Condition="exists('$(UserRootDir)\Microsoft.Cpp.$(Platform).user.props')" Label="LocalAppDataPlatform" />
+  </ImportGroup>
+  <PropertyGroup Label="UserMacros" />
+  <PropertyGroup>
+    <_ProjectFileVersion>10.0.20506.1</_ProjectFileVersion>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\Debug\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OpenGLPAG.dir\Debug\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">OpenGLPAG</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\Release\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='Release|x64'">OpenGLPAG.dir\Release\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='Release|x64'">OpenGLPAG</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='Release|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='Release|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\MinSizeRel\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">OpenGLPAG.dir\MinSizeRel\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">OpenGLPAG</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">true</GenerateManifest>
+    <OutDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\RelWithDebInfo\</OutDir>
+    <IntDir Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">OpenGLPAG.dir\RelWithDebInfo\</IntDir>
+    <TargetName Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">OpenGLPAG</TargetName>
+    <TargetExt Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">.exe</TargetExt>
+    <LinkIncremental Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</LinkIncremental>
+    <GenerateManifest Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">true</GenerateManifest>
+  </PropertyGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>Disabled</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>Disabled</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDebugDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX="";CMAKE_INTDIR="Debug"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_DEBUG;_WINDOWS;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX=\"\";CMAKE_INTDIR=\"Debug\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+D:\CMake\bin\cmake.exe -E copy_directory D:/Olcia/Studia/PAGI/OpenGLPAG/res D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/res
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;..\thirdparty\assimp\code\Debug\assimp-vc140-mt.lib;..\thirdparty\glfw\src\Debug\glfw3.lib;..\Debug\glad.lib;..\Debug\imgui.lib;..\Debug\stb_image.lib;..\thirdparty\assimp\contrib\zlib\Debug\zlibstaticd.lib;..\thirdparty\assimp\contrib\irrXML\Debug\IrrXML.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/Debug/OpenGLPAG.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/Debug/OpenGLPAG.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>AnySuitable</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX="";CMAKE_INTDIR="Release"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX=\"\";CMAKE_INTDIR=\"Release\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+D:\CMake\bin\cmake.exe -E copy_directory D:/Olcia/Studia/PAGI/OpenGLPAG/res D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/res
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;..\thirdparty\assimp\code\Release\assimp-vc140-mt.lib;..\thirdparty\glfw\src\Release\glfw3.lib;..\Release\glad.lib;..\Release\imgui.lib;..\Release\stb_image.lib;..\thirdparty\assimp\contrib\zlib\Release\zlibstatic.lib;..\thirdparty\assimp\contrib\irrXML\Release\IrrXML.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/Release/OpenGLPAG.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/Release/OpenGLPAG.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MinSpace</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX="";CMAKE_INTDIR="MinSizeRel"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+      <DebugInformationFormat>
+      </DebugInformationFormat>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX=\"\";CMAKE_INTDIR=\"MinSizeRel\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+D:\CMake\bin\cmake.exe -E copy_directory D:/Olcia/Studia/PAGI/OpenGLPAG/res D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/res
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;..\thirdparty\assimp\code\MinSizeRel\assimp-vc140-mt.lib;..\thirdparty\glfw\src\MinSizeRel\glfw3.lib;..\MinSizeRel\glad.lib;..\MinSizeRel\imgui.lib;..\MinSizeRel\stb_image.lib;..\thirdparty\assimp\contrib\zlib\MinSizeRel\zlibstatic.lib;..\thirdparty\assimp\contrib\irrXML\MinSizeRel\IrrXML.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>false</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/MinSizeRel/OpenGLPAG.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/MinSizeRel/OpenGLPAG.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">
+    <ClCompile>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AssemblerListingLocation>$(IntDir)</AssemblerListingLocation>
+      <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
+      <ExceptionHandling>Sync</ExceptionHandling>
+      <InlineFunctionExpansion>OnlyExplicitInline</InlineFunctionExpansion>
+      <LanguageStandard>stdcpp17</LanguageStandard>
+      <Optimization>MaxSpeed</Optimization>
+      <PrecompiledHeader>NotUsing</PrecompiledHeader>
+      <RuntimeLibrary>MultiThreadedDLL</RuntimeLibrary>
+      <RuntimeTypeInfo>true</RuntimeTypeInfo>
+      <UseFullPaths>false</UseFullPaths>
+      <WarningLevel>Level3</WarningLevel>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX="";CMAKE_INTDIR="RelWithDebInfo"</PreprocessorDefinitions>
+      <ObjectFileName>$(IntDir)</ObjectFileName>
+    </ClCompile>
+    <ResourceCompile>
+      <PreprocessorDefinitions>%(PreprocessorDefinitions);WIN32;_WINDOWS;NDEBUG;GLFW_INCLUDE_NONE;LIBRARY_SUFFIX=\"\";CMAKE_INTDIR=\"RelWithDebInfo\"</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+    </ResourceCompile>
+    <Midl>
+      <AdditionalIncludeDirectories>D:\Olcia\Studia\PAGI\OpenGLPAG\src;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glfw\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glad\include;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\glm;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\imgui;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\stb_image;D:\Olcia\Studia\PAGI\OpenGLPAG\thirdparty\assimp\code\..\include;D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\..\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <OutputDirectory>$(ProjectDir)/$(IntDir)</OutputDirectory>
+      <HeaderFileName>%(Filename).h</HeaderFileName>
+      <TypeLibraryName>%(Filename).tlb</TypeLibraryName>
+      <InterfaceIdentifierFileName>%(Filename)_i.c</InterfaceIdentifierFileName>
+      <ProxyFileName>%(Filename)_p.c</ProxyFileName>
+    </Midl>
+    <PostBuildEvent>
+      <Message>
+      </Message>
+      <Command>setlocal
+D:\CMake\bin\cmake.exe -E copy_directory D:/Olcia/Studia/PAGI/OpenGLPAG/res D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/res
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+    </PostBuildEvent>
+    <Link>
+      <AdditionalDependencies>opengl32.lib;glu32.lib;..\thirdparty\assimp\code\RelWithDebInfo\assimp-vc140-mt.lib;..\thirdparty\glfw\src\RelWithDebInfo\glfw3.lib;..\RelWithDebInfo\glad.lib;..\RelWithDebInfo\imgui.lib;..\RelWithDebInfo\stb_image.lib;..\thirdparty\assimp\contrib\zlib\RelWithDebInfo\zlibstatic.lib;..\thirdparty\assimp\contrib\irrXML\RelWithDebInfo\IrrXML.lib;kernel32.lib;user32.lib;gdi32.lib;winspool.lib;shell32.lib;ole32.lib;oleaut32.lib;uuid.lib;comdlg32.lib;advapi32.lib</AdditionalDependencies>
+      <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
+      <AdditionalOptions>%(AdditionalOptions) /machine:x64</AdditionalOptions>
+      <GenerateDebugInformation>true</GenerateDebugInformation>
+      <IgnoreSpecificDefaultLibraries>%(IgnoreSpecificDefaultLibraries)</IgnoreSpecificDefaultLibraries>
+      <ImportLibrary>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/RelWithDebInfo/OpenGLPAG.lib</ImportLibrary>
+      <ProgramDataBaseFile>D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/RelWithDebInfo/OpenGLPAG.pdb</ProgramDataBaseFile>
+      <SubSystem>Console</SubSystem>
+    </Link>
+    <ProjectReference>
+      <LinkLibraryDependencies>false</LinkLibraryDependencies>
+    </ProjectReference>
+  </ItemDefinitionGroup>
+  <ItemGroup>
+    <CustomBuild Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\CMakeLists.txt">
+      <StdOutEncoding>UTF-8</StdOutEncoding>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='Release|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='Release|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='Release|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='MinSizeRel|x64'">false</LinkObjects>
+      <Message Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">Building Custom Rule D:/Olcia/Studia/PAGI/OpenGLPAG/src/CMakeLists.txt</Message>
+      <Command Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">setlocal
+D:\CMake\bin\cmake.exe -SD:/Olcia/Studia/PAGI/OpenGLPAG -BD:/Olcia/Studia/PAGI/OpenGLPAG/Build --check-stamp-file D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/CMakeFiles/generate.stamp
+if %errorlevel% neq 0 goto :cmEnd
+:cmEnd
+endlocal &amp; call :cmErrorLevel %errorlevel% &amp; goto :cmDone
+:cmErrorLevel
+exit /b %1
+:cmDone
+if %errorlevel% neq 0 goto :VCEnd</Command>
+      <AdditionalInputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">%(AdditionalInputs)</AdditionalInputs>
+      <Outputs Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\CMakeFiles\generate.stamp</Outputs>
+      <LinkObjects Condition="'$(Configuration)|$(Platform)'=='RelWithDebInfo|x64'">false</LinkObjects>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\src\Cube.h" />
+    <ClInclude Include="..\..\src\InputHandler.h" />
+    <ClInclude Include="..\..\src\Shader.h" />
+    <ClInclude Include="..\..\src\ShaderProgram.h" />
+    <ClInclude Include="..\..\src\Window.h" />
+    <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\Texture.h" />
+    <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_glfw.h" />
+    <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_opengl3.h" />
+    <ClCompile Include="..\..\src\Cube.cpp" />
+    <ClCompile Include="..\..\src\InputHandler.cpp" />
+    <ClCompile Include="..\..\src\Shader.cpp" />
+    <ClCompile Include="..\..\src\ShaderProgram.cpp" />
+    <ClCompile Include="..\..\src\Window.cpp" />
+    <ClCompile Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\Texture.cpp" />
+    <ClCompile Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_glfw.cpp" />
+    <ClCompile Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_opengl3.cpp" />
+    <ClCompile Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\main.cpp" />
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\ZERO_CHECK.vcxproj">
+      <Project>{B1C9BBB7-27F9-3C25-858B-D9A45B3EFBC6}</Project>
+      <Name>ZERO_CHECK</Name>
+      <ReferenceOutputAssembly>false</ReferenceOutputAssembly>
+      <CopyToOutputDirectory>Never</CopyToOutputDirectory>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\contrib\irrXML\IrrXML.vcxproj">
+      <Project>{26C8E299-0469-3F1F-87E2-F446A369C5E5}</Project>
+      <Name>IrrXML</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\code\assimp.vcxproj">
+      <Project>{2152650B-0910-33F5-A29E-3E90C8A06A13}</Project>
+      <Name>assimp</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\glad.vcxproj">
+      <Project>{1D9EEA7D-7F82-34C4-B593-7DBB684BD57E}</Project>
+      <Name>glad</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\glfw\src\glfw.vcxproj">
+      <Project>{AB691172-D7C1-37CB-8FDF-550985EFB262}</Project>
+      <Name>glfw</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\imgui.vcxproj">
+      <Project>{4C92F3F9-7744-3547-9811-D258F60E0514}</Project>
+      <Name>imgui</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\stb_image.vcxproj">
+      <Project>{24C97A91-1416-378F-87D6-C81495C1B5ED}</Project>
+      <Name>stb_image</Name>
+    </ProjectReference>
+    <ProjectReference Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\thirdparty\assimp\contrib\zlib\zlibstatic.vcxproj">
+      <Project>{F39F1465-04CD-3A09-852F-E53014C36252}</Project>
+      <Name>zlibstatic</Name>
+    </ProjectReference>
+  </ItemGroup>
+  <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
+  <ImportGroup Label="ExtensionTargets">
+  </ImportGroup>
+</Project>

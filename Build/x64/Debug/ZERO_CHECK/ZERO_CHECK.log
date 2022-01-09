@@ -1,0 +1,81 @@
+﻿  Checking Build System
+  CMake is re-running because D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/CMakeFiles/generate.stamp is out-of-date.
+    the file 'D:/Olcia/Studia/PAGI/OpenGLPAG/src/CMakeLists.txt'
+    is newer than 'D:/Olcia/Studia/PAGI/OpenGLPAG/Build/src/CMakeFiles/generate.stamp.depend'
+    result='-1'
+  -- Selecting Windows SDK version 10.0.19041.0 to target Windows 10.0.19042.
+  Unable to find assimp, cloning...
+  CMake Deprecation Warning at thirdparty/assimp/CMakeLists.txt:38 (CMAKE_MINIMUM_REQUIRED):
+    Compatibility with CMake < 2.8.12 will be removed from a future version of
+    CMake.
+  
+    Update the VERSION argument <min> value or use a ...<max> suffix to tell
+    CMake that the project does not need compatibility with older versions.
+  
+  
+  CMake Warning (dev) at thirdparty/assimp/CMakeLists.txt:39 (PROJECT):
+    Policy CMP0048 is not set: project() command manages VERSION variables.
+    Run "cmake --help-policy CMP0048" for policy details.  Use the cmake_policy
+    command to set the policy and suppress this warning.
+  
+    The following variable(s) would be set to empty:
+  
+      PROJECT_VERSION
+      PROJECT_VERSION_MAJOR
+      PROJECT_VERSION_MINOR
+  This warning is for project developers.  Use -Wno-dev to suppress it.
+  
+  -- Shared libraries disabled
+  -- Looking for DirectX...
+  -- DirectX_PREFIX_PATH changed.
+  -- Found DirectX: D:/Windows Kits/10/Lib/10.0.19041.0/um/x64/d3d9.lib
+  -- DX lib dir: D:/Windows Kits/10/Lib/10.0.19041.0/um/x64
+  -- Looking for ZLIB...
+  -- Could NOT find PkgConfig (missing: PKG_CONFIG_EXECUTABLE) 
+  -- Could not locate ZLIB
+  -- compiling zlib from sources
+  CMake Deprecation Warning at thirdparty/assimp/contrib/zlib/CMakeLists.txt:1 (cmake_minimum_required):
+    Compatibility with CMake < 2.8.12 will be removed from a future version of
+    CMake.
+  
+    Update the VERSION argument <min> value or use a ...<max> suffix to tell
+    CMake that the project does not need compatibility with older versions.
+  
+  
+  CMake Deprecation Warning at thirdparty/assimp/contrib/zlib/CMakeLists.txt:8 (cmake_policy):
+    The OLD behavior for policy CMP0048 will be removed from a future version
+    of CMake.
+  
+    The cmake-policies(7) manual explains that the OLD behaviors of all
+    policies are deprecated and that a policy should be set to OLD only under
+    specific short-term circumstances.  Projects should be ported to the NEW
+    behavior and not rely on setting a policy to OLD.
+  
+  
+  CMake Deprecation Warning at thirdparty/assimp/code/CMakeLists.txt:47 (cmake_minimum_required):
+    Compatibility with CMake < 2.8.12 will be removed from a future version of
+    CMake.
+  
+    Update the VERSION argument <min> value or use a ...<max> suffix to tell
+    CMake that the project does not need compatibility with older versions.
+  
+  
+  CMake Warning (dev) at D:/CMake/share/cmake-3.21/Modules/FindPackageHandleStandardArgs.cmake:438 (message):
+    The package name passed to `find_package_handle_standard_args` (rt) does
+    not match the name of the calling package (RT).  This can lead to problems
+    in calling code that expects `find_package` result variables (e.g.,
+    `_FOUND`) to follow a certain pattern.
+  Call Stack (most recent call first):
+    thirdparty/assimp/cmake-modules/FindRT.cmake:19 (find_package_handle_standard_args)
+    thirdparty/assimp/code/CMakeLists.txt:835 (FIND_PACKAGE)
+  This warning is for project developers.  Use -Wno-dev to suppress it.
+  
+  -- Could NOT find rt (missing: RT_LIBRARY) 
+  -- Enabled formats: AMF 3DS AC ASE ASSBIN ASSXML B3D BVH COLLADA DXF CSM HMP IRRMESH IRR LWO LWS MD2 MD3 MD5 MDC MDL NFF NDO OFF OBJ OGRE OPENGEX PLY MS3D COB BLEND IFC XGL FBX Q3D Q3BSP RAW SIB SMD STL TERRAGEN 3D X X3D GLTF 3MF MMD
+  -- Disabled formats:
+  Unable to find glfw, cloning...
+  -- Could NOT find Vulkan (missing: VULKAN_LIBRARY VULKAN_INCLUDE_DIR) 
+  -- Using Win32 for window creation
+  -- Configuring done
+  -- Generating done
+  -- Build files have been written to: D:/Olcia/Studia/PAGI/OpenGLPAG/Build

@@ -1,0 +1,16 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="16.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <CustomBuild Include="D:\Olcia\Studia\PAGI\OpenGLPAG\Build\CMakeFiles\bbecd6e22572d70108f4a893e382161c\INSTALL_force.rule">
+      <Filter>CMake Rules</Filter>
+    </CustomBuild>
+  </ItemGroup>
+  <ItemGroup>
+    <Filter Include="CMake Rules">
+      <UniqueIdentifier>{28E6278A-2A7A-3029-A7CC-20A0BD7DEC2F}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="sources">
+      <UniqueIdentifier>{31C759A1-9FB6-3D2D-87E5-6395A42B6BF1}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+</Project>
