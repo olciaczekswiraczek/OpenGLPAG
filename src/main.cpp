@@ -13,7 +13,7 @@
 #include "Window.h"
 #include "ShaderProgram.h"
 #include "Texture.h"
-#include "Cube.h"
+#include "Mesh.h"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -45,7 +45,7 @@ int main()
 
 
 
-    std::vector <Cube> mengerSponge;
+    std::vector <Mesh> mengerSponge;
 
     std::shared_ptr<Shader> vertexShader(new Shader("shader.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> fragmentShader(new Shader("shader.frag", FRAGMENT_SHADER));
@@ -142,7 +142,7 @@ void Menger(int level, GLfloat x, GLfloat y, GLfloat z, GLfloat edgeLength)
 {
     if (level == 0)
     {
-        Cube cube(x, y, z, edgeLength);
+        Mesh cube(x, y, z, edgeLength);
         cube.Draw();
     }
     else

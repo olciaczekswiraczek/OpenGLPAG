@@ -25,7 +25,7 @@
     <ClCompile Include="..\..\src\Shader.cpp">
       <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Cube.cpp">
+    <ClCompile Include="..\..\src\Mesh.cpp">
       <Filter>sources</Filter>
     </ClCompile>
   </ItemGroup>
@@ -51,7 +51,7 @@
     <ClInclude Include="..\..\src\Shader.h">
       <Filter>sources</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\src\Cube.h">
+    <ClInclude Include="..\..\src\Mesh.h">
       <Filter>sources</Filter>
     </ClInclude>
   </ItemGroup>

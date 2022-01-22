@@ -369,7 +369,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Cube.h" />
+    <ClInclude Include="..\..\src\Mesh.h" />
     <ClInclude Include="..\..\src\InputHandler.h" />
     <ClInclude Include="..\..\src\Shader.h" />
     <ClInclude Include="..\..\src\ShaderProgram.h" />
@@ -377,7 +377,7 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\Texture.h" />
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_glfw.h" />
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_opengl3.h" />
-    <ClCompile Include="..\..\src\Cube.cpp" />
+    <ClCompile Include="..\..\src\Mesh.cpp" />
     <ClCompile Include="..\..\src\InputHandler.cpp" />
     <ClCompile Include="..\..\src\Shader.cpp" />
     <ClCompile Include="..\..\src\ShaderProgram.cpp" />
