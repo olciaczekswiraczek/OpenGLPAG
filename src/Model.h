@@ -9,8 +9,10 @@ class Model
 {
 
 public:
-	Model();
+	Model(char *filename);
 	~Model();
+
+	void Draw();
 
 private:
 

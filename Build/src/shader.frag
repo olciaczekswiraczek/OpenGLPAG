@@ -10,6 +10,6 @@ uniform vec4 uniformColor;
 
 void main()
 {
-	color = uniformColor*mix( texture(ourTexture, textureCoord), texture(ourTexture1, textureCoord), 0.1 );
+	color = uniformColor;//*mix( texture(ourTexture, textureCoord), texture(ourTexture1, textureCoord), 0.1 );
 	
 }

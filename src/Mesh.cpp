@@ -1,6 +1,7 @@
 #include "Mesh.h"
 
-Mesh::Mesh(float x, float y, float z, float edgeLength) : x(x), y(y), z(z), edgeLength(edgeLength)
+Mesh::Mesh(std::vector<Vertex>& vertexBuffer, std::vector<GLuint>& elementBuffer)
+	:m_vertexBuffer(vertexBuffer),m_elementBuffer(elementBuffer)
 {
 	Init();
 }
@@ -27,60 +28,14 @@ void Mesh::Draw()
 {
 
 	glBindVertexArray(VAO);
-	//glDrawElements(GL_TRIANGLES, 3*2, GL_UNSIGNED_INT, NULL); //count liczba indicies, offset
-	glDrawArrays(GL_TRIANGLES, 0, 36);
+	glDrawElements(GL_TRIANGLES, m_vertexBuffer.size(), GL_UNSIGNED_INT, NULL);
 	glBindVertexArray(NULL);
+	//glDrawElements(GL_TRIANGLES, 3*2, GL_UNSIGNED_INT, NULL); //count liczba indicies, offset
+	
 }
 
 void Mesh::Init()
 {
-	float a = edgeLength / 2;
-
-	float vertices[] = {
-	   x - a, y - a, z - a,  0.0f, 0.0f,
-	   x + a, y - a, z - a,  1.0f, 0.0f,
-	   x + a, y + a, z - a,  1.0f, 1.0f,
-	   x + a, y + a, z - a,  1.0f, 1.0f,
-	   x - a, y + a, z - a,  0.0f, 1.0f,
-	   x - a, y - a, z - a,  0.0f, 0.0f,
-
-		x - a, y - a, z + a,  0.0f, 0.0f,
-		x + a, y - a, z + a,  1.0f, 0.0f,
-		x + a, y + a, z + a,  1.0f, 1.0f,
-		x + a, y + a, z + a,  1.0f, 1.0f,
-		x - a, y + a, z + a,  0.0f, 1.0f,
-		x - a, y - a, z + a,  0.0f, 0.0f,
-
-		x - a, y + a, z + a,  1.0f, 0.0f,
-		x - a, y + a, z - a,  1.0f, 1.0f,
-		x - a, y - a, z - a,  0.0f, 1.0f,
-		x - a, y - a, z - a,  0.0f, 1.0f,
-		x - a, y - a, z + a,  0.0f, 0.0f,
-		x - a, y + a, z + a,  1.0f, 0.0f,
-
-		x + a, y + a, z + a,  1.0f, 0.0f,
-		x + a, y + a, z - a,  1.0f, 1.0f,
-		x + a, y - a, z - a,  0.0f, 1.0f,
-		x + a, y - a, z - a,  0.0f, 1.0f,
-		x + a, y - a, z + a,  0.0f, 0.0f,
-		x + a, y + a, z + a,  1.0f, 0.0f,
-
-		x - a, y - a, z - a,  0.0f, 1.0f,
-		x + a, y - a, z - a,  1.0f, 1.0f,
-		x + a, y - a, z + a,  1.0f, 0.0f,
-		x + a, y - a, z + a,  1.0f, 0.0f,
-		x - a, y - a, z + a,  0.0f, 0.0f,
-		x - a, y - a, z - a,  0.0f, 1.0f,
-
-		x - a, y + a, z - a,  0.0f, 1.0f,
-		x + a, y + a, z - a,  1.0f, 1.0f,
-		x + a, y + a, z + a,  1.0f, 0.0f,
-		x + a, y + a, z + a,  1.0f, 0.0f,
-		x - a, y + a, z + a,  0.0f, 0.0f,
-		x - a, y + a, z - a,  0.0f, 1.0f
-
-
-	};
 
 	glGenVertexArrays(1, &VAO);
 	glGenBuffers(1, &VBO);
@@ -89,72 +44,26 @@ void Mesh::Init()
 	glBindVertexArray(VAO);
 
 	glBindBuffer(GL_ARRAY_BUFFER, VBO);
-	glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
-	//glBufferDataV(GL_ARRAY_BUFFER, *vertexBuffer, GL_STATIC_DRAW);
+	glBufferDataV(GL_ARRAY_BUFFER, m_vertexBuffer, GL_STATIC_DRAW);
 
-	//glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-	//glBufferDataV(GL_ELEMENT_ARRAY_BUFFER, *elementBuffer, GL_STATIC_DRAW);
-
+	//
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+	glBufferDataV(GL_ELEMENT_ARRAY_BUFFER, m_elementBuffer, GL_STATIC_DRAW);
 
 	//pozycja
-	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)0);
-	//glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (void*)offsetof(Vertex, position)); //ustawia wskazniki na atrybuty na naszym VBO, pozycja 0, posiada 3 glfloaty, wyrównanie, rozmiar elementu, offset 
-	glEnableVertexAttribArray(0);  //enable 0 <-indeks
+	glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, position)); //indeksy, liczba elementow
+	glEnableVertexAttribArray(0);
 
-	//tekstura
-	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, 5 * sizeof(float), (void*)(3 * sizeof(float)));
-	//glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex),  (void*)offsetof(Vertex, textureCoord));
+	//tex coord
+	glVertexAttribPointer(1, 2, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, textureCoord));
 	glEnableVertexAttribArray(1);
 
-	glBindBuffer(GL_ARRAY_BUFFER, 0); //Unbind buffor
+	//normal
+	glVertexAttribPointer(2, 3, GL_FLOAT, GL_FALSE, sizeof(Vertex), (GLvoid*)offsetof(Vertex, normal));
+	glEnableVertexAttribArray(1);
 
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-	glBindVertexArray(NULL); //odpiecie VAO
+	glBindVertexArray(NULL); // odpiecie vao
 }
 
-
-/*
- * -a, -a, -a,  0.0f, 0.0f,
-	   +a, -a, -a,  1.0f, 0.0f,
-	   +a, +a, -a,  1.0f, 1.0f,
-	   +a, +a, -a,  1.0f, 1.0f,
-	   -a, +a, -a,  0.0f, 1.0f,
-	   -a, -a, -a,  0.0f, 0.0f,
-
-		-a, -a, +a,  0.0f, 0.0f,
-		+a, -a, +a,  1.0f, 0.0f,
-		+a, +a, +a,  1.0f, 1.0f,
-		+a, +a, +a,  1.0f, 1.0f,
-		-a, +a, +a,  0.0f, 1.0f,
-		-a, -a, +a,  0.0f, 0.0f,
-
-		-a, +a, +a,  1.0f, 0.0f,
-		-a, +a, -a,  1.0f, 1.0f,
-		-a, -a, -a,  0.0f, 1.0f,
-		-a, -a, -a,  0.0f, 1.0f,
-		-a, -a, +a,  0.0f, 0.0f,
-		-a, +a, +a,  1.0f, 0.0f,
-
-		+a, +a, +a,  1.0f, 0.0f,
-		+a, +a, -a,  1.0f, 1.0f,
-		+a, -a, -a,  0.0f, 1.0f,
-		+a, -a, -a,  0.0f, 1.0f,
-		+a, -a, +a,  0.0f, 0.0f,
-		+a, +a, +a,  1.0f, 0.0f,
-
-		-a, -a, -a,  0.0f, 1.0f,
-		+a, -a, -a,  1.0f, 1.0f,
-		+a, -a, +a,  1.0f, 0.0f,
-		+a, -a, +a,  1.0f, 0.0f,
-		-a, -a, +a,  0.0f, 0.0f,
-		-a, -a, -a,  0.0f, 1.0f,
-
-		-a, +a, -a,  0.0f, 1.0f,
-		+a, +a, -a,  1.0f, 1.0f,
-		+a, +a, +a,  1.0f, 0.0f,
-		+a, +a, +a,  1.0f, 0.0f,
-		-a, +a, +a,  0.0f, 0.0f,
-		-a, +a, -a,  0.0f, 1.0f
-
-
- */

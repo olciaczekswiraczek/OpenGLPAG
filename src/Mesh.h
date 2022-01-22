@@ -14,16 +14,17 @@ struct Vertex
 {
 	glm::vec3 position;
 	glm::vec2 textureCoord;
+	glm::vec3 normal;
 };
 
 class Mesh
 {
 public:
-	Mesh(float x, float y, float z, float edgeLength);
-	//VertexArrayObject(GLfloat d, glm::vec3 centerPos);
+	Mesh(std::vector<Vertex>& vertexBuffer, std::vector<GLuint>& elementBuffer);
 	~Mesh();
 
 	GLuint getVAO();
+
 	void Draw();
 
 private:
@@ -31,17 +32,10 @@ private:
 	GLuint VBO;
 	GLuint EBO;
 
-	float x, y, z;
-
-	float edgeLength;
-
-	//std::vector<Vertex>* vertexBuffer;
-	//std::vector<GLuint>* elementBuffer;
+	std::vector<Vertex> m_vertexBuffer;
+	std::vector<GLuint> m_elementBuffer;
 
 	void Init();
-
-
-
 
 
 };
