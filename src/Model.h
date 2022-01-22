@@ -19,7 +19,7 @@ private:
 
 	void loadModel(std::string& dir);
 
-	void processModel(aiNode* mesh, const aiScene* scene);
+	void processNode(aiNode* node, const aiScene* scene);
 
 	Mesh* processMesh(aiMesh* mesh, const aiScene* scene);
 
