@@ -12,6 +12,7 @@ thirdparty/
 Build/.vs/
 .vs/
 Build/src/OpenGLPAG.dir/Debug/
+Build/src/Debug/
 
 # Ignore Logs
 logs
