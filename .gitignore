@@ -12,6 +12,13 @@ thirdparty/
 Build/.vs/
 .vs/
 Build/src/OpenGLPAG.dir/Debug/
+
+# Ignore Logs
+logs
 *.log
 *.tlog
-*.tlog
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.sw*
