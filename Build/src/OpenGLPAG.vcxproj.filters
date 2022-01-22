@@ -28,6 +28,9 @@
     <ClCompile Include="..\..\src\Mesh.cpp">
       <Filter>sources</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\src\Model.cpp">
+      <Filter>sources</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\Texture.h">
@@ -52,6 +55,9 @@
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\Mesh.h">
+      <Filter>sources</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\src\Model.h">
       <Filter>sources</Filter>
     </ClInclude>
   </ItemGroup>

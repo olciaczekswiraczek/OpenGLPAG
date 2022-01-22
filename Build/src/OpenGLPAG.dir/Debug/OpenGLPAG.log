@@ -1,2 +1,2 @@
-﻿  main.cpp
-  OpenGLPAG.vcxproj -> D:\Olcia\Studia\PAGI\OpenGLPAG\Build\src\Debug\OpenGLPAG.exe
+﻿  Model.cpp
+..\..\src\Model.cpp(31,2): error C3861: "processNode": identyfikatora nie odnaleziono

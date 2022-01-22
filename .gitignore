@@ -11,3 +11,6 @@ CTestTestfile.cmake
 thirdparty/
 Build/.vs/
 .vs/
+Build/src/OpenGLPAG.dir/Debug/
+*.log
+*.tlog
