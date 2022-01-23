@@ -52,8 +52,8 @@ int main()
 
     Model rose("rose.fbx");
 
-    Texture texture1("texture1.jpg");
-    Texture texture2("texture2.jpg");
+    //Texture texture1("texture1.jpg");
+    //Texture texture2("texture2.jpg");
 
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);

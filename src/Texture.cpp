@@ -2,7 +2,8 @@
 #include <stb_image.h>
 #include <iostream>
 
-Texture::Texture(const char* filename)
+Texture::Texture(const char* filename, const char* type)
+    :m_type(type), path(filename)
 {
     Load(filename);
 }
@@ -14,6 +15,11 @@ Texture::~Texture()
 GLuint Texture::getTexture()
 {
     return texture;
+}
+
+std::string Texture::getPath()
+{
+    return path;
 }
 
 void Texture::Use(int id)

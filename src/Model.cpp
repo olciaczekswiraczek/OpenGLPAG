@@ -12,7 +12,12 @@ Model::Model(char* filename)
 
 Model::~Model()
 {
+	for (auto mesh : m_meshes)
+	{
+		delete mesh;
+	}
 
+	
 }
 
 void Model::Draw()
@@ -98,6 +103,16 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 		}
 	}
 
-	return new Mesh(vertices, indices);
 
+
+	 Mesh* newMesh = new Mesh(vertices, indices);
+	 if (mesh->mMaterialIndex >= 0)
+	 {
+		 aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];//pobieramy material o odpowiednim indeksie
+		 newMesh->loadMaterialTexture(mat, aiTextureType_DIFFUSE, "texture_diffuse");
+	 }
+
+	 return newMesh;
 }
+
+

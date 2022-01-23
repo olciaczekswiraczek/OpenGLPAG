@@ -3,6 +3,9 @@
 #include "glm/glm.hpp"
 #include <vector>
 
+#include "Texture.h"
+#include <assimp/material.h>
+
 
 template <typename T>
 void glBufferDataV(GLuint target, const std::vector<T>& buffer, GLenum type)
@@ -27,6 +30,8 @@ public:
 
 	void Draw();
 
+	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
+
 private:
 	GLuint VAO;
 	GLuint VBO;
@@ -35,7 +40,11 @@ private:
 	std::vector<Vertex> m_vertexBuffer;
 	std::vector<GLuint> m_elementBuffer;
 
+	std::vector <Texture*> m_textures;
+
 	void Init();
+
+	
 
 
 };

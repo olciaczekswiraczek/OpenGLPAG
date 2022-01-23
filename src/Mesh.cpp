@@ -12,6 +12,12 @@ Mesh::~Mesh()
 {
 	//delete vertices;
 	//delete elementBuffer;
+
+	for (auto tex : m_textures)
+	{
+		delete tex;
+	}
+
 	glDeleteBuffers(1, &VBO);
 	glDeleteBuffers(1, &EBO);
 	glDeleteVertexArrays(1, &VAO);
@@ -32,6 +38,36 @@ void Mesh::Draw()
 	glBindVertexArray(NULL);
 	//glDrawElements(GL_TRIANGLES, 3*2, GL_UNSIGNED_INT, NULL); //count liczba indicies, offset
 	
+}
+
+void Mesh::loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName)
+{
+
+	int size = material->GetTextureCount(textureType); //ile jest teksur danego typu w tym materiale 
+
+	for (int i = 0; i < size; i++)
+	{
+		aiString name;
+		material->GetTexture(textureType, i, &name);
+
+		bool skip = false;
+
+		for (auto loadedTexture : m_textures) //sprawdzamy czy nie mamy tesktury o danej nazwie, czy nie jest rowna aktualnie przetwarzanej sciezce/nazwie
+		{
+			if (loadedTexture->getPath() == std::string(name.C_Str()))
+			{
+				skip = true;
+				break;
+			}
+		}
+		if (!skip)
+		{
+			Texture* newTexture = new Texture(name.C_Str(), typeName);
+			m_textures.push_back(newTexture);
+		}
+
+
+	}
 }
 
 void Mesh::Init()
