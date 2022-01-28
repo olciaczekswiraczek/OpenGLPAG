@@ -21,8 +21,8 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 
 
 // settings
-const unsigned int SCR_WIDTH = 800;
-const unsigned int SCR_HEIGHT = 600;
+const unsigned int SCR_WIDTH = 1200;
+const unsigned int SCR_HEIGHT = 800;
 const char* glsl_version = "#version 430";
 
 
@@ -50,9 +50,9 @@ int main()
 
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
 
-    Model rose("rose.fbx");
+    Model star("Death_Star.obj", &shaderProgram);
 
-    //Texture texture1("texture1.jpg");
+    Texture texture1("texture1.jpg","texture_diffuse");
     //Texture texture2("texture2.jpg");
 
     // configure global opengl state
@@ -61,7 +61,7 @@ int main()
     glm::mat4 view = glm::mat4(1.0f);
     glm::mat4 projection = glm::mat4(1.0f);
 
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -300.0f)); //tak naprawde przesuwamy obiekty, a nie kamere
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -20.0f)); //tak naprawde przesuwamy obiekty, a nie kamere
     //view = glm::rotate(view, glm::radians(45.0f), glm::vec3(1.0f, 1.0f, 1.0f));
     projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 1000.0f);
 
@@ -80,12 +80,12 @@ int main()
 
       
 
-        //texture1.Use(0);
+        texture1.Use(0);
         shaderProgram.Use();
 
         //drawing
-        rose.Draw();
-        shaderProgram.setColor(glm::vec4(0.0f, 0.5f, 1.0f, 1.0f));  
+        star.Draw();
+        //shaderProgram.setColor(glm::vec4(0.0f, 0.5f, 1.0f, 1.0f));  
 
 
         glm::mat4 model = glm::mat4(1.0f);
@@ -112,9 +112,9 @@ int main()
         shaderProgram.setColor(glm::vec4(color[0], color[1], color[2], 1.0f));
         ImGui::End();*/
 
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.getProgram(), "model"), 1, GL_FALSE, glm::value_ptr(model));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.getProgram(), "view"), 1, GL_FALSE, glm::value_ptr(view));
-        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.getProgram(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.getProgramID(), "model"), 1, GL_FALSE, glm::value_ptr(model));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.getProgramID(), "view"), 1, GL_FALSE, glm::value_ptr(view));
+        glUniformMatrix4fv(glGetUniformLocation(shaderProgram.getProgramID(), "projection"), 1, GL_FALSE, glm::value_ptr(projection));
 
         // Render dear imgui into screen
         ImGui::Render();

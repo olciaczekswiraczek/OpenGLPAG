@@ -10,16 +10,18 @@ public:
 	Texture(const char* filename, const char* type);
 	~Texture();
 
-	GLuint getTexture();
+	GLuint getTextureID();
+	std::string getType();
 	std::string getPath();
+	
 
 	void Use(int id);
 
 private:
 	bool Load(const char* filename);
-	GLuint texture;
+	GLuint textureID;
 
-	std::string m_type;
+	std::string type;
 	std::string path;
 
 };

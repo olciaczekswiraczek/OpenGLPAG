@@ -13,20 +13,20 @@ ShaderProgram::~ShaderProgram()
 {
 }
 
-GLuint ShaderProgram::getProgram()
+GLuint ShaderProgram::getProgramID()
 {
-	return program;
+	return programID;
 }
 
 void ShaderProgram::Use()
 {
-	glUseProgram(program); //aktywacja shaderów
+	glUseProgram(programID); //aktywacja shaderów
 	currentProgram = this;
 }
 
 void ShaderProgram::setColor(glm::vec4 color)
 {
-	GLuint location = glGetUniformLocation(program, "uniformColor");
+	GLuint location = glGetUniformLocation(programID, "uniformColor");
 	glUniform4fv(location, 1, (GLfloat*)&color);
 }
 
@@ -41,25 +41,25 @@ void ShaderProgram::Init(bool mustCreate)
 {
 	if (mustCreate)
 	{
-		program = glCreateProgram(); //tworzymy program
+		programID = glCreateProgram(); //tworzymy program
 	}
-	glAttachShader(program, vertexShader->getShaderID());
-	glAttachShader(program, fragmentShader->getShaderID());
-	glLinkProgram(program);
+	glAttachShader(programID, vertexShader->getShaderID());
+	glAttachShader(programID, fragmentShader->getShaderID());
+	glLinkProgram(programID);
 
 	GLint success;
 	GLchar errBuffer[512];
-	glGetProgramiv(program, GL_LINK_STATUS, &success);
+	glGetProgramiv(programID, GL_LINK_STATUS, &success);
 
 	if (!success)
 	{
-		glGetShaderInfoLog(program, 512, NULL, errBuffer);
+		glGetShaderInfoLog(programID, 512, NULL, errBuffer);
 		std::cout << "ERROR::SHADER::VERTEX::COMPILATION_FAILED\n" << errBuffer << std::endl;
 	}
-	glUseProgram(program);
+	glUseProgram(programID);
 
-	glUniform1i(glGetUniformLocation(program, "ourTexture"), 0);
-	glUniform1i(glGetUniformLocation(program, "ourTexture1"), 1);
+	glUniform1i(glGetUniformLocation(programID, "ourTexture"), 0);
+	glUniform1i(glGetUniformLocation(programID, "ourTexture1"), 1);
 
 	glUseProgram(0);
 

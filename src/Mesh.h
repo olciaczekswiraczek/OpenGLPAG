@@ -2,9 +2,13 @@
 #include <glad/glad.h>
 #include "glm/glm.hpp"
 #include <vector>
+#include <sstream>
 
 #include "Texture.h"
 #include <assimp/material.h>
+#include "ShaderProgram.h"
+
+
 
 
 template <typename T>
@@ -28,7 +32,7 @@ public:
 
 	GLuint getVAO();
 
-	void Draw();
+	void Draw(ShaderProgram * shaderProgram);
 
 	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
 

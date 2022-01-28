@@ -12,7 +12,7 @@ public:
 
 	static ShaderProgram* currentProgram;
 
-	GLuint getProgram();
+	GLuint getProgramID();
 
 	void Use();
 	void setColor(glm::vec4 color);
@@ -20,7 +20,7 @@ public:
 
 
 private:
-	GLint program;
+	GLint programID;
 	std::shared_ptr<Shader> vertexShader;
 	std::shared_ptr<Shader> fragmentShader;
 

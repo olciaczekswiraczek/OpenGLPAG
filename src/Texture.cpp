@@ -3,7 +3,7 @@
 #include <iostream>
 
 Texture::Texture(const char* filename, const char* type)
-    :m_type(type), path(filename)
+    :type(type), path(filename)
 {
     Load(filename);
 }
@@ -12,9 +12,14 @@ Texture::~Texture()
 {
 }
 
-GLuint Texture::getTexture()
+GLuint Texture::getTextureID()
 {
-    return texture;
+    return textureID;
+}
+
+std::string Texture::getType()
+{
+    return type;
 }
 
 std::string Texture::getPath()
@@ -24,8 +29,8 @@ std::string Texture::getPath()
 
 void Texture::Use(int id)
 {
-    glActiveTexture(GL_TEXTURE0 + id); //GL_TEXTUREn w gladzie s¹ kolejno st¹d dodajemy id
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glActiveTexture(GL_TEXTURE0 + id); //GL_TEXTUREn w gladzie sa kolejno stad dodajemy id
+    glBindTexture(GL_TEXTURE_2D, textureID);
 }
 
 bool Texture::Load(const char* filename)
@@ -33,8 +38,8 @@ bool Texture::Load(const char* filename)
     // load and create a texture 
   // -------------------------
 
-    glGenTextures(1, &texture);
-    glBindTexture(GL_TEXTURE_2D, texture);
+    glGenTextures(1, &textureID);
+    glBindTexture(GL_TEXTURE_2D, textureID);
     // set the texture wrapping parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT);

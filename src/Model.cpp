@@ -5,7 +5,8 @@
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
-Model::Model(char* filename)
+Model::Model(char* filename, ShaderProgram* shaderProgram):
+	shaderProgram(shaderProgram)
 {
 	loadModel(std::string(filename));
 }
@@ -24,8 +25,13 @@ void Model::Draw()
 {
 	for (auto mesh : m_meshes)
 	{
-		mesh->Draw();
+		mesh->Draw(shaderProgram);
 	}
+}
+
+void Model::setShader(ShaderProgram* newShaderProgram)
+{
+	shaderProgram = newShaderProgram;
 }
 
 void Model::loadModel(std::string& dir)

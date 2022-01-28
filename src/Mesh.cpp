@@ -30,8 +30,39 @@ GLuint Mesh::getVAO()
 
 
 
-void Mesh::Draw()
+void Mesh::Draw(ShaderProgram* shaderProgram)
 {
+
+	GLuint diffuseNr = 1;
+	GLuint specularNr = 1;
+	GLuint normalNr = 1;
+	GLuint heightNr = 1;
+
+	for (GLuint i = 0; i < this->m_textures.size(); i++)
+	{
+		glActiveTexture(GL_TEXTURE0 + i);
+
+		std::stringstream ss;
+		std::string number;
+		std::string name = this->m_textures[i]->getType();
+
+		if (name == "texture_diffuse")
+			ss << diffuseNr++;
+		else if (name == "texture_specular")
+			ss << specularNr++;
+		else if (name == "texture_normal")
+			ss << normalNr++;
+		else if (name == "texture_height")
+			ss << heightNr++;
+		number == ss.str();
+
+
+		// now set the sampler to the correct texture unit
+		glUniform1i(glGetUniformLocation(shaderProgram->getProgramID(), (name + number).c_str()), i);
+		// and finally bind the texture
+		glBindTexture(GL_TEXTURE_2D, this->m_textures[i]->getTextureID());
+	}
+
 
 	glBindVertexArray(VAO);
 	glDrawElements(GL_TRIANGLES, m_vertexBuffer.size(), GL_UNSIGNED_INT, NULL);
