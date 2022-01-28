@@ -3,6 +3,7 @@
 #include "Shader.h"
 #include <memory>
 #include <glm/vec4.hpp>
+#include <glm/ext/matrix_float4x4.hpp>
 
 class ShaderProgram
 {
@@ -15,8 +16,10 @@ public:
 	GLuint getProgramID();
 
 	void Use();
-	void setColor(glm::vec4 color);
 	void Refresh();
+
+	void setColor(glm::vec4 color, const std::string& name);
+	void setMat4(glm::mat4& matrix, const std::string& name);
 
 
 private:

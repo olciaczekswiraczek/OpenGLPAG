@@ -24,18 +24,13 @@ void ShaderProgram::Use()
 	currentProgram = this;
 }
 
-void ShaderProgram::setColor(glm::vec4 color)
-{
-	GLuint location = glGetUniformLocation(programID, "uniformColor");
-	glUniform4fv(location, 1, (GLfloat*)&color);
-}
-
 void ShaderProgram::Refresh() //wczytujemy na nowo shadery z plików oraz inicjalizujemy VAO
 {
 	fragmentShader->Refresh();
 	vertexShader->Refresh();
 	Init();
 }
+
 
 void ShaderProgram::Init(bool mustCreate)
 {
@@ -65,3 +60,16 @@ void ShaderProgram::Init(bool mustCreate)
 
 
 }
+
+void ShaderProgram::setColor(glm::vec4 color, const std::string& name)
+{
+	GLuint location = glGetUniformLocation(programID, name.c_str());
+	glUniform4fv(location, 1, (GLfloat*)&color);
+}
+
+void ShaderProgram::setMat4(glm::mat4 &matrix, const std::string& name)
+{
+	GLuint location = glGetUniformLocation(programID, name.c_str());
+	glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
+}
+
