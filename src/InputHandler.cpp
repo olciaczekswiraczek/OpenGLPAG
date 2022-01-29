@@ -25,4 +25,5 @@ void InputHandler::KeyInputCallback(GLFWwindow* window, int key, int scancode, i
 	{
 		ShaderProgram::currentProgram->Refresh();
 	}
+	
 }

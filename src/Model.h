@@ -13,7 +13,7 @@ public:
 	Model(char *filename, ShaderProgram* shaderProgram);
 	~Model();
 
-	glm::mat4 transform; 
+	glm::mat4* transform; 
 
 	void Draw();
 	void setTransform(glm::mat4* matrix);
@@ -27,7 +27,7 @@ private:
 
 
 	void setShader(ShaderProgram* newShaderProgram);
-	void setTeansform(glm::mat4 matrix);
+	void setTeansform(glm::mat4* matrix);
 	void loadModel(std::string& dir);
 
 	void processNode(aiNode* node, const aiScene* scene);
