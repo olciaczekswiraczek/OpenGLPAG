@@ -7,3 +7,28 @@ cmake_install.cmake
 install_manifest.txt
 compile_commands.json
 CTestTestfile.cmake
+
+thirdparty/
+Build/.vs/
+.vs/
+Build/src/OpenGLPAG.dir/Debug/
+Build/imgui.dir/
+Build/glad.dir/
+Build/src/Debug/
+Build/Debug/
+out/
+Build/stb_image.dir/
+Build/x64/
+
+*.vcxproj*
+*.ini
+
+# Ignore Logs
+logs
+*.log
+*.tlog
+
+# Ignore IDE specific files
+.idea/
+.vscode/
+*.sw*
