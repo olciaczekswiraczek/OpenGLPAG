@@ -32,7 +32,7 @@ void Model::Draw()
 
 void Model::setTransform(glm::mat4* matrix)
 {
-
+	transform = matrix;
 }
 
 void Model::setShader(ShaderProgram* newShaderProgram)

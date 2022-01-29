@@ -117,12 +117,6 @@ int main()
         float currentFrame = glfwGetTime();
         deltaTime = currentFrame - lastFrame;
         lastFrame = currentFrame;
-
-        glfwPollEvents(); //poll IO events (keys pressed/released, mouse moved etc.)
-
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
         // feed inputs to dear imgui, start new frame
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
@@ -137,11 +131,18 @@ int main()
             ImGui::SliderInt(" ", &NUMBER_OF_RINGS, 6, 60);
             ImGui::Text("Rotate root node:");
             ImGui::SliderInt("  ", &angle, 1, 360);
+            model = glm::rotate(model, glm::radians((float)angle), glm::vec3(1.0, 0.0, 0.0));
+           
             ImGui::Text("Rotate root node:");
             ImGui::SliderInt("   ", &angle3, 1, 360);
+            model = glm::rotate(model, glm::radians((float)angle3), glm::vec3(0.0, 0.0, 1.0));
+            
             ImGui::Text("Rotate root node:");
             ImGui::SliderInt("    ", &angle2, 1, 360);
-           
+            model = glm::rotate(model, glm::radians((float)angle2), glm::vec3(0.0, 1.0, 0.0));
+                
+
+
             if (ImGui::Checkbox("Wireframe mode", &wireframeMode)) {
 
                 if (wireframeMode) {
@@ -154,10 +155,16 @@ int main()
             ImGui::End();
         }
 
+        glfwPollEvents(); //poll IO events (keys pressed/released, mouse moved etc.)
+
+        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        
 
 
         processInput(window.getWindow());
-        starGraphNode->Rotate(angle, glm::vec3(0, -1, 0));
+        //starGraphNode->Rotate(angle, glm::vec3(0, -1, 0));
      
         
         // set projection and view matrix
@@ -173,31 +180,26 @@ int main()
      
         // set projection and view matrix
         //-------------------------------
-      
-        
         shaderProgram.Use();
         shaderProgram.setMat4(projection, "projection");
         shaderProgram.setMat4(view, "view");
-        glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians((float)angle), glm::vec3(1.0, 0.0, 0.0));
-        model = glm::rotate(model, glm::radians((float)angle2), glm::vec3(0.0, 1.0, 0.0));
-        model = glm::rotate(model, glm::radians((float)angle3), glm::vec3(0.0, 0.0, 1.0));
+       
 
-        starGraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
+        //starGraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
         
-        //star->Draw();
+        star->Draw();
 
         //starGraphNode->Update();
         //starGraphNode->Draw();
-        star2GraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
+        //star2GraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
 
 
        
-        starGraphNode->setTransform(&model);
+        star->setTransform(&model);
 
 
-        solarSystem->Update();
-        solarSystem->Draw();
+        //solarSystem->Update();
+        //solarSystem->Draw();
 
      
 
