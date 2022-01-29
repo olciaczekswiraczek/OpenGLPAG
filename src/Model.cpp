@@ -35,15 +35,11 @@ void Model::setTransform(glm::mat4* matrix)
 	transform = matrix;
 }
 
-void Model::setShader(ShaderProgram* newShaderProgram)
+void Model::setShaderProgram(ShaderProgram* s)
 {
-	shaderProgram = newShaderProgram;
+	shaderProgram = s;
 }
 
-void Model::setTeansform(glm::mat4* matrix)
-{
-	transform = matrix;
-}
 
 void Model::loadModel(std::string& dir)
 {

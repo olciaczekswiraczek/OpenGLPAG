@@ -10,13 +10,21 @@ class Model
 {
 
 public:
-	Model(char *filename, ShaderProgram* shaderProgram);
+	Model(char *filename, ShaderProgram* shaderProgram = nullptr);
+	Model(Mesh* mesh)
+	{
+		
+		m_meshes.push_back(mesh);
+		transform = new glm::mat4(1);
+	}
+
 	~Model();
 
 	glm::mat4* transform; 
 
 	void Draw();
 	void setTransform(glm::mat4* matrix);
+	void setShaderProgram(ShaderProgram* s);
 
 private:
 
@@ -25,9 +33,6 @@ private:
 
 	ShaderProgram* shaderProgram;
 
-
-	void setShader(ShaderProgram* newShaderProgram);
-	void setTeansform(glm::mat4* matrix);
 	void loadModel(std::string& dir);
 
 	void processNode(aiNode* node, const aiScene* scene);

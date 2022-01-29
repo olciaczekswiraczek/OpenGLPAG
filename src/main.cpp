@@ -6,7 +6,7 @@
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
 
-#include "glm/glm.hpp"
+#include <glm/glm.hpp>
 #include <glm/gtc/matrix_transform.hpp>
 #include <glm/gtc/type_ptr.hpp>
 
@@ -64,30 +64,65 @@ int main()
     std::shared_ptr<Shader> vertexShader(new Shader("shader.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> fragmentShader(new Shader("shader.frag", FRAGMENT_SHADER));
 
+    std::shared_ptr<Shader> torusVertexShader(new Shader("torusShader.vs", VERTEX_SHADER));
+    std::shared_ptr<Shader> torusFragmentShader(new Shader("torusShader.fs", FRAGMENT_SHADER));
+
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
+    ShaderProgram torusShader(torusVertexShader, torusFragmentShader);
 
     Model* star = new Model("Death_Star.obj", &shaderProgram);
     Model* star2 = new Model("Death_Star.obj", &shaderProgram);
+    //Model* pizza = new Model("res/models/pizza/pizza.fbx", &shaderProgram);
+
+    Mesh* torusMesh = new Mesh();
+    torusMesh->generateTorus(30, 30, 4.0f, 10.0f);
+    Model* torusModel = new Model(torusMesh);
+    torusModel->setShaderProgram(&torusShader);
 
     Texture texture1("texture1.jpg","texture_diffuse");
     //Texture texture2("texture2.jpg");
 
     GraphNode* solarSystem = new GraphNode();
+   // GraphNode* pizzaGraphNode = new GraphNode(pizza);
     GraphNode* starGraphNode = new GraphNode(star);
+
+    GraphNode* handler1 = new GraphNode();
+    GraphNode* handler2 = new GraphNode();
+    GraphNode* handler3 = new GraphNode();
+    GraphNode* handler4 = new GraphNode();
+    GraphNode* handler5 = new GraphNode();
+    GraphNode* handler6 = new GraphNode();
+    GraphNode* handler7 = new GraphNode();
+
+
     GraphNode* star2GraphNode = new GraphNode(star2);
+
+    GraphNode* torusGraphNode = new GraphNode(torusModel);
 
     // create graph nodes transformations to position them in the scene
 // ----------------------------------------------------------------
     glm::mat4* transformStarGraphNode = new glm::mat4(1);
-    *transformStarGraphNode = glm::translate(*(transformStarGraphNode), glm::vec3(0.0f, -2.75f, 0.0f));
-    //transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.1f, 0.1f, 0.1f));
+    *transformStarGraphNode = glm::translate(*(transformStarGraphNode), glm::vec3(0.0f, -.75f, 0.0f));
+    *transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.1f, 0.1f, 0.1f));
+
+    glm::mat4* transformTorusGraphNode = new glm::mat4(1);
+	*transformTorusGraphNode = glm::translate(*(transformTorusGraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
+	*transformTorusGraphNode = glm::scale(*transformTorusGraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
+
+    starGraphNode->addOrbit(30, &torusShader, 0.1f, 9.0f);
+    starGraphNode->addOrbit(40, &torusShader, 0.1f, 9.0f);
 
   
 
 
     star->setTransform(transformStarGraphNode);
+    star2->setTransform(transformTorusGraphNode);
 
-    starGraphNode->addChild(star2GraphNode);
+    handler1->addChild(torusGraphNode);
+    handler2->addChild(star2GraphNode);
+
+    starGraphNode->addChild(handler1);
+    starGraphNode->addChild(handler2);
     solarSystem->addChild(starGraphNode);
     
     
@@ -100,7 +135,7 @@ int main()
     glm::mat4 projection = glm::mat4(1.0f);
     glm::mat4 model = glm::mat4(1.0f);
 
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -200.0f)); //tak naprawde przesuwamy obiekty, a nie kamere
+    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -500.0f)); //tak naprawde przesuwamy obiekty, a nie kamere
     //view = glm::rotate(view, glm::radians(45.0f), glm::vec3(1.0f, 1.0f, 1.0f));
     projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
 
@@ -155,7 +190,7 @@ int main()
             ImGui::End();
         }
 
-        glfwPollEvents(); //poll IO events (keys pressed/released, mouse moved etc.)
+        
 
         glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
@@ -174,40 +209,50 @@ int main()
        
       
         //drawing
-       
-        //shaderProgram.setColor(glm::vec4(0.0f, 0.5f, 1.0f, 1.0f));  
+         
 
      
         // set projection and view matrix
         //-------------------------------
+
+        torusShader.Use();
+        torusShader.setMat4(projection,"projection");
+        torusShader.setMat4(view,"view");
+
         shaderProgram.Use();
         shaderProgram.setMat4(projection, "projection");
         shaderProgram.setMat4(view, "view");
        
+      
 
-        //starGraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
+      //  starGraphNode->Rotate(1.3f, glm::vec3(0, 1, 0));
+        starGraphNode->Translate(glm::vec3(0.002, 0, 0));
         
-        star->Draw();
+        //star->Draw();
 
         //starGraphNode->Update();
         //starGraphNode->Draw();
         //star2GraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
 
 
-       
+        glm::mat4 model = glm::mat4(1.0f);
+        model = glm::rotate(model, glm::radians((float)angle), glm::vec3(1.0, 0.0, 0.0));
+        model = glm::rotate(model, glm::radians((float)angle2), glm::vec3(0.0, 1.0, 0.0));
+        model = glm::rotate(model, glm::radians((float)angle3), glm::vec3(0.0, 0.0, 1.0));
+     
         star->setTransform(&model);
 
 
-        //solarSystem->Update();
-        //solarSystem->Draw();
+        solarSystem->Update();
+        solarSystem->Draw();
 
      
 
         // Render dear imgui into screen
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
         glfwSwapBuffers(window.getWindow());
+        glfwPollEvents(); //poll IO events (keys pressed/released, mouse moved etc.)
     }
 
     ImGui_ImplOpenGL3_Shutdown();

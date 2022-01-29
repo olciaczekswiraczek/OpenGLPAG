@@ -23,46 +23,31 @@ glm::mat4 GraphNode::getTransform()
 	return *transform;
 }
 
-void GraphNode::Draw()
-{
-	if (model) 
-	{
-		model->Draw();
-	}
-	for (auto node : children)
-	{
-		node->Draw();
-	}
-
-}
-
-void GraphNode::Update()
-{
-	if (parent)
-	{
-		*worldTransform = *parent->worldTransform * (*transform);
-	}
-	else
-	{
-		*worldTransform = *transform;
-	}
-
-	if (model)
-	{
-		model->setTransform(worldTransform);
-	}
-
-	for (auto node : children)
-	{
-		node->Update();
-	}
-}
 
 void GraphNode::addChild(GraphNode* node)
 {
 	children.push_back(node);
 	node->parent = this;
 }
+
+void GraphNode::addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform)
+{
+	Mesh* thorusMesh = new Mesh();
+	thorusMesh->generateTorus(50, 45, thickness, radius);
+	Model* thorusModel = new Model(thorusMesh);
+	thorusModel->setShaderProgram(shaderProgram);
+	GraphNode* pom = new GraphNode(thorusModel);
+	glm::mat4* TransformNode1 = new glm::mat4(1);
+	if (upTransform != 0) {
+
+		*TransformNode1 = glm::translate(*(TransformNode1), glm::vec3(0.0f, upTransform, 0.0f));
+	}
+
+	pom->setTransform(TransformNode1);
+	pom->Rotate(90, glm::vec3(1, 0, 0));
+	addChild(pom);
+}
+
 
 void GraphNode::Translate(glm::vec3 translation)
 {

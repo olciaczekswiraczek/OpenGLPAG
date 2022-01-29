@@ -9,6 +9,6 @@ uniform vec4 uniformColor;
 
 void main()
 {
-	color =texture(texture_diffuse1, textureCoord);
+	color = texture(texture_diffuse1, textureCoord);
 	
 }

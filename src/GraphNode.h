@@ -16,10 +16,44 @@ public:
 	void setTransform(glm::mat4* matrix);
 	glm::mat4 getTransform();
 
-	virtual void Draw();
-	virtual void Update();
+	// update transforms
+	// -----------------
+	virtual void Update()
+	{
+		if (parent) // if has a parent
+		{
+			*worldTransform = *parent->worldTransform * (*transform);
+		}
+		else //if does not have a parent
+		{
+			*worldTransform = *transform;
+		}
+
+		if (model) // if has a model
+		{
+			model->setTransform(worldTransform);
+		}
+		for (GraphNode* node : children)
+		{
+			node->Update();
+		}
+
+	}
+
+	// draw whole scene
+	// ----------------
+	virtual void Draw()
+	{
+		if (model) { model->Draw(); }
+
+		for (GraphNode* node : children)
+		{
+			node->Draw();
+		}
+	}
 
 	void addChild(GraphNode* node);
+	void addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform);
 
 	void Translate(glm::vec3 translation);
 	void Rotate(float angle, glm::vec3 axis);
