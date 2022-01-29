@@ -34,9 +34,6 @@
     <ClCompile Include="..\..\src\GraphNode.cpp">
       <Filter>sources</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\src\Camera.cpp">
-      <Filter>sources</Filter>
-    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\Texture.h">
@@ -67,9 +64,6 @@
       <Filter>sources</Filter>
     </ClInclude>
     <ClInclude Include="..\..\src\GraphNode.h">
-      <Filter>sources</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\src\Camera.h">
       <Filter>sources</Filter>
     </ClInclude>
   </ItemGroup>

@@ -9,7 +9,6 @@ Model::Model(char* filename, ShaderProgram* shaderProgram):
 	shaderProgram(shaderProgram)
 {
 	loadModel(std::string(filename));
-	transform = new glm::mat4(1);
 }
 
 Model::~Model()
@@ -26,7 +25,7 @@ void Model::Draw()
 {
 	for (auto mesh : m_meshes)
 	{
-		mesh->Draw(shaderProgram, transform);
+		mesh->Draw(shaderProgram);
 	}
 }
 
@@ -40,7 +39,7 @@ void Model::setShader(ShaderProgram* newShaderProgram)
 	shaderProgram = newShaderProgram;
 }
 
-void Model::setTeansform(glm::mat4* matrix)
+void Model::setTeansform(glm::mat4 matrix)
 {
 	transform = matrix;
 }

@@ -369,7 +369,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     </CustomBuild>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\src\Camera.h" />
     <ClInclude Include="..\..\src\GraphNode.h" />
     <ClInclude Include="..\..\src\Mesh.h" />
     <ClInclude Include="..\..\src\InputHandler.h" />
@@ -380,7 +379,6 @@ if %errorlevel% neq 0 goto :VCEnd</Command>
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\Texture.h" />
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_glfw.h" />
     <ClInclude Include="D:\Olcia\Studia\PAGI\OpenGLPAG\src\imgui_impl_opengl3.h" />
-    <ClCompile Include="..\..\src\Camera.cpp" />
     <ClCompile Include="..\..\src\GraphNode.cpp" />
     <ClCompile Include="..\..\src\Mesh.cpp" />
     <ClCompile Include="..\..\src\InputHandler.cpp" />

@@ -8,7 +8,6 @@ Window::Window(int width, int height, char* name)
 
 Window::~Window()
 {
-    glfwTerminate();
 }
 
 bool Window::isOpen()
@@ -37,7 +36,6 @@ bool Window::Init(int width, int height, char* name)
     // glfw window creation
     // --------------------
     m_window = glfwCreateWindow(width, height, "LearnOpenGL", NULL, NULL);
-
     if (m_window == NULL)
     {
         std::cerr << "Failed to create GLFW window" << std::endl;

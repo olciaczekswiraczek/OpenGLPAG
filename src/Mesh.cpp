@@ -30,9 +30,8 @@ GLuint Mesh::getVAO()
 
 
 
-void Mesh::Draw(ShaderProgram* shaderProgram, glm::mat4* model)
+void Mesh::Draw(ShaderProgram* shaderProgram)
 {
-	shaderProgram->setMat4(*model, "model");
 
 	GLuint diffuseNr = 1;
 	GLuint specularNr = 1;
