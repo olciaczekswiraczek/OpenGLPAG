@@ -1,6 +1,7 @@
 #pragma once
 #include "InputHandler.h"
 #include <iostream>
+#include <Camera.h>
 
 class Window
 {
@@ -18,4 +19,5 @@ private:
 	GLFWwindow* m_window;
 
 	InputHandler m_inputHandler;
+	Camera camera;
 };

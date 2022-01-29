@@ -32,7 +32,7 @@ public:
 
 	GLuint getVAO();
 
-	void Draw(ShaderProgram * shaderProgram);
+	void Draw(ShaderProgram * shaderProgram, glm::mat4* model);
 
 	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
 
