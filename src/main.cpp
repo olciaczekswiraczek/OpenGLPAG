@@ -109,6 +109,9 @@ int main()
 	*transformTorusGraphNode = glm::translate(*(transformTorusGraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
 	*transformTorusGraphNode = glm::scale(*transformTorusGraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
 
+    star2GraphNode->Translate(glm::vec3(30.0f, 9.0f, 0.0f));
+    star2GraphNode->Scale(glm::vec3(0.3f, 0.3f, 0.3f));
+
     starGraphNode->addOrbit(30, &torusShader, 0.1f, 9.0f);
     starGraphNode->addOrbit(40, &torusShader, 0.1f, 9.0f);
 
@@ -131,13 +134,10 @@ int main()
     // configure global opengl state
     glEnable(GL_DEPTH_TEST);
 
-    glm::mat4 view = glm::mat4(1.0f);
-    glm::mat4 projection = glm::mat4(1.0f);
-    glm::mat4 model = glm::mat4(1.0f);
 
-    view = glm::translate(view, glm::vec3(0.0f, 0.0f, -500.0f)); //tak naprawde przesuwamy obiekty, a nie kamere
+   // view = glm::translate(view, glm::vec3(0.0f, 0.0f, -500.0f)); //tak naprawde przesuwamy obiekty, a nie kamere
     //view = glm::rotate(view, glm::radians(45.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-    projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
+  //  projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
 
 
     int angle = 1;
@@ -166,18 +166,14 @@ int main()
             ImGui::SliderInt(" ", &NUMBER_OF_RINGS, 6, 60);
             ImGui::Text("Rotate root node:");
             ImGui::SliderInt("  ", &angle, 1, 360);
-            model = glm::rotate(model, glm::radians((float)angle), glm::vec3(1.0, 0.0, 0.0));
-           
             ImGui::Text("Rotate root node:");
             ImGui::SliderInt("   ", &angle3, 1, 360);
-            model = glm::rotate(model, glm::radians((float)angle3), glm::vec3(0.0, 0.0, 1.0));
-            
             ImGui::Text("Rotate root node:");
             ImGui::SliderInt("    ", &angle2, 1, 360);
-            model = glm::rotate(model, glm::radians((float)angle2), glm::vec3(0.0, 1.0, 0.0));
-                
-
-
+            if (ImGui::Button("Generate!"))
+            {
+                torusMesh->generateTorus(NUMBER_OF_SEGMENTS, NUMBER_OF_RINGS, 4, 10);
+            }
             if (ImGui::Checkbox("Wireframe mode", &wireframeMode)) {
 
                 if (wireframeMode) {
@@ -188,6 +184,7 @@ int main()
                 }
             }
             ImGui::End();
+          
         }
 
         
@@ -199,7 +196,7 @@ int main()
 
 
         processInput(window.getWindow());
-        //starGraphNode->Rotate(angle, glm::vec3(0, -1, 0));
+        starGraphNode->Rotate(angle, glm::vec3(0, -1, 0));
      
         
         // set projection and view matrix
@@ -232,7 +229,9 @@ int main()
 
         //starGraphNode->Update();
         //starGraphNode->Draw();
-        //star2GraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
+        star2GraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
+        handler1->Rotate(1.3f, glm::vec3(0, -1, 0));
+        handler2->Rotate(1.0f, glm::vec3(0, -1, 0));
 
 
         glm::mat4 model = glm::mat4(1.0f);
