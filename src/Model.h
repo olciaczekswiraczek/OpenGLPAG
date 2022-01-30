@@ -2,7 +2,9 @@
 #include "Mesh.h"
 #include "ShaderProgram.h"
 #include <vector>
+#include <string>
 
+#include <stb_image.h>
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
 
@@ -29,11 +31,14 @@ public:
 private:
 
 	std::vector<Mesh*> m_meshes;
+	std::vector<Texture*> textures_loaded;
 	std::string m_directory;
 
 	ShaderProgram* shaderProgram;
 
 	void loadModel(std::string& dir);
+	std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+	Texture* TextureFromFile(const char* path, const std::string& directory);
 
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh* processMesh(aiMesh* mesh, const aiScene* scene);

@@ -70,29 +70,28 @@ int main()
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
     //ShaderProgram torusShader(torusVertexShader, torusFragmentShader);
 
-    Model* star = new Model("Death_Star.obj", &shaderProgram);
-    Model* planet1 = new Model("res/models/Sun/Sun.obj", &shaderProgram);
-    Model* planet2 = new Model("res/models/Sun/Sun.obj", &shaderProgram);
+    Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
+    Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
+    Model* planet2 = new Model("res/models/Mars/Mars.obj", &shaderProgram);
+    Model* moon1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
+    Model* moon2 = new Model("res/models/Death_Star/Death_Star.obj", &shaderProgram);
     //shaderProgram.setColor
 
     
 
 
-    Texture texture1("texture1.jpg","texture_diffuse");
+   // Texture texture1("texture1.jpg","texture_diffuse");
     //Texture texture2("texture2.jpg");
 
     GraphNode* solarSystem = new GraphNode();
     GraphNode* starGraphNode = new GraphNode(star);
+
     GraphNode* planet1GraphNode = new GraphNode(planet1);
     GraphNode* planet2GraphNode = new GraphNode(planet2);
 
-    GraphNode* handler1 = new GraphNode();
-    GraphNode* handler2 = new GraphNode();
-    GraphNode* handler3 = new GraphNode();
-    GraphNode* handler4 = new GraphNode();
-    GraphNode* handler5 = new GraphNode();
-    GraphNode* handler6 = new GraphNode();
-    GraphNode* handler7 = new GraphNode();
+    GraphNode* moon1GraphNode = new GraphNode(moon1);
+    GraphNode* moon2GraphNode = new GraphNode(moon2);
+
 
 
     // create graph nodes transformations to position them in the scene
@@ -104,24 +103,37 @@ int main()
 
     glm::mat4* transformPlanet1GraphNode = new glm::mat4(1);
     *transformPlanet1GraphNode = glm::translate(*(transformPlanet1GraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
-    *transformPlanet1GraphNode = glm::scale(*transformPlanet1GraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
+    *transformPlanet1GraphNode = glm::scale(*transformPlanet1GraphNode, glm::vec3(0.1f, 0.1f, 0.1f));
 
-    glm::mat4* transformTorusGraphNode = new glm::mat4(1);
-	*transformTorusGraphNode = glm::translate(*(transformTorusGraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
-	*transformTorusGraphNode = glm::scale(*transformTorusGraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
+    glm::mat4* transformPlanet2GraphNode = new glm::mat4(1);
+	*transformPlanet2GraphNode = glm::translate(*(transformPlanet2GraphNode), glm::vec3(10.0f, 2.0f, 0.0f));
+	*transformPlanet2GraphNode = glm::scale(*transformPlanet2GraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
 
+    glm::mat4* transformMoon1GraphNode = new glm::mat4(1);
+    *transformMoon1GraphNode = glm::translate(*(transformMoon1GraphNode), glm::vec3(20.0f, -2.0f, 0.0f));
+    *transformMoon1GraphNode = glm::scale(*transformMoon1GraphNode, glm::vec3(2.0f, 2.0f, 2.0f));
 
-
-
-
- 
+    glm::mat4* transformMoon2GraphNode = new glm::mat4(1);
+    *transformMoon2GraphNode = glm::translate(*(transformMoon2GraphNode), glm::vec3(30.0f, -5.0f, 0.0f));
+    *transformMoon2GraphNode = glm::scale(*transformMoon2GraphNode, glm::vec3(0.8f, 0.8f, 0.8f));
+        
 
     starGraphNode->setTransform(transformStarGraphNode);
     planet1GraphNode->setTransform(transformPlanet1GraphNode);
+    planet2GraphNode->setTransform(transformPlanet2GraphNode);
+    moon1GraphNode->setTransform(transformMoon1GraphNode);
+    moon2GraphNode->setTransform(transformMoon2GraphNode);
+
+
+    // ----------------------------------------------------------------
+    planet1GraphNode->addChild(moon1GraphNode);
+    planet1GraphNode->addChild(moon2GraphNode);
 
     starGraphNode->addChild(planet1GraphNode);
+    starGraphNode->addChild(planet2GraphNode);
 
     solarSystem->addChild(starGraphNode);
+
     
     
    
@@ -195,14 +207,11 @@ int main()
      
         
         // set projection and view matrix
-    //-------------------------------
+        //-------------------------------
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
         glm::mat4 view = camera.GetViewMatrix();
        
-      
-        //drawing
-         
-
+     
      
         // set projection and view matrix
         //-------------------------------
@@ -212,6 +221,12 @@ int main()
         shaderProgram.setMat4(projection, "projection");
         shaderProgram.setMat4(view, "view");
        
+
+        // rotate all graph nodes
+        // ----------------------
+        moon1GraphNode->Rotate(5.2f, glm::vec3(1, 1, 0));
+        moon2GraphNode->Rotate(0.9f, glm::vec3(0, 1, 0));
+        //deathStarGraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
 
 
         glm::mat4 model = glm::mat4(1.0f);

@@ -28,6 +28,7 @@ class Mesh
 {
 public:
 	Mesh(std::vector<Vertex>& vertexBuffer, std::vector<GLuint>& elementBuffer);
+	Mesh(std::vector<Vertex>& vertexBuffer, std::vector<GLuint>& elementBuffer, std::vector<Texture*> textures);
 	Mesh()
 	{
 

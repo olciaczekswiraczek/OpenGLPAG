@@ -5,6 +5,10 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
+class Transform
+{
+
+};
 
 
 class GraphNode
@@ -18,39 +22,12 @@ public:
 
 	// update transforms
 	// -----------------
-	virtual void Update()
-	{
-		if (parent) // if has a parent
-		{
-			*worldTransform = *parent->worldTransform * (*transform);
-		}
-		else //if does not have a parent
-		{
-			*worldTransform = *transform;
-		}
-
-		if (model) // if has a model
-		{
-			model->setTransform(worldTransform);
-		}
-		for (GraphNode* node : children)
-		{
-			node->Update();
-		}
-
-	}
+	virtual void Update();
 
 	// draw whole scene
 	// ----------------
-	virtual void Draw()
-	{
-		if (model) { model->Draw(); }
-
-		for (GraphNode* node : children)
-		{
-			node->Draw();
-		}
-	}
+	virtual void Draw();
+	
 
 	void addChild(GraphNode* node);
 	void addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform);
@@ -62,6 +39,7 @@ public:
 protected:
 	Model* model;
 	GraphNode* parent;
+	bool dirty;
 
 	glm::mat4* worldTransform;
 	glm::mat4* transform;

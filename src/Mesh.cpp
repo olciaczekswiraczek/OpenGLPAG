@@ -6,6 +6,12 @@ Mesh::Mesh(std::vector<Vertex>& vertexBuffer, std::vector<GLuint>& elementBuffer
 	Init();
 }
 
+Mesh::Mesh(std::vector<Vertex>& vertexBuffer, std::vector<GLuint>& elementBuffer, std::vector<Texture*> textures)
+	: m_vertexBuffer(vertexBuffer), m_elementBuffer(elementBuffer), m_textures(textures)
+{
+	Init();
+}
+
 
 
 Mesh::~Mesh()
@@ -95,8 +101,9 @@ void Mesh::loadMaterialTexture(aiMaterial* material, aiTextureType textureType, 
 		}
 		if (!skip)
 		{
-			Texture* newTexture = new Texture(name.C_Str(), typeName);
-			m_textures.push_back(newTexture);
+			Texture* texture = new Texture(name.C_Str(), typeName);
+			
+			m_textures.push_back(texture);
 		}
 
 

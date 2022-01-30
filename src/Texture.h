@@ -8,6 +8,7 @@ class Texture
 {
 public:
 	Texture(const char* filename, const char* type);
+	Texture();
 	~Texture();
 
 	GLuint getTextureID();

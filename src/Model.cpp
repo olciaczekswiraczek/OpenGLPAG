@@ -1,6 +1,7 @@
-#include "Model.h"
+﻿#include "Model.h"
 #include <assimp/postprocess.h>
 #include <iostream>
+#include "Texture.h"
 
 #include <assimp/Importer.hpp>
 #include <assimp/scene.h>
@@ -47,7 +48,7 @@ void Model::loadModel(std::string& dir)
 	Assimp::Importer importer;
 	const aiScene* scene = importer.ReadFile(dir, aiProcess_Triangulate | aiProcess_FlipUVs);
 
-	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !(scene->mRootNode)) // scena nieza�adowana, scena niekompletna, nie mamy root node'a
+	if (!scene || scene->mFlags == AI_SCENE_FLAGS_INCOMPLETE || !(scene->mRootNode)) // scena niezaładowana, scena niekompletna, nie mamy root node'a
 	{
 		std::cerr << "Error loading model" << importer.GetErrorString() << "\n";
 		return;
@@ -58,6 +59,8 @@ void Model::loadModel(std::string& dir)
 	processNode(scene->mRootNode, scene);
 	
 }
+
+
 
 void Model::processNode(aiNode* node, const aiScene* scene)
 {
@@ -79,10 +82,11 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 {
 	std::vector<Vertex> vertices;
 	std::vector<GLuint> indices;
+	std::vector<Texture*> textures;
 
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
 	{
-		Vertex newVertex;
+		Vertex newVertex;		
 
 		aiVector3D currentAiVec = mesh->mVertices[i]; //aktualnie przetwarzamy wektor; musimy odpowiednio przepisac wartosci, bo ni ma bezposredniej konwersji
 		glm::vec3 vec(currentAiVec.x, currentAiVec.y, currentAiVec.z);
@@ -116,16 +120,67 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 		}
 	}
 
-
-
-	 Mesh* newMesh = new Mesh(vertices, indices);
-	 if (mesh->mMaterialIndex >= 0)
+	
+	/* if (mesh->mMaterialIndex >= 0)
 	 {
 		 aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];//pobieramy material o odpowiednim indeksie
 		 newMesh->loadMaterialTexture(mat, aiTextureType_DIFFUSE, "texture_diffuse");
+	 } */
+
+	 // przetwórz materia³y
+	 if (mesh->mMaterialIndex >= 0)
+	 {
+		 aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+		 std::vector<Texture*> diffuseMaps = loadMaterialTextures(material,
+			 aiTextureType_DIFFUSE, "texture_diffuse");
+		 textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+		 std::vector<Texture*> specularMaps = loadMaterialTextures(material,
+			 aiTextureType_SPECULAR, "texture_specular");
+		 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	 }
 
-	 return newMesh;
+	 return new Mesh(vertices, indices, textures);
+}
+
+std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName)
+{
+	std::vector<Texture*> textures;
+	for (int i = 0; i < mat->GetTextureCount(type); i++)
+	{
+		aiString name;
+		mat->GetTexture(type, i, &name);
+
+		bool skip = false;
+
+		for (auto loadedTexture : textures_loaded) //sprawdzamy czy nie mamy tesktury o danej nazwie, czy nie jest rowna aktualnie przetwarzanej sciezce/nazwie
+		{
+			if (loadedTexture->getPath() == std::string(name.C_Str()))
+			{
+				skip = true;
+				break;
+			}
+		}
+		if (!skip)
+		{   // jeœli tekstura nie zosta³a jeszcze za³adowana, za³aduj j¹
+			Texture* texture = TextureFromFile(name.C_Str(), m_directory);
+			
+			textures.push_back(texture);
+			textures_loaded.push_back(texture); // dodaj do za³adowanych wektora textures_loaded
+		}
+	}
+	return textures;
+}
+Texture* Model::TextureFromFile(const char* path, const std::string& directory)
+{
+	std::string filename0 = std::string(path);
+	filename0 = directory + '/' + filename0;
+	const char* filename = filename0.c_str();
+
+	std::cout << "Halooooooo " << filename << '\n';
+
+	Texture* tex = new Texture(filename, "texture_diffuse");
+
+	return tex;
 }
 
 
