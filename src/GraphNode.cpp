@@ -18,9 +18,9 @@ void GraphNode::setTransform(glm::mat4* matrix)
 	transform = matrix;
 }
 
-glm::mat4 GraphNode::getTransform()
+glm::mat4* GraphNode::getTransform()
 {
-	return *transform;
+	return transform;
 }
 
 

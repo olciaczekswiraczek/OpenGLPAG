@@ -14,7 +14,7 @@ public:
 	~GraphNode();
 
 	void setTransform(glm::mat4* matrix);
-	glm::mat4 getTransform();
+	glm::mat4* getTransform();
 
 	// update transforms
 	// -----------------

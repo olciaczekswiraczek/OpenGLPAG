@@ -68,23 +68,23 @@ int main()
     std::shared_ptr<Shader> torusFragmentShader(new Shader("torusShader.fs", FRAGMENT_SHADER));
 
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
-    ShaderProgram torusShader(torusVertexShader, torusFragmentShader);
+    //ShaderProgram torusShader(torusVertexShader, torusFragmentShader);
 
     Model* star = new Model("Death_Star.obj", &shaderProgram);
-    Model* star2 = new Model("Death_Star.obj", &shaderProgram);
-    //Model* pizza = new Model("res/models/pizza/pizza.fbx", &shaderProgram);
+    Model* planet1 = new Model("res/models/Sun/Sun.obj", &shaderProgram);
+    Model* planet2 = new Model("res/models/Sun/Sun.obj", &shaderProgram);
+    //shaderProgram.setColor
 
-    Mesh* torusMesh = new Mesh();
-    torusMesh->generateTorus(30, 30, 4.0f, 10.0f);
-    Model* torusModel = new Model(torusMesh);
-    torusModel->setShaderProgram(&torusShader);
+    
+
 
     Texture texture1("texture1.jpg","texture_diffuse");
     //Texture texture2("texture2.jpg");
 
     GraphNode* solarSystem = new GraphNode();
-   // GraphNode* pizzaGraphNode = new GraphNode(pizza);
     GraphNode* starGraphNode = new GraphNode(star);
+    GraphNode* planet1GraphNode = new GraphNode(planet1);
+    GraphNode* planet2GraphNode = new GraphNode(planet2);
 
     GraphNode* handler1 = new GraphNode();
     GraphNode* handler2 = new GraphNode();
@@ -95,37 +95,32 @@ int main()
     GraphNode* handler7 = new GraphNode();
 
 
-    GraphNode* star2GraphNode = new GraphNode(star2);
-
-    GraphNode* torusGraphNode = new GraphNode(torusModel);
-
     // create graph nodes transformations to position them in the scene
 // ----------------------------------------------------------------
+    
     glm::mat4* transformStarGraphNode = new glm::mat4(1);
-    *transformStarGraphNode = glm::translate(*(transformStarGraphNode), glm::vec3(0.0f, -.75f, 0.0f));
-    *transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.1f, 0.1f, 0.1f));
+    *transformStarGraphNode = glm::translate(*(transformStarGraphNode), glm::vec3(0.0f, -0.5f, 0.0f)); // translate it down so it's at the center of the scene
+    *transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+
+    glm::mat4* transformPlanet1GraphNode = new glm::mat4(1);
+    *transformPlanet1GraphNode = glm::translate(*(transformPlanet1GraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
+    *transformPlanet1GraphNode = glm::scale(*transformPlanet1GraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
 
     glm::mat4* transformTorusGraphNode = new glm::mat4(1);
 	*transformTorusGraphNode = glm::translate(*(transformTorusGraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
 	*transformTorusGraphNode = glm::scale(*transformTorusGraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
 
-    star2GraphNode->Translate(glm::vec3(30.0f, 9.0f, 0.0f));
-    star2GraphNode->Scale(glm::vec3(0.3f, 0.3f, 0.3f));
-
-    starGraphNode->addOrbit(30, &torusShader, 0.1f, 9.0f);
-    starGraphNode->addOrbit(40, &torusShader, 0.1f, 9.0f);
-
-  
 
 
-    star->setTransform(transformStarGraphNode);
-    star2->setTransform(transformTorusGraphNode);
 
-    handler1->addChild(torusGraphNode);
-    handler2->addChild(star2GraphNode);
 
-    starGraphNode->addChild(handler1);
-    starGraphNode->addChild(handler2);
+ 
+
+    starGraphNode->setTransform(transformStarGraphNode);
+    planet1GraphNode->setTransform(transformPlanet1GraphNode);
+
+    starGraphNode->addChild(planet1GraphNode);
+
     solarSystem->addChild(starGraphNode);
     
     
@@ -172,7 +167,7 @@ int main()
             ImGui::SliderInt("    ", &angle2, 1, 360);
             if (ImGui::Button("Generate!"))
             {
-                torusMesh->generateTorus(NUMBER_OF_SEGMENTS, NUMBER_OF_RINGS, 4, 10);
+                //torusMesh->generateTorus(NUMBER_OF_SEGMENTS, NUMBER_OF_RINGS, 4, 10);
             }
             if (ImGui::Checkbox("Wireframe mode", &wireframeMode)) {
 
@@ -212,26 +207,11 @@ int main()
         // set projection and view matrix
         //-------------------------------
 
-        torusShader.Use();
-        torusShader.setMat4(projection,"projection");
-        torusShader.setMat4(view,"view");
 
         shaderProgram.Use();
         shaderProgram.setMat4(projection, "projection");
         shaderProgram.setMat4(view, "view");
        
-      
-
-      //  starGraphNode->Rotate(1.3f, glm::vec3(0, 1, 0));
-        starGraphNode->Translate(glm::vec3(0.002, 0, 0));
-        
-        //star->Draw();
-
-        //starGraphNode->Update();
-        //starGraphNode->Draw();
-        star2GraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
-        handler1->Rotate(1.3f, glm::vec3(0, -1, 0));
-        handler2->Rotate(1.0f, glm::vec3(0, -1, 0));
 
 
         glm::mat4 model = glm::mat4(1.0f);
