@@ -1,7 +1,7 @@
 ﻿#include "GraphNode.h"
 
 GraphNode::GraphNode(Model* model):
-	model(model), parent(nullptr), dirty(true)
+	model(model), parent(nullptr)
 
 {
 	transform = new glm::mat4(1);
@@ -27,25 +27,6 @@ glm::mat4* GraphNode::getTransform()
 // -----------------
 void GraphNode::Update()
 {
-	/*
-	//unikamy tworzenia dodatkowej zmiennej
-		//true jezeli "rodzic" posiada wartosc true
-	dirtyP |= dirty;
-
-	//je¿eli dirty == false pomijamy przeliczanie transformacji world
-	if (dirtyP)
-	{
-		*worldTransform = *parent->worldTransform * (*transform);
-	}
-
-	if (model) // if has a model
-	{
-		model->setTransform(worldTransform);
-	}
-	for (GraphNode* node : children)
-	{
-		node->Update();
-	}*/
 
 	
 	if (parent) // if has a parent

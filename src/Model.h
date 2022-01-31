@@ -36,6 +36,8 @@ private:
 
 	ShaderProgram* shaderProgram;
 
+	bool isFromFile;
+
 	void loadModel(std::string& dir);
 	std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
 	Texture* TextureFromFile(const char* path, const std::string& directory);

@@ -27,7 +27,7 @@ void Model::Draw()
 {
 	for (auto mesh : m_meshes)
 	{
-		mesh->Draw(shaderProgram, transform);
+		mesh->Draw(shaderProgram, transform, isFromFile);
 	}
 }
 

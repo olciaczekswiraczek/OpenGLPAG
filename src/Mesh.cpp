@@ -36,7 +36,7 @@ GLuint Mesh::getVAO()
 
 
 
-void Mesh::Draw(ShaderProgram* shaderProgram, glm::mat4* model)
+void Mesh::Draw(ShaderProgram* shaderProgram, glm::mat4* model, bool& isFromFile)
 {
 	shaderProgram->Use();
 	shaderProgram->setMat4(*model, "model");
@@ -72,10 +72,22 @@ void Mesh::Draw(ShaderProgram* shaderProgram, glm::mat4* model)
 	}
 
 
+	// draw cylinder
+		// -------------
 	glBindVertexArray(VAO);
-	glDrawElements(GL_TRIANGLES, m_vertexBuffer.size(), GL_UNSIGNED_INT, NULL);
-	glBindVertexArray(NULL);
-	//glDrawElements(GL_TRIANGLES, 3*2, GL_UNSIGNED_INT, NULL); //count liczba indicies, offset
+	if (m_elementBuffer.size() != 0)
+	{
+		if (isFromFile) {
+			glDrawElements(GL_TRIANGLES, m_elementBuffer.size(), GL_UNSIGNED_INT, 0);
+			glActiveTexture(GL_TEXTURE0);
+		}
+		else
+			glDrawElements(GL_TRIANGLE_STRIP, m_elementBuffer.size(), GL_UNSIGNED_INT, 0);
+	}
+	else {
+		glDrawArrays(GL_POINTS, 0, vert.size());
+	}
+	glBindVertexArray(0);
 	
 }
 
@@ -141,5 +153,10 @@ void Mesh::Init()
 	glBindBuffer(GL_ARRAY_BUFFER, 0);
 
 	glBindVertexArray(NULL); // odpiecie vao
+}
+
+void Mesh::Init2()
+{
+	
 }
 

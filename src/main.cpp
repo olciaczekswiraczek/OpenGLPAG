@@ -64,11 +64,11 @@ int main()
     std::shared_ptr<Shader> vertexShader(new Shader("shader.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> fragmentShader(new Shader("shader.frag", FRAGMENT_SHADER));
 
-    std::shared_ptr<Shader> torusVertexShader(new Shader("torusShader.vs", VERTEX_SHADER));
-    std::shared_ptr<Shader> torusFragmentShader(new Shader("torusShader.fs", FRAGMENT_SHADER));
+    std::shared_ptr<Shader> coneVertexShader(new Shader("cone.vert", VERTEX_SHADER));
+    std::shared_ptr<Shader> coneFragmentShader(new Shader("cone.frag", FRAGMENT_SHADER));
 
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
-    //ShaderProgram torusShader(torusVertexShader, torusFragmentShader);
+    ShaderProgram coneShaderProgram(coneVertexShader, coneFragmentShader);
 
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
     Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
@@ -77,8 +77,10 @@ int main()
     Model* moon2 = new Model("res/models/Death_Star/Death_Star.obj", &shaderProgram);
     //shaderProgram.setColor
 
-    
-
+    Mesh* coneMesh = new Mesh();
+    coneMesh->generateTorus(30, 30, 4.0f, 10.0f);
+    Model* coneModel = new Model(coneMesh);
+    coneModel->setShaderProgram(&coneShaderProgram);
 
    // Texture texture1("texture1.jpg","texture_diffuse");
     //Texture texture2("texture2.jpg");
@@ -92,6 +94,7 @@ int main()
     GraphNode* moon1GraphNode = new GraphNode(moon1);
     GraphNode* moon2GraphNode = new GraphNode(moon2);
 
+    GraphNode* coneGraphNode = new GraphNode(coneModel);
 
 
     // create graph nodes transformations to position them in the scene
@@ -116,6 +119,10 @@ int main()
     glm::mat4* transformMoon2GraphNode = new glm::mat4(1);
     *transformMoon2GraphNode = glm::translate(*(transformMoon2GraphNode), glm::vec3(30.0f, -5.0f, 0.0f));
     *transformMoon2GraphNode = glm::scale(*transformMoon2GraphNode, glm::vec3(0.8f, 0.8f, 0.8f));
+
+    glm::mat4* transformConeGraphNode = new glm::mat4(1);
+    *transformConeGraphNode = glm::translate(*(transformConeGraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
+    *transformConeGraphNode = glm::scale(*transformConeGraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
         
 
     starGraphNode->setTransform(transformStarGraphNode);
@@ -124,14 +131,17 @@ int main()
     moon1GraphNode->setTransform(transformMoon1GraphNode);
     moon2GraphNode->setTransform(transformMoon2GraphNode);
 
+    coneGraphNode->setTransform(transformConeGraphNode);
+
 
     // ----------------------------------------------------------------
-    planet1GraphNode->addChild(moon1GraphNode);
-    planet1GraphNode->addChild(moon2GraphNode);
+    //planet1GraphNode->addChild(moon1GraphNode);
+   // planet1GraphNode->addChild(moon2GraphNode);
 
-    starGraphNode->addChild(planet1GraphNode);
-    starGraphNode->addChild(planet2GraphNode);
+    //starGraphNode->addChild(planet1GraphNode);
+   // starGraphNode->addChild(planet2GraphNode);
 
+    starGraphNode->addChild(coneGraphNode);
     solarSystem->addChild(starGraphNode);
 
     
@@ -215,6 +225,10 @@ int main()
      
         // set projection and view matrix
         //-------------------------------
+
+        coneShaderProgram.Use();
+        coneShaderProgram.setMat4(projection, "projection");
+        coneShaderProgram.setMat4(view, "view");
 
 
         shaderProgram.Use();

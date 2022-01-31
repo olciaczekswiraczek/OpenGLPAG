@@ -37,7 +37,7 @@ public:
 
 	GLuint getVAO();
 
-	void Draw(ShaderProgram * shaderProgram, glm::mat4* model);
+	void Draw(ShaderProgram * shaderProgram, glm::mat4* model, bool& isFromFile);
 
 	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
 
@@ -84,7 +84,7 @@ private:
 	GLuint VBO;
 	GLuint EBO;
 
-	std::vector<float> vert;
+	std::vector<float> vert; //do stozka
 
 	std::vector<Vertex> m_vertexBuffer;
 	std::vector<GLuint> m_elementBuffer;
@@ -92,6 +92,7 @@ private:
 	std::vector <Texture*> m_textures;
 
 	void Init();
+	void Init2();
 
 	void setupMesh2()
 	{
