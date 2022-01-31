@@ -46,6 +46,7 @@ bool Window::Init(int width, int height, char* name)
     }
     glfwMakeContextCurrent(m_window);
     //glfwSetFramebufferSizeCallback(window, framebuffer_size_callback);
+    
 
     // glad: load all OpenGL function pointers
     // ---------------------------------------
@@ -57,6 +58,7 @@ bool Window::Init(int width, int height, char* name)
 
     int frameX, frameY;
     glfwGetFramebufferSize(m_window, &frameX, &frameY);
+    
 
     glEnable(GL_DEPTH_TEST);
 

@@ -29,12 +29,14 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 const unsigned int SCR_WIDTH = 1200;
 const unsigned int SCR_HEIGHT = 800;
 const char* glsl_version = "#version 430";
+
 // camera
 Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
 bool wireframeMode = false;
+
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
@@ -46,8 +48,12 @@ int main()
 {
    
 
-    Window window(SCR_WIDTH, SCR_HEIGHT, "Zadanie 2");
+    Window window(SCR_WIDTH, SCR_HEIGHT, "Zadanie 3");
     glfwSetFramebufferSizeCallback(window.getWindow(), framebuffer_size_callback);
+    glfwSetCursorPosCallback(window.getWindow(), mouse_callback);
+    glfwSetScrollCallback(window.getWindow(), scroll_callback);
+    // tell GLFW to capture our mouse
+    glfwSetInputMode(window.getWindow(), GLFW_CURSOR, GLFW_CURSOR_NORMAL);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -78,13 +84,11 @@ int main()
     //shaderProgram.setColor
 
     Mesh* coneMesh = new Mesh();
-    coneMesh->generateTorus(30, 30, 4.0f, 10.0f);
+    coneMesh->generateOrbit(30, 30, 4.0f, 10.0f);
     Model* coneModel = new Model(coneMesh);
     coneModel->setShaderProgram(&coneShaderProgram);
 
-   // Texture texture1("texture1.jpg","texture_diffuse");
-    //Texture texture2("texture2.jpg");
-
+   
     GraphNode* solarSystem = new GraphNode();
     GraphNode* starGraphNode = new GraphNode(star);
 
