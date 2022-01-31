@@ -41,7 +41,7 @@ public:
 
 	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
 
-	void generateTorus(int num_segments, int num_rings, float thickness, float R) {
+	void generateOrbit(int num_segments, int num_rings, float thickness, float R) {
 		std::vector<unsigned int> indexBuffer;
 		std::vector<float> vertBuffer;
 		int num_vertices = (num_rings + 1) * (num_segments + 1);
@@ -59,7 +59,7 @@ public:
 				float v_angle = v * 2 * pi;
 
 				// Position
-				float x = cos(u_angle) * (r1 + cos(v_angle) * r2);
+				float x =  cos(u_angle) * (r1 + cos(v_angle) * r2);
 				float y = sin(u_angle) * (r1 + cos(v_angle) * r2);
 				float z = sin(v_angle) * r2;
 				

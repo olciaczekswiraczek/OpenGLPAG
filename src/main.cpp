@@ -132,7 +132,7 @@ int main()
     moon2GraphNode->setTransform(transformMoon2GraphNode);
 
     coneGraphNode->setTransform(transformConeGraphNode);
-
+    coneGraphNode->addOrbit(20, &coneShaderProgram, 0.5f, 0.0f);
 
     // ----------------------------------------------------------------
     //planet1GraphNode->addChild(moon1GraphNode);

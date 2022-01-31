@@ -69,11 +69,11 @@ void GraphNode::addChild(GraphNode* node)
 
 void GraphNode::addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform)
 {
-	Mesh* thorusMesh = new Mesh();
-	thorusMesh->generateTorus(50, 45, thickness, radius);
-	Model* thorusModel = new Model(thorusMesh);
-	thorusModel->setShaderProgram(shaderProgram);
-	GraphNode* pom = new GraphNode(thorusModel);
+	Mesh* orbitMesh = new Mesh();
+	orbitMesh->generateOrbit(50, 45, thickness, radius);
+	Model* orbitModel = new Model(orbitMesh);
+	orbitModel->setShaderProgram(shaderProgram);
+	GraphNode* pom = new GraphNode(orbitModel);
 	glm::mat4* TransformNode1 = new glm::mat4(1);
 	if (upTransform != 0) {
 
