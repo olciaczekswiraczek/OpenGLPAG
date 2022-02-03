@@ -76,7 +76,7 @@ int main()
     std::shared_ptr<Shader> coneFragmentShader(new Shader("cone.frag", FRAGMENT_SHADER));
 
     std::shared_ptr<Shader> lightingVertexShader(new Shader("light.vert", VERTEX_SHADER));
-    std::shared_ptr<Shader> lightingFragmentShader(new Shader("light.frag", VERTEX_SHADER));
+    std::shared_ptr<Shader> lightingFragmentShader(new Shader("light.frag", FRAGMENT_SHADER));
 
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
