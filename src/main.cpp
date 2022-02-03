@@ -17,6 +17,7 @@
 #include "Model.h"
 #include "GraphNode.h"
 #include "Camera.h"
+#include "Light.h"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
@@ -78,7 +79,6 @@ int main()
     std::shared_ptr<Shader> lightingFragmentShader(new Shader("light.frag", VERTEX_SHADER));
 
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
-    ShaderProgram coneShaderProgram(coneVertexShader, coneFragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
 
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
@@ -86,12 +86,6 @@ int main()
     Model* planet2 = new Model("res/models/Mars/Mars.obj", &shaderProgram);
     Model* moon1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
     Model* moon2 = new Model("res/models/Death_Star/Death_Star.obj", &shaderProgram);
-    //shaderProgram.setColor
-
-    Mesh* coneMesh = new Mesh();
-    coneMesh->generateOrbit(30, 30, 4.0f, 10.0f);
-    Model* coneModel = new Model(coneMesh);
-    coneModel->setShaderProgram(&coneShaderProgram);
 
    
     GraphNode* solarSystem = new GraphNode();
@@ -103,7 +97,6 @@ int main()
     GraphNode* moon1GraphNode = new GraphNode(moon1);
     GraphNode* moon2GraphNode = new GraphNode(moon2);
 
-    GraphNode* coneGraphNode = new GraphNode(coneModel);
 
 
     // create graph nodes transformations to position them in the scene
@@ -129,10 +122,7 @@ int main()
     *transformMoon2GraphNode = glm::translate(*(transformMoon2GraphNode), glm::vec3(30.0f, -5.0f, 0.0f));
     *transformMoon2GraphNode = glm::scale(*transformMoon2GraphNode, glm::vec3(0.8f, 0.8f, 0.8f));
 
-    glm::mat4* transformConeGraphNode = new glm::mat4(1);
-    *transformConeGraphNode = glm::translate(*(transformConeGraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
-    *transformConeGraphNode = glm::scale(*transformConeGraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
-        
+ 
 
     starGraphNode->setTransform(transformStarGraphNode);
     planet1GraphNode->setTransform(transformPlanet1GraphNode);
@@ -140,29 +130,22 @@ int main()
     moon1GraphNode->setTransform(transformMoon1GraphNode);
     moon2GraphNode->setTransform(transformMoon2GraphNode);
 
-    coneGraphNode->setTransform(transformConeGraphNode);
-    coneGraphNode->addOrbit(20, &coneShaderProgram, 0.5f, 0.0f);
-
+ 
     // ----------------------------------------------------------------
-    //planet1GraphNode->addChild(moon1GraphNode);
-   // planet1GraphNode->addChild(moon2GraphNode);
+    planet1GraphNode->addChild(moon1GraphNode);
+    planet1GraphNode->addChild(moon2GraphNode);
 
-    //starGraphNode->addChild(planet1GraphNode);
-   // starGraphNode->addChild(planet2GraphNode);
+    starGraphNode->addChild(planet1GraphNode);
+    starGraphNode->addChild(planet2GraphNode);
 
-    starGraphNode->addChild(coneGraphNode);
+ 
     solarSystem->addChild(starGraphNode);
 
+    Light* light = new Light(); 
+    light->InitLightObject();
 
-
-    // shader configuration
-    // --------------------
-    lightingShaderProgram.Use();
+ 
     
-    
-    
-   
-
    
 
     int angle = 1;
@@ -214,7 +197,7 @@ int main()
 
         
 
-        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
@@ -234,20 +217,22 @@ int main()
         // set projection and view matrix
         //-------------------------------
 
-        coneShaderProgram.Use();
-        coneShaderProgram.setMat4("projection", projection);
-        coneShaderProgram.setMat4("view", view);
 
 
         shaderProgram.Use();
         shaderProgram.setMat4("projection", projection);
         shaderProgram.setMat4("view", view);
        
+        // shader configuration
+ // --------------------
+        lightingShaderProgram.Use();
+        lightingShaderProgram.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        lightingShaderProgram.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
         // rotate all graph nodes
         // ----------------------
-        moon1GraphNode->Rotate(5.2f, glm::vec3(1, 1, 0));
-        moon2GraphNode->Rotate(0.9f, glm::vec3(0, 1, 0));
+        //moon1GraphNode->Rotate(5.2f, glm::vec3(1, 1, 0));
+       // moon2GraphNode->Rotate(0.9f, glm::vec3(0, 1, 0));
         //deathStarGraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
 
 

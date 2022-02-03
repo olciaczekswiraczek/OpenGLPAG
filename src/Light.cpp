@@ -1,5 +1,9 @@
 #include "Light.h"
 
+Light::Light()
+{
+    InitLightObject();
+}
 void Light::InitLightObject()
 {
 
@@ -74,4 +78,13 @@ void Light::InitLightObject()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 8 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
+}
+
+void Light::drawLightObject(ShaderProgram* shaderProgram, glm::mat4* model)
+{
+    shaderProgram->Use();
+    shaderProgram->setMat4("model", *model);
+
+    glBindVertexArray(VAO);
+    glDrawArrays(GL_TRIANGLES, 0, 36);
 }

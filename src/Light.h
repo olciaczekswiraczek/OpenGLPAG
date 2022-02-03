@@ -4,13 +4,16 @@
 #include <vector>
 #include <string>
 
-class Light 
-{ 
+#include "ShaderProgram.h"
+
+class Light
+{
 public:
 	Light();
 	~Light();
 
 	void InitLightObject();
+	void drawLightObject(ShaderProgram* shaderProgram, glm::mat4* model);
 
 private:
 	std::string type;
