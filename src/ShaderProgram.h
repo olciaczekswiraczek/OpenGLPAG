@@ -18,8 +18,14 @@ public:
 	void Use();
 	void Refresh();
 
-	void setColor(glm::vec4 color, const std::string& name);
-	void setMat4(glm::mat4& matrix, const std::string& name);
+
+	void setInt(const std::string& name, int value) const;
+	void setVec3(const std::string& name, const glm::vec3& value) const;
+	void setVec3(const std::string& name, float x, float y, float z) const;
+	void setColor(const std::string& name, glm::vec4 color) const;
+	void setMat4(const std::string& name, glm::mat4& matrix) const;
+
+	
 
 
 private:

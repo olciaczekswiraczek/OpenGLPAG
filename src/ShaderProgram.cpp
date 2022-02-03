@@ -53,23 +53,36 @@ void ShaderProgram::Init(bool mustCreate)
 	}
 	glUseProgram(programID);
 
-	glUniform1i(glGetUniformLocation(programID, "ourTexture"), 0);
-	glUniform1i(glGetUniformLocation(programID, "ourTexture1"), 1);
+	//glUniform1i(glGetUniformLocation(programID, "ourTexture"), 0);
+	//glUniform1i(glGetUniformLocation(programID, "ourTexture1"), 1);
 
 	glUseProgram(0);
 
 
 }
 
-void ShaderProgram::setColor(glm::vec4 color, const std::string& name)
+void ShaderProgram::setInt(const std::string& name, int value) const
+{
+	GLuint location = glGetUniformLocation(programID, name.c_str());
+	glUniform1i(location, value);
+}
+void ShaderProgram::setVec3(const std::string& name, const glm::vec3& value) const
+{
+	GLuint location = glGetUniformLocation(programID, name.c_str());
+	glUniform3fv(location, 1, &value[0]);
+}
+void ShaderProgram::setVec3(const std::string& name, float x, float y, float z) const
+{
+	GLuint location = glGetUniformLocation(programID, name.c_str());
+	glUniform3f(location, x, y, z);
+}
+void ShaderProgram::setColor(const std::string& name, glm::vec4 color) const
 {
 	GLuint location = glGetUniformLocation(programID, name.c_str());
 	glUniform4fv(location, 1, (GLfloat*)&color);
 }
-
-void ShaderProgram::setMat4(glm::mat4 &matrix, const std::string& name)
+void ShaderProgram::setMat4(const std::string& name, glm::mat4& matrix) const
 {
 	GLuint location = glGetUniformLocation(programID, name.c_str());
 	glUniformMatrix4fv(location, 1, GL_FALSE, &matrix[0][0]);
 }
-

@@ -65,7 +65,8 @@ int main()
     // Setup Dear ImGui style
     ImGui::StyleColorsDark();
 
-
+    // configure global opengl state
+    glEnable(GL_DEPTH_TEST);
 
     std::shared_ptr<Shader> vertexShader(new Shader("shader.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> fragmentShader(new Shader("shader.frag", FRAGMENT_SHADER));
@@ -73,8 +74,12 @@ int main()
     std::shared_ptr<Shader> coneVertexShader(new Shader("cone.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> coneFragmentShader(new Shader("cone.frag", FRAGMENT_SHADER));
 
+    std::shared_ptr<Shader> lightingVertexShader(new Shader("light.vert", VERTEX_SHADER));
+    std::shared_ptr<Shader> lightingFragmentShader(new Shader("light.frag", VERTEX_SHADER));
+
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
     ShaderProgram coneShaderProgram(coneVertexShader, coneFragmentShader);
+    ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
 
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
     Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
@@ -148,18 +153,17 @@ int main()
     starGraphNode->addChild(coneGraphNode);
     solarSystem->addChild(starGraphNode);
 
+
+
+    // shader configuration
+    // --------------------
+    lightingShaderProgram.Use();
+    
     
     
    
 
-    // configure global opengl state
-    glEnable(GL_DEPTH_TEST);
-
-
-   // view = glm::translate(view, glm::vec3(0.0f, 0.0f, -500.0f)); //tak naprawde przesuwamy obiekty, a nie kamere
-    //view = glm::rotate(view, glm::radians(45.0f), glm::vec3(1.0f, 1.0f, 1.0f));
-  //  projection = glm::perspective(glm::radians(45.0f), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
-
+   
 
     int angle = 1;
     int angle2 = 1;
@@ -210,7 +214,7 @@ int main()
 
         
 
-        glClearColor(0.2f, 0.3f, 0.3f, 1.0f);
+        glClearColor(0.0f, 0.0f, 0.0f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
@@ -231,13 +235,13 @@ int main()
         //-------------------------------
 
         coneShaderProgram.Use();
-        coneShaderProgram.setMat4(projection, "projection");
-        coneShaderProgram.setMat4(view, "view");
+        coneShaderProgram.setMat4("projection", projection);
+        coneShaderProgram.setMat4("view", view);
 
 
         shaderProgram.Use();
-        shaderProgram.setMat4(projection, "projection");
-        shaderProgram.setMat4(view, "view");
+        shaderProgram.setMat4("projection", projection);
+        shaderProgram.setMat4("view", view);
        
 
         // rotate all graph nodes
