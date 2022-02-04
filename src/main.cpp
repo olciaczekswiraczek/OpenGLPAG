@@ -80,7 +80,7 @@ int main()
 
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
-    ShaderProgram lightCubeShaderProgram(lightingVertexShader, lightingFragmentShader);
+    ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
     Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
@@ -311,7 +311,6 @@ int main()
         // render the cube
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
-
         // also draw the lamp object
         lightCubeShaderProgram.Use();
         lightCubeShaderProgram.setMat4("projection", projection);
