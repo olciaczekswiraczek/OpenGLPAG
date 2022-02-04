@@ -72,14 +72,15 @@ int main()
     std::shared_ptr<Shader> vertexShader(new Shader("shader.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> fragmentShader(new Shader("shader.frag", FRAGMENT_SHADER));
 
-    std::shared_ptr<Shader> coneVertexShader(new Shader("cone.vert", VERTEX_SHADER));
-    std::shared_ptr<Shader> coneFragmentShader(new Shader("cone.frag", FRAGMENT_SHADER));
-
     std::shared_ptr<Shader> lightingVertexShader(new Shader("light.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> lightingFragmentShader(new Shader("light.frag", FRAGMENT_SHADER));
 
+    std::shared_ptr<Shader> lightCubeVertexShader(new Shader("lightCube.vert", VERTEX_SHADER));
+    std::shared_ptr<Shader> lightCubeFragmentShader(new Shader("lightCube.frag", FRAGMENT_SHADER));
+
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
+    ShaderProgram lightCubeShaderProgram(lightingVertexShader, lightingFragmentShader);
 
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
     Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
@@ -141,10 +142,94 @@ int main()
  
     solarSystem->addChild(starGraphNode);
 
-    Light* light = new Light(); 
+    // lighting
+    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+
+    // set up vertex data (and buffer(s)) and configure vertex attributes
+    // ------------------------------------------------------------------
+    float vertices[] = {
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+
+        -0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f, -0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+
+        -0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f, -0.5f,
+         0.5f, -0.5f,  0.5f,
+         0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f,  0.5f,
+        -0.5f, -0.5f, -0.5f,
+
+        -0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f, -0.5f,
+         0.5f,  0.5f,  0.5f,
+         0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f,  0.5f,
+        -0.5f,  0.5f, -0.5f,
+    };
+    // first, configure the cube's VAO (and VBO)
+    unsigned int VBO, cubeVAO;
+    glGenVertexArrays(1, &cubeVAO);
+    glGenBuffers(1, &VBO);
+
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+
+    glBindVertexArray(cubeVAO);
+
+    // position attribute
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+    // second, configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+    unsigned int lightCubeVAO;
+    glGenVertexArrays(1, &lightCubeVAO);
+    glBindVertexArray(lightCubeVAO);
+
+    // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
+    glBindBuffer(GL_ARRAY_BUFFER, VBO);
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);
+
+
+
+    /*
+    Light* light = new Light(vertices); 
     light->InitLightObject();
 
- 
+    unsigned int cubeVAO;
+    glGenVertexArrays(1, &cubeVAO);
+    glBindVertexArray(cubeVAO);
+
+    // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
+    glBindBuffer(GL_ARRAY_BUFFER, light->getVBO());
+
+    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
+    glEnableVertexAttribArray(0);*/
     
    
 
@@ -195,59 +280,50 @@ int main()
           
         }
 
-        
+        // input
+        // -----
+        processInput(window.getWindow());
 
+
+        // render
+        // ------
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
         
+        // be sure to activate shader when setting uniforms/drawing objects
+        lightingShaderProgram.Use();
+        lightingShaderProgram.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
+        lightingShaderProgram.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
 
-
-        processInput(window.getWindow());
-        starGraphNode->Rotate(angle, glm::vec3(0, -1, 0));
-     
         
         // set projection and view matrix
         //-------------------------------
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
         glm::mat4 view = camera.GetViewMatrix();
-       
-     
-     
-        // set projection and view matrix
-        //-------------------------------
+        lightingShaderProgram.setMat4("projection", projection);
+        lightingShaderProgram.setMat4("view", view);
 
-
-
-        shaderProgram.Use();
-        shaderProgram.setMat4("projection", projection);
-        shaderProgram.setMat4("view", view);
-       
-        // shader configuration
- // --------------------
-        lightingShaderProgram.Use();
-        lightingShaderProgram.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-        lightingShaderProgram.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-
-        // rotate all graph nodes
-        // ----------------------
-        //moon1GraphNode->Rotate(5.2f, glm::vec3(1, 1, 0));
-       // moon2GraphNode->Rotate(0.9f, glm::vec3(0, 1, 0));
-        //deathStarGraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
-
-
+        // world transformation
         glm::mat4 model = glm::mat4(1.0f);
-        model = glm::rotate(model, glm::radians((float)angle), glm::vec3(1.0, 0.0, 0.0));
-        model = glm::rotate(model, glm::radians((float)angle2), glm::vec3(0.0, 1.0, 0.0));
-        model = glm::rotate(model, glm::radians((float)angle3), glm::vec3(0.0, 0.0, 1.0));
-     
-        star->setTransform(&model);
+        lightingShaderProgram.setMat4("model", model);
 
+        // render the cube
+        glBindVertexArray(cubeVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
 
-        solarSystem->Update();
-        solarSystem->Draw();
+        // also draw the lamp object
+        lightCubeShaderProgram.Use();
+        lightCubeShaderProgram.setMat4("projection", projection);
+        lightCubeShaderProgram.setMat4("view", view);
+        model = glm::mat4(1.0f);
+        model = glm::translate(model, lightPos);
+        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
+        lightCubeShaderProgram.setMat4("model", model);
 
-     
+        glBindVertexArray(lightCubeVAO);
+        glDrawArrays(GL_TRIANGLES, 0, 36);
+
 
         // Render dear imgui into screen
         ImGui::Render();

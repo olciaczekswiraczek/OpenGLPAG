@@ -9,17 +9,22 @@
 class Light
 {
 public:
-	Light();
+	Light(std::vector<float>& vertices);
 	~Light();
+
+	GLuint getLightObjectVAO();
+	GLuint getVBO();
 
 	void InitLightObject();
 	void drawLightObject(ShaderProgram* shaderProgram, glm::mat4* model);
 
 private:
-	std::string type;
-
-	GLuint VAO;
+	
+	GLuint lightObjectVAO;
 	GLuint VBO;
+
+	std::vector<float>& vertices;
+	std::string type;
 
 
 

@@ -1,68 +1,25 @@
 #include "Light.h"
 
-Light::Light()
+Light::Light(std::vector<float>& vertices):
+    vertices(vertices)
 {
     InitLightObject();
 }
+GLuint Light::getVBO()
+{
+    return VBO;
+}
 void Light::InitLightObject()
 {
-
-    // set up vertex data (and buffer(s)) and configure vertex attributes
-  // ------------------------------------------------------------------
-    float vertices[] = {
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f, -0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-
-        -0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f, -0.5f,
-         0.5f, -0.5f,  0.5f,
-         0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f,  0.5f,
-        -0.5f, -0.5f, -0.5f,
-
-        -0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f, -0.5f,
-         0.5f,  0.5f,  0.5f,
-         0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f,  0.5f,
-        -0.5f,  0.5f, -0.5f,
-    };
-    // first, configure the cube's VAO (and VBO)
-   
-    glGenVertexArrays(1, &VAO);
+    // configure the light's VAO (VBO stays the same; the vertices are the same for the light object which is also a 3D cube)
+    glGenVertexArrays(1, &lightObjectVAO);
     glGenBuffers(1, &VBO);
 
     glBindBuffer(GL_ARRAY_BUFFER, VBO);
-    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), vertices, GL_STATIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, sizeof(vertices), &vertices[0], GL_STATIC_DRAW);
 
-    glBindVertexArray(VAO);
+    glBindVertexArray(lightObjectVAO);
 
-    // position attribute
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);
 
@@ -73,6 +30,6 @@ void Light::drawLightObject(ShaderProgram* shaderProgram, glm::mat4* model)
     shaderProgram->Use();
     shaderProgram->setMat4("model", *model);
 
-    glBindVertexArray(VAO);
+    glBindVertexArray(lightObjectVAO);
     glDrawArrays(GL_TRIANGLES, 0, 36);
 }
