@@ -2,6 +2,9 @@
 #include <corecrt_math_defines.h>
 #include <iostream>
 
+#include <glad/glad.h>
+#include <GLFW/glfw3.h>
+
 #include "imgui.h"
 #include "imgui_impl_glfw.h"
 #include "imgui_impl_opengl3.h"
@@ -36,14 +39,16 @@ Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
+
 bool wireframeMode = false;
 
 // timing
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
-int NUMBER_OF_SEGMENTS = 30;
-int NUMBER_OF_RINGS = 30;
+
+// lighting
+glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
 {
@@ -78,10 +83,11 @@ int main()
     std::shared_ptr<Shader> lightCubeVertexShader(new Shader("lightCube.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> lightCubeFragmentShader(new Shader("lightCube.frag", FRAGMENT_SHADER));
 
-    ShaderProgram shaderProgram(vertexShader, fragmentShader);
+   // ShaderProgram shaderProgram(vertexShader, fragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
+    /*
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
     Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
     Model* planet2 = new Model("res/models/Mars/Mars.obj", &shaderProgram);
@@ -140,10 +146,10 @@ int main()
     starGraphNode->addChild(planet2GraphNode);
 
  
-    solarSystem->addChild(starGraphNode);
+    solarSystem->addChild(starGraphNode);*/
 
-    // lighting
-    glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
+ 
+
     // set up vertex data (and buffer(s)) and configure vertex attributes
        // ------------------------------------------------------------------
     float vertices[] = {
@@ -219,7 +225,6 @@ int main()
 
 
 
-
     /*
     Light* light = new Light(vertices); 
     light->InitLightObject();
@@ -255,30 +260,8 @@ int main()
         {
             ImGui::SetWindowPos(ImVec2(60, 60));
             ImGui::SetWindowSize(ImVec2(250, 100));
-            ImGui::Begin("Adjustments");
-            ImGui::Text("Number of segments");
-            ImGui::SliderInt("", &NUMBER_OF_SEGMENTS, 7, 60);
-            ImGui::Text("Number of rings");
-            ImGui::SliderInt(" ", &NUMBER_OF_RINGS, 6, 60);
-            ImGui::Text("Rotate root node:");
-            ImGui::SliderInt("  ", &angle, 1, 360);
-            ImGui::Text("Rotate root node:");
-            ImGui::SliderInt("   ", &angle3, 1, 360);
-            ImGui::Text("Rotate root node:");
-            ImGui::SliderInt("    ", &angle2, 1, 360);
-            if (ImGui::Button("Generate!"))
-            {
-                //torusMesh->generateTorus(NUMBER_OF_SEGMENTS, NUMBER_OF_RINGS, 4, 10);
-            }
-            if (ImGui::Checkbox("Wireframe mode", &wireframeMode)) {
-
-                if (wireframeMode) {
-                    glPolygonMode(GL_FRONT_AND_BACK, GL_LINE);
-                }
-                else {
-                    glPolygonMode(GL_FRONT_AND_BACK, GL_FILL);
-                }
-            }
+            ImGui::Begin("Change lights");
+           
             ImGui::End();
           
         }
@@ -293,17 +276,30 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShaderProgram.Use();
-        lightingShaderProgram.setVec3("objectColor", 1.0f, 0.5f, 0.31f);
-        lightingShaderProgram.setVec3("lightColor", 1.0f, 1.0f, 1.0f);
-        lightingShaderProgram.setVec3("lightPos", lightPos);
+        lightingShaderProgram.setVec3("light.position", lightPos);
+        lightingShaderProgram.setVec3("viewPos", camera.Position);
 
-        
-        // set projection and view matrix
-        //-------------------------------
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 200.0f);
+        // light properties
+        glm::vec3 lightColor;
+        lightColor.x = static_cast<float>(sin(glfwGetTime() * 2.0));
+        lightColor.y = static_cast<float>(sin(glfwGetTime() * 0.7));
+        lightColor.z = static_cast<float>(sin(glfwGetTime() * 1.3));
+        glm::vec3 diffuseColor = lightColor * glm::vec3(0.5f); // decrease the influence
+        glm::vec3 ambientColor = diffuseColor * glm::vec3(0.2f); // low influence
+        lightingShaderProgram.setVec3("light.ambient", ambientColor);
+        lightingShaderProgram.setVec3("light.diffuse", diffuseColor);
+        lightingShaderProgram.setVec3("light.specular", 1.0f, 1.0f, 1.0f);
+
+        // material properties
+        lightingShaderProgram.setVec3("material.ambient", 1.0f, 0.5f, 0.31f);
+        lightingShaderProgram.setVec3("material.diffuse", 1.0f, 0.5f, 0.31f);
+        lightingShaderProgram.setVec3("material.specular", 0.5f, 0.5f, 0.5f); // specular lighting doesn't have full effect on this object's material
+        lightingShaderProgram.setFloat("material.shininess", 32.0f);
+
+        // view/projection transformations
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
         lightingShaderProgram.setMat4("projection", projection);
         lightingShaderProgram.setMat4("view", view);
@@ -315,6 +311,8 @@ int main()
         // render the cube
         glBindVertexArray(cubeVAO);
         glDrawArrays(GL_TRIANGLES, 0, 36);
+
+
         // also draw the lamp object
         lightCubeShaderProgram.Use();
         lightCubeShaderProgram.setMat4("projection", projection);
@@ -328,6 +326,8 @@ int main()
         glDrawArrays(GL_TRIANGLES, 0, 36);
 
 
+
+
         // Render dear imgui into screen
         ImGui::Render();
         ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
@@ -339,7 +339,12 @@ int main()
     ImGui_ImplGlfw_Shutdown();
     ImGui::DestroyContext();
     // glfw: terminate, clearing all previously allocated GLFW resources.
-    
+      // optional: de-allocate all resources once they've outlived their purpose:
+    // ------------------------------------------------------------------------
+    glDeleteVertexArrays(1, &cubeVAO);
+    glDeleteVertexArrays(1, &lightCubeVAO);
+    glDeleteBuffers(1, &VBO);
+
     return 0;
 }
 
@@ -389,27 +394,3 @@ void scroll_callback(GLFWwindow* window, double xoffset, double yoffset)
 {
     camera.ProcessMouseScroll(yoffset);
 }
-
-
-//obrot wokol osi z
-    // model - glm::translate(model, glm::vec3(0.5f, 0.2f, 0.0)); //przesuwa pivot, kolejnosc transformacji ma znaczenie
-
-     // render your GUI
-    /* ImGui::Begin("Cube Rotation/Color");
-     static int level;
-     ImGui::SliderInt("Level", &level, 0, 3);
-
-     static float rotationOX = 0.0f;
-     ImGui::SliderFloat("Rotation OX", &rotationOX, 0.0f, 1.0f);
-     model = glm::rotate(model, glm::radians(rotationOX * 360.f), glm::vec3(1.0f, 0.0f, 0.0f));
-
-     static float rotationOY = 0.0f;
-     ImGui::SliderFloat("Rotation OY", &rotationOY, 0.0f, 1.0f);
-     model = glm::rotate(model, glm::radians(rotationOY * 360.f), glm::vec3(0.0f, 1.0f, 0.0f));
-
-     static float color[4] = { 1.0f,1.0f,1.0f,1.0f };
-     // color picker
-     ImGui::ColorEdit3("color", color);
-     // multiply triangle's color with this color
-     shaderProgram.setColor(glm::vec4(color[0], color[1], color[2], 1.0f));
-     ImGui::End();*/
