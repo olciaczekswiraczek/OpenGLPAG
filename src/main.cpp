@@ -135,11 +135,11 @@ int main()
     coneGraphNode->addOrbit(20, &coneShaderProgram, 0.5f, 0.0f);
 
     // ----------------------------------------------------------------
-    //planet1GraphNode->addChild(moon1GraphNode);
-   // planet1GraphNode->addChild(moon2GraphNode);
+    planet1GraphNode->addChild(moon1GraphNode);
+    planet1GraphNode->addChild(moon2GraphNode);
 
-    //starGraphNode->addChild(planet1GraphNode);
-   // starGraphNode->addChild(planet2GraphNode);
+    starGraphNode->addChild(planet1GraphNode);
+    starGraphNode->addChild(planet2GraphNode);
 
     starGraphNode->addChild(coneGraphNode);
     solarSystem->addChild(starGraphNode);
@@ -211,7 +211,6 @@ int main()
 
         
 
-
         processInput(window.getWindow());
         starGraphNode->Rotate(angle, glm::vec3(0, -1, 0));
      
@@ -228,12 +227,12 @@ int main()
 
         coneShaderProgram.Use();
         coneShaderProgram.setMat4(projection, "projection");
-        coneShaderProgram.setMat4(projection, "projection");
+        coneShaderProgram.setMat4(view, "view");
 
 
         shaderProgram.Use();
         shaderProgram.setMat4(projection, "projection");
-        shaderProgram.setMat4(projection, "view");
+        shaderProgram.setMat4(view, "view");
        
 
         // rotate all graph nodes
