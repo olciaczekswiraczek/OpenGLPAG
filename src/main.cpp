@@ -456,10 +456,35 @@ int main()
 
         // we now draw as many light bulbs as we have point lights.
         glBindVertexArray(lightCubeVAO);
-        for (unsigned int i = 0; i < 4; i++)
+        if (dirLightFlag) {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, lightsPositions[3]);
+            model = glm::scale(model, glm::vec3(0.2f));
+            model = glm::rotate(model, glm::radians((float)180.0f), glm::vec3(dirLightDirX, dirLightDirY, dirLightDirZ));
+            lightCubeShaderProgram.setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+
+        if (pointLightFlag)
         {
             model = glm::mat4(1.0f);
-            model = glm::translate(model, lightsPositions[i]);
+            model = glm::translate(model, lightsPositions[0]);
+            model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+            lightCubeShaderProgram.setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+        if (spotLight1Flag)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, lightsPositions[1]);
+            model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
+            lightCubeShaderProgram.setMat4("model", model);
+            glDrawArrays(GL_TRIANGLES, 0, 36);
+        }
+        if (spotLight2Flag)
+        {
+            model = glm::mat4(1.0f);
+            model = glm::translate(model, lightsPositions[2]);
             model = glm::scale(model, glm::vec3(0.2f)); // Make it a smaller cube
             lightCubeShaderProgram.setMat4("model", model);
             glDrawArrays(GL_TRIANGLES, 0, 36);
