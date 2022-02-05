@@ -281,19 +281,27 @@ int main()
     int angle2 = 1;
     int angle3 = 1;
 
+    bool dirLightFlag = true;
     bool pointLightFlag = true;
     bool spotLight1Flag = true;
     bool spotLight2Flag = true;
-    bool dirLightFlag = true;
-    float DirX = -0.2f;
-    float DirY = -1.0f;
-    float DirZ = -0.3f;
-    float ambient[3] = { 0.7f, 0.7f, 0.7f };
-    float specular[3] = { 0.7f, 0.7f, 0.7f };
-    float diffuse[3] = { 0.7f, 0.7f, 0.7f };
-    float spotambient[3] = { 0.9f, 0.9f, 0.9f };
-    float spotspecular[3] = { 0.9f, 0.9f, 0.9f };
-    float spotdiffuse[3] = { 0.9f, 0.9f, 0.9f };
+  
+    float dirLightDirX = -0.2f;
+    float dirLightDirY = -1.0f;
+    float dirLightDirZ = -0.3f;
+    float dirLightAmbient[3] = { 0.7f, 0.7f, 0.7f };
+    float dirLightSpecular[3] = { 0.7f, 0.7f, 0.7f };
+    float dirLightDiffuse[3] = { 0.7f, 0.7f, 0.7f };
+
+
+    float pointLightAmbient[3] = { 0.7f, 0.7f, 0.7f };
+    float pointLightSpecular[3] = { 0.7f, 0.7f, 0.7f };
+    float pointLightDiffuse[3] = { 0.7f, 0.7f, 0.7f };
+
+    float spotLightAmbient[3] = { 0.9f, 0.9f, 0.9f };
+    float spotLightSpecular[3] = { 0.9f, 0.9f, 0.9f };
+    float spotLightDiffuse[3] = { 0.9f, 0.9f, 0.9f };
+
     float constant = 1.0f;
     float linear = 0.01;
     float quadratic = 0.01;
@@ -316,18 +324,21 @@ int main()
             ImGui::SetWindowSize(ImVec2(250, 100));
             ImGui::Begin("Change lights");
            
-            ImGui::Checkbox("Pointlight", &pointLightFlag);
-            ImGui::Checkbox("Spotlight 1", &spotLight1Flag);
-            ImGui::Checkbox("Spotlight 2", &spotLight2Flag);
             ImGui::Checkbox("Directional Light", &dirLightFlag);
+            ImGui::SliderFloat("Directional Light X", &dirLightDirX, -1, 1);
+            ImGui::SliderFloat("Directional Light Y", &dirLightDirY, -1, 1);
+            ImGui::SliderFloat("Directional Light Z", &dirLightDirZ, -1, 1);
+            ImGui::ColorEdit3("Directional Light Color", dirLightAmbient);
 
-            ImGui::SliderFloat("Directional Light X", &DirX, -1, 1);
-            ImGui::SliderFloat("Directional Light Y", &DirY, -1, 1);
-            ImGui::SliderFloat("Directional Light Z", &DirZ, -1, 1);
-            ImGui::ColorEdit3("Pointlight Color", ambient);
-            ImGui::ColorEdit3("Spotlight 1 Color", spotambient);
+            ImGui::Checkbox("Pointlight", &pointLightFlag);
+            ImGui::ColorEdit3("Pointlight Color", pointLightAmbient);
+
+            ImGui::Checkbox("Spotlight 1", &spotLight1Flag);
+            ImGui::Checkbox("Spotlight 2", &spotLight2Flag);       
+            ImGui::ColorEdit3("Spotlight 1 Color", spotLightAmbient);
+
            // ImGui::ColorEdit3("Spotlight 2 Color", spotambient1);
-            //ImGui::ColorEdit3("Directional Light Color", dirAmbient);
+            //
 
             ImGui::SliderInt("Rotation speed", &angle2, 0, 100);
 
@@ -377,22 +388,7 @@ int main()
         lightingShaderProgram.setFloat("pointLights[1].constant", 1.0f);
         lightingShaderProgram.setFloat("pointLights[1].linear", 0.09f);
         lightingShaderProgram.setFloat("pointLights[1].quadratic", 0.032f);
-        // point light 3
-        lightingShaderProgram.setVec3("pointLights[2].position", pointLightPositions[2]);
-        lightingShaderProgram.setVec3("pointLights[2].ambient", 0.05f, 0.05f, 0.05f);
-        lightingShaderProgram.setVec3("pointLights[2].diffuse", 0.8f, 0.8f, 0.8f);
-        lightingShaderProgram.setVec3("pointLights[2].specular", 1.0f, 1.0f, 1.0f);
-        lightingShaderProgram.setFloat("pointLights[2].constant", 1.0f);
-        lightingShaderProgram.setFloat("pointLights[2].linear", 0.09f);
-        lightingShaderProgram.setFloat("pointLights[2].quadratic", 0.032f);
-        // point light 4
-        lightingShaderProgram.setVec3("pointLights[3].position", pointLightPositions[3]);
-        lightingShaderProgram.setVec3("pointLights[3].ambient", 0.05f, 0.05f, 0.05f);
-        lightingShaderProgram.setVec3("pointLights[3].diffuse", 0.8f, 0.8f, 0.8f);
-        lightingShaderProgram.setVec3("pointLights[3].specular", 1.0f, 1.0f, 1.0f);
-        lightingShaderProgram.setFloat("pointLights[3].constant", 1.0f);
-        lightingShaderProgram.setFloat("pointLights[3].linear", 0.09f);
-        lightingShaderProgram.setFloat("pointLights[3].quadratic", 0.032f);
+        
         // spotLight
         lightingShaderProgram.setVec3("spotLight.position", camera.Position);
         lightingShaderProgram.setVec3("spotLight.direction", camera.Front);
