@@ -281,6 +281,24 @@ int main()
     int angle2 = 1;
     int angle3 = 1;
 
+    bool pointLightFlag = true;
+    bool spotLight1Flag = true;
+    bool spotLight2Flag = true;
+    bool dirLightFlag = true;
+    float DirX = -0.2f;
+    float DirY = -1.0f;
+    float DirZ = -0.3f;
+    float ambient[3] = { 0.7f, 0.7f, 0.7f };
+    float specular[3] = { 0.7f, 0.7f, 0.7f };
+    float diffuse[3] = { 0.7f, 0.7f, 0.7f };
+    float spotambient[3] = { 0.9f, 0.9f, 0.9f };
+    float spotspecular[3] = { 0.9f, 0.9f, 0.9f };
+    float spotdiffuse[3] = { 0.9f, 0.9f, 0.9f };
+    float constant = 1.0f;
+    float linear = 0.01;
+    float quadratic = 0.01;
+    bool* k = new bool(true);
+
     // render loop
     while (window.isOpen())
     {
@@ -298,6 +316,21 @@ int main()
             ImGui::SetWindowSize(ImVec2(250, 100));
             ImGui::Begin("Change lights");
            
+            ImGui::Checkbox("Pointlight", &pointLightFlag);
+            ImGui::Checkbox("Spotlight 1", &spotLight1Flag);
+            ImGui::Checkbox("Spotlight 2", &spotLight2Flag);
+            ImGui::Checkbox("Directional Light", &dirLightFlag);
+
+            ImGui::SliderFloat("Directional Light X", &DirX, -1, 1);
+            ImGui::SliderFloat("Directional Light Y", &DirY, -1, 1);
+            ImGui::SliderFloat("Directional Light Z", &DirZ, -1, 1);
+            ImGui::ColorEdit3("Pointlight Color", ambient);
+            ImGui::ColorEdit3("Spotlight 1 Color", spotambient);
+           // ImGui::ColorEdit3("Spotlight 2 Color", spotambient1);
+            //ImGui::ColorEdit3("Directional Light Color", dirAmbient);
+
+            ImGui::SliderInt("Rotation speed", &angle2, 0, 100);
+
             ImGui::End();
           
         }
