@@ -226,13 +226,13 @@ int main()
         //-------------------------------
 
         coneShaderProgram.Use();
-        coneShaderProgram.setMat4(projection, "projection");
-        coneShaderProgram.setMat4(view, "view");
+        coneShaderProgram.setMat4("projection",projection);
+        coneShaderProgram.setMat4("view", view);
 
 
         shaderProgram.Use();
-        shaderProgram.setMat4(projection, "projection");
-        shaderProgram.setMat4(view, "view");
+        shaderProgram.setMat4("projection", projection);
+        shaderProgram.setMat4("view", view);
        
 
         // rotate all graph nodes
