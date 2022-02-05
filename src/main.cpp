@@ -84,16 +84,15 @@ int main()
     std::shared_ptr<Shader> lightCubeVertexShader(new Shader("lightCube.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> lightCubeFragmentShader(new Shader("lightCube.frag", FRAGMENT_SHADER));
 
-   // ShaderProgram shaderProgram(vertexShader, fragmentShader);
+    ShaderProgram shaderProgram(vertexShader, fragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
+    Model* house = new Model("res/models/House/House.fbx", &shaderProgram);
+
     /*
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
-    Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
-    Model* planet2 = new Model("res/models/Mars/Mars.obj", &shaderProgram);
-    Model* moon1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
-    Model* moon2 = new Model("res/models/Death_Star/Death_Star.obj", &shaderProgram);
+   
 
    
     GraphNode* solarSystem = new GraphNode();
@@ -264,8 +263,7 @@ int main()
     glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
     glEnableVertexAttribArray(0);*/
     
-    //Texture* diffuseMap = new Texture("res/textures/container2.png","diffuse");
-   // Texture* specularMap = new Texture("res/textures/container2_specular.png", "diffuse");
+   
      // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
     unsigned int diffuseMap = loadTexture("res/textures/container2.png");
