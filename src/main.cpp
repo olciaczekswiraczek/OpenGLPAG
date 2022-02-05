@@ -90,19 +90,15 @@ int main()
 
     Model* house = new Model("res/models/House/House.fbx", &shaderProgram);
 
-    /*
+    
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
    
 
    
     GraphNode* solarSystem = new GraphNode();
-    GraphNode* starGraphNode = new GraphNode(star);
+    GraphNode* starGraphNode = new GraphNode(house);
 
-    GraphNode* planet1GraphNode = new GraphNode(planet1);
-    GraphNode* planet2GraphNode = new GraphNode(planet2);
-
-    GraphNode* moon1GraphNode = new GraphNode(moon1);
-    GraphNode* moon2GraphNode = new GraphNode(moon2);
+   
 
 
 
@@ -132,21 +128,14 @@ int main()
  
 
     starGraphNode->setTransform(transformStarGraphNode);
-    planet1GraphNode->setTransform(transformPlanet1GraphNode);
-    planet2GraphNode->setTransform(transformPlanet2GraphNode);
-    moon1GraphNode->setTransform(transformMoon1GraphNode);
-    moon2GraphNode->setTransform(transformMoon2GraphNode);
+   
 
  
     // ----------------------------------------------------------------
-    planet1GraphNode->addChild(moon1GraphNode);
-    planet1GraphNode->addChild(moon2GraphNode);
-
-    starGraphNode->addChild(planet1GraphNode);
-    starGraphNode->addChild(planet2GraphNode);
+   
 
  
-    solarSystem->addChild(starGraphNode);*/
+    solarSystem->addChild(starGraphNode);
 
  
 
@@ -247,21 +236,6 @@ int main()
     glEnableVertexAttribArray(0);
 
 
-
-
-    /*
-    Light* light = new Light(vertices); 
-    light->InitLightObject();
-
-    unsigned int cubeVAO;
-    glGenVertexArrays(1, &cubeVAO);
-    glBindVertexArray(cubeVAO);
-
-    // we only need to bind to the VBO (to link it with glVertexAttribPointer), no need to fill it; the VBO's data already contains all we need (it's already bound, but we do it again for educational purposes)
-    glBindBuffer(GL_ARRAY_BUFFER, light->getVBO());
-
-    glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
-    glEnableVertexAttribArray(0);*/
     
    
      // load textures (we now use a utility function to keep the code more organized)
@@ -352,6 +326,7 @@ int main()
         // -----
         processInput(window.getWindow());
 
+     
 
         // render
         // ------
@@ -366,6 +341,7 @@ int main()
         lightingShaderProgram.setVec3("viewPos", camera.Position);
         lightingShaderProgram.setFloat("material.shininess", 32.0f);
 
+        
         /*
           Here we set all the uniforms for the 5/6 types of lights we have. We have to set them manually and index
           the proper PointLight struct in the array to set each uniform variable. This can be done more code-friendly
