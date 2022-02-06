@@ -40,7 +40,7 @@ public:
 protected:
 	Model* model;
 	GraphNode* parent;
-	//bool dirty;
+	bool dirty;
 
 	glm::mat4* worldTransform;
 	glm::mat4* transform;
