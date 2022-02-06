@@ -19,6 +19,8 @@ public:
 
 	void setTransform(glm::mat4* matrix);
 	glm::mat4* getTransform();
+	glm::mat4* getWorldTransform();
+	std::vector<GraphNode*> getChildren();
 
 	// update transforms
 	// -----------------
@@ -30,8 +32,7 @@ public:
 	
 
 	void addChild(GraphNode* node);
-	void addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform);
-
+	
 	void Translate(glm::vec3 translation);
 	void Rotate(float angle, glm::vec3 axis);
 	void Scale(glm::vec3 scale);

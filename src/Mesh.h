@@ -19,9 +19,17 @@ void glBufferDataV(GLuint target, const std::vector<T>& buffer, GLenum type)
 
 struct Vertex
 {
-	glm::vec3 position;
-	glm::vec2 textureCoord;
-	glm::vec3 normal;
+	// position
+	glm::vec3 Position;
+	// normal
+	glm::vec3 Normal;
+	// texCoords
+	glm::vec2 TexCoords;
+	// tangent
+	glm::vec3 Tangent;
+	// bitangent
+	glm::vec3 Bitangent;
+
 };
 
 class Mesh

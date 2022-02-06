@@ -10,7 +10,7 @@ Model::Model(char* filename, ShaderProgram* shaderProgram):
 	shaderProgram(shaderProgram)
 {
 	loadModel(std::string(filename));
-	transform = new glm::mat4(1);
+	
 }
 
 Model::~Model()
@@ -91,22 +91,22 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 		aiVector3D currentAiVec = mesh->mVertices[i]; //aktualnie przetwarzamy wektor; musimy odpowiednio przepisac wartosci, bo ni ma bezposredniej konwersji
 		glm::vec3 vec(currentAiVec.x, currentAiVec.y, currentAiVec.z);
 
-		newVertex.position = vec;
+		newVertex.Position = vec;
 
 		currentAiVec = mesh -> mNormals[i];
 		vec = glm::vec3(currentAiVec.x, currentAiVec.y, currentAiVec.z);
-		newVertex.normal = vec;
+		newVertex.Normal = vec;
 
 		if (mesh->mTextureCoords[0])
 		{
 			glm::vec2 vec;
 			vec.x = mesh->mTextureCoords[0][i].x;
 			vec.y = mesh->mTextureCoords[0][i].y;
-			newVertex.textureCoord = vec;
+			newVertex.TexCoords = vec;
 		}
 		else
 		{
-			newVertex.textureCoord = glm::vec2(0.0f, 0.0f);
+			newVertex.TexCoords = glm::vec2(0.0f, 0.0f);
 		}
 		vertices.push_back(newVertex);
 	}

@@ -23,6 +23,16 @@ glm::mat4* GraphNode::getTransform()
 	return transform;
 }
 
+glm::mat4* GraphNode::getWorldTransform()
+{
+	return worldTransform;
+}
+
+std::vector<GraphNode*> GraphNode::getChildren()
+{
+	return children;
+}
+
 // update transforms
 // -----------------
 void GraphNode::Update()
@@ -38,10 +48,10 @@ void GraphNode::Update()
 		*worldTransform = *transform;
 	}
 
-	if (model) // if has a model
-	{
-		model->setTransform(worldTransform);
-	}
+	//if (model) // if has a model
+	//{
+	//	model->setTransform(worldTransform);
+	//}
 	for (GraphNode* node : children)
 	{
 		node->Update();
@@ -52,7 +62,7 @@ void GraphNode::Update()
 void GraphNode::Draw()
 {
 	{
-		if (model) { model->Draw(); }
+		//if (model) { model->Draw(); }
 
 		for (GraphNode* node : children)
 		{
@@ -67,23 +77,6 @@ void GraphNode::addChild(GraphNode* node)
 	node->parent = this;
 }
 
-void GraphNode::addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform)
-{
-	Mesh* orbitMesh = new Mesh();
-	orbitMesh->generateOrbit(50, 45, thickness, radius);
-	Model* orbitModel = new Model(orbitMesh);
-	orbitModel->setShaderProgram(shaderProgram);
-	GraphNode* pom = new GraphNode(orbitModel);
-	glm::mat4* TransformNode1 = new glm::mat4(1);
-	if (upTransform != 0) {
-
-		*TransformNode1 = glm::translate(*(TransformNode1), glm::vec3(0.0f, upTransform, 0.0f));
-	}
-
-	pom->setTransform(TransformNode1);
-	pom->Rotate(90, glm::vec3(1, 0, 0));
-	addChild(pom);
-}
 
 
 void GraphNode::Translate(glm::vec3 translation)

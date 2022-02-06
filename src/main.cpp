@@ -123,7 +123,7 @@ int main()
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
-    Model* houseModel = new Model("res/models/House/House.fbx", &shaderProgram);
+    Model* houseModel = new Model("res/models/Death_Star/Death_Star.obj", &shaderProgram);
 
     
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
@@ -133,34 +133,58 @@ int main()
     GraphNode* solarSystem = new GraphNode();
     GraphNode* starGraphNode = new GraphNode(houseModel);
 
+
+    std::vector<GraphNode*> graphNodes;
+
+    GraphNode* world = new GraphNode();
+    GraphNode* root = new GraphNode();
+
     // generate a large list of semi-random model transformation matrices
  // ------------------------------------------------------------------
-    unsigned int amount = 500;
+    unsigned int amount =100;
     glm::mat4* houseMatrices = new glm::mat4[amount];
     
 
     float x = 0;
     float z = 0;
-
+    
     srand(static_cast<unsigned int>(glfwGetTime()));
+    float offset = 120.0f;
+    float radius = 25.0f;
 
-    for (unsigned int i = 0; i < 50; i++)
+    for (unsigned int i = 0; i < amount; i++)
     {
-        for (unsigned int k = 0; k < 10; k++) {
+        glm::mat4 model = glm::mat4(1.0f);
+        float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        float x = displacement;
+        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        float y = .6f;
+        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
+        float z = +displacement;
+        model = glm::translate(model, glm::vec3(x, y, z));
 
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, glm::vec3(i + x, 0.0f, k + z));
-            float scale = 0.4f;
-            model = glm::scale(model, glm::vec3(scale));
-            houseMatrices[i * 10 + k] = model;
-            //std::cout << glm::to_string(houseMatrices[i * 10 + k]) << std::endl;
+        float scale = 0.2;
+        model = glm::scale(model, glm::vec3(scale));
 
-            z += 15;
-        }
-        x += 15;
-        z = 0;
+
+        houseMatrices[i] = model;
+    }
+
+    for (int i = 0; i < (amount); i++) {
+        GraphNode* pomGraphNode = new GraphNode();
+        pomGraphNode->setTransform(&houseMatrices[i]);
+        graphNodes.push_back(pomGraphNode);
+
+        root->addChild(pomGraphNode);
     }
  
+    std::cout << "Graph nodes size =  " << graphNodes.size() << std::endl;
+
+    world->addChild(root);
+
+    std::cout << "root children: " << root->getChildren().size() << std::endl;
+    std::cout << "world children: " << world->getChildren().size() << std::endl;
+
     unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
 
     // create graph nodes transformations to position them in the scene
@@ -188,16 +212,11 @@ int main()
 
  
 
-    starGraphNode->setTransform(transformStarGraphNode);
    
 
  
     // ----------------------------------------------------------------
    
-
- 
-    solarSystem->addChild(starGraphNode);
-
  
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -344,9 +363,26 @@ int main()
     float quadratic = 0.01;
     bool* k = new bool(true);
 
+    bool rotateRoot = false;
+
     // render loop
     while (window.isOpen())
     {
+
+        // input
+        // -----
+        processInput(window.getWindow());
+
+
+
+        // render
+        // ------
+        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
+        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+        static float dirAmbient[3] = { 0.5f, 0.5f, 0.5f };
+        static float spotambient1[3] = { 0.7f, 0.7f, 0.7f };
+
         // per-frame time logic
        // --------------------
         float currentFrame = glfwGetTime();
@@ -377,25 +413,38 @@ int main()
            // ImGui::ColorEdit3("Spotlight 2 Color", spotambient1);
             //
 
-            ImGui::SliderInt("Rotation speed", &angle2, 0, 100);
+            ImGui::Checkbox("Rotate root", &rotateRoot);
 
             ImGui::End();
           
         }
 
-        // input
-        // -----
-        processInput(window.getWindow());
+        if (rotateRoot) {
+            glm::mat4 rootTranform = glm::mat4(1.0f);
+            //rootTranform = glm::translate(rootTranform, glm::vec3(1.0f, 2.0f, 1.0f));
+            rootTranform = glm::rotate(rootTranform, glm::radians((float)1), glm::vec3(0.0, 1.0, 0.0));
+            root->setTransform(&rootTranform);
 
-     
+            world->Update();
 
-        // render
-        // ------
-        glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        static float dirAmbient[3] = { 0.5f, 0.5f, 0.5f };
-        static float spotambient1[3] = { 0.7f, 0.7f, 0.7f };
+            for (int i = 0; i < graphNodes.size(); i++) {
+                houseMatrices[i] = *graphNodes[i]->getWorldTransform();
+            }
+
+            glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
+            glBufferData(GL_ARRAY_BUFFER, (amount) * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
+        }
+
+
+        // view/projection transformations
+        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
+        glm::mat4 view = camera.GetViewMatrix();
+
+
+
+       
+
 
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShaderProgram.Use();
@@ -452,9 +501,6 @@ int main()
         lightingShaderProgram.setFloat("spotLights[1].outerCutOff", glm::cos(glm::radians(15.0f)));
 
 
-        // view/projection transformations
-        glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
-        glm::mat4 view = camera.GetViewMatrix();
         lightingShaderProgram.setMat4("projection", projection);
         lightingShaderProgram.setMat4("view", view);
 
@@ -469,20 +515,6 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, specularMap);
 
-
-        // render containers
-        glBindVertexArray(cubeVAO);
-        for (unsigned int i = 0; i < 10; i++)
-        {
-            // calculate the model matrix for each object and pass it to shader before drawing
-            glm::mat4 model = glm::mat4(1.0f);
-            model = glm::translate(model, cubePositions[i]);
-            float angle = 20.0f * i;
-            model = glm::rotate(model, glm::radians(angle), glm::vec3(1.0f, 0.3f, 0.5f));
-            lightingShaderProgram.setMat4("model", model);
-
-            glDrawArrays(GL_TRIANGLES, 0, 36);
-        }
 
         // also draw the lamp object(s)
         lightCubeShaderProgram.Use();
@@ -533,7 +565,7 @@ int main()
         lightingShaderProgram.Use();
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
         glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
-        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        //glBindBuffer(GL_ARRAY_BUFFER, 0);
 
         for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
         {
