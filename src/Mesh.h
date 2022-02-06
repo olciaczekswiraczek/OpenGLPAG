@@ -50,43 +50,7 @@ public:
 
 	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
 
-	void generateOrbit(int num_segments, int num_rings, float thickness, float R) {
-		std::vector<unsigned int> indexBuffer;
-		std::vector<float> vertBuffer;
-		int num_vertices = (num_rings + 1) * (num_segments + 1);
-
-		const float pi = 3.1415926535f;
-		const float r1 = R;
-		const float r2 = thickness;
-		for (int i = 0, index = 0; i <= num_rings; ++i) {
-			for (int j = 0; j <= num_segments; ++j, ++index) {
-				float u = float(i) / num_rings;
-				float v = (float(j) + u) / num_segments;
-
-				// Compute angles
-				float u_angle = u * 2 * pi;
-				float v_angle = v * 2 * pi;
-
-				// Position
-				float x =  cos(u_angle) * (r1 + cos(v_angle) * r2);
-				float y = sin(u_angle) * (r1 + cos(v_angle) * r2);
-				float z = sin(v_angle) * r2;
-				
-				vertBuffer.push_back(x);
-				vertBuffer.push_back(y);
-				vertBuffer.push_back(z);
-			}
-		}
-
-		// Compute torus indices
-		for (int i = 0, index = 0; i <= num_vertices; ++i) {
-			indexBuffer.push_back(int(i % num_vertices));
-			indexBuffer.push_back(int((i + num_segments + 1) % num_vertices));
-		}
-		vert = vertBuffer;
-		m_elementBuffer = indexBuffer;
-		setupMesh2();
-	}
+	
 
 private:
 	GLuint VAO;

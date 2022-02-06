@@ -123,15 +123,7 @@ int main()
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
-    Model* houseModel = new Model("res/models/Death_Star/Death_Star.obj", &shaderProgram);
-
-    
-    Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
-   
-
-   
-    GraphNode* solarSystem = new GraphNode();
-    GraphNode* starGraphNode = new GraphNode(houseModel);
+    Model* houseModel = new Model("res/models/House/House.fbx", &lightingShaderProgram);
 
 
     std::vector<GraphNode*> graphNodes;
@@ -150,7 +142,7 @@ int main()
     
     srand(static_cast<unsigned int>(glfwGetTime()));
     float offset = 120.0f;
-    float radius = 25.0f;
+    float radius = 5.0f;
 
     for (unsigned int i = 0; i < amount; i++)
     {
