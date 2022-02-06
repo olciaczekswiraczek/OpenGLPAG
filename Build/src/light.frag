@@ -111,8 +111,8 @@ vec3 CalcDirLight(DirLight light, vec3 normal, vec3 viewDir)
     vec3 ambient = light.ambient * vec3(texture(texture_diffuse1, TexCoords));
     vec3 diffuse = light.diffuse * diff * vec3(texture(texture_diffuse1, TexCoords));
     vec3 specular = light.specular * spec * vec3(texture(texture_specular1, TexCoords));
-    //return (ambient + diffuse + specular);
-    return specular;
+    return (ambient + diffuse + specular);
+    //return specular;
 }
 
 // calculates the color when using a point light.
@@ -124,7 +124,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     // specular shading
     float spec = 0.0;
     vec3 halfwayDir = normalize(lightDir + viewDir);  
-    spec = pow(max(dot(normal, halfwayDir), 0.0), 32.0);
+    spec = pow(max(dot(normal, halfwayDir), 0.0), 532.0);
     // attenuation
     float distance = length(light.position - fragPos);
     float attenuation = 1.0 / (light.constant + light.linear * distance + light.quadratic * (distance * distance));    
@@ -136,6 +136,7 @@ vec3 CalcPointLight(PointLight light, vec3 normal, vec3 fragPos, vec3 viewDir)
     diffuse *= attenuation;
     specular *= attenuation;
     return (ambient + diffuse + specular);
+    //return specular;
 }
 
 // calculates the color when using a spot light.

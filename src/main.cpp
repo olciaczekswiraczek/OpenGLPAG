@@ -112,6 +112,7 @@ float lastFrame = 0.0f;
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
+
 int main()
 {
    
@@ -154,10 +155,12 @@ int main()
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
     Model* houseModel = new Model("res/models/Cube/Cube.obj", &lightingShaderProgram);
+    Model* tipModel = new Model("res/models/Tip/tip.obj", &lightingShaderProgram);
 
     Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
 
-    std::vector<GraphNode*> graphNodes;
+    std::vector<GraphNode*> wallsGraphNodes;
+    std::vector<GraphNode*> tipGraphNodes;
 
     GraphNode* world = new GraphNode();
     GraphNode* root = new GraphNode();
@@ -165,9 +168,10 @@ int main()
     // generate a large list of semi-random model transformation matrices
  // ------------------------------------------------------------------
      //macierz transformacji instancji
-    unsigned int sqrtAmount = 200;
-    unsigned int amount = sqrtAmount * sqrtAmount;
-    glm::mat4* houseMatrices = new glm::mat4[amount];
+    unsigned int dim = 200;
+    unsigned int amount = dim * dim;
+    glm::mat4* modelMatrices = new glm::mat4[amount];
+    glm::mat4* tipMatrices = new glm::mat4[amount];
     
 
     float x = 0;
@@ -175,11 +179,10 @@ int main()
     float z = 0;
     
     srand(static_cast<unsigned int>(glfwGetTime()));
-    float offset = 50.0f;
-    //float radius = 1.0f;
 
-    for (unsigned int i = 0; i < amount; i++)
+    for (unsigned int i = 0; i < dim; i++)
     {
+        /*
         glm::mat4 model = glm::mat4(1.0f);
         float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
         float x = displacement;
@@ -190,38 +193,67 @@ int main()
         model = glm::translate(model, glm::vec3(x, y, z));
 
         float scale = 0.2;
-        model = glm::scale(model, glm::vec3(scale));
+        model = glm::scale(model, glm::vec3(scale));*/
 
+        for (unsigned int j = 0; j < dim; j++)
+        {
+            GraphNode* wallsGraphNode = new GraphNode();
+            GraphNode* tipGraphNode = new GraphNode();
+            glm::mat4 model = glm::mat4(1.0f);
+            glm::mat4 modelTip = glm::mat4(1.0f);
+           
+                x = i * (2.0f);
+                z = j * (-2.0f);
+            
+            
+            model = glm::translate(model, glm::vec3(x, 0.0f, z));
+            modelTip = glm::translate(modelTip, glm::vec3(x, 1.0f, z));
+            float scale = 0.2;
+            //model = glm::scale(model, glm::vec3(scale));
 
-        houseMatrices[i] = model;
+            modelMatrices[i * dim + j] = model;
+            tipMatrices[i * dim + j] = modelTip;
+            wallsGraphNode->setTransform(&modelMatrices[i * dim + j]);
+            tipGraphNode->setTransform(&tipMatrices[i * dim + j]);
+            wallsGraphNodes.push_back(wallsGraphNode);
+            tipGraphNodes.push_back(tipGraphNode);
+            wallsGraphNode->addChild(tipGraphNode);
+            root->addChild(wallsGraphNode);
+        }
+
+        
+       
     }
 
+    glm::mat4 model = glm::mat4(1.0f);
+    
+
+    /*
     for (int i = 0; i < (amount); i++) {
         GraphNode* pomGraphNode = new GraphNode();
-        pomGraphNode->setTransform(&houseMatrices[i]);
+        pomGraphNode->setTransform(&modelMatrices[i]);
         graphNodes.push_back(pomGraphNode);
 
         root->addChild(pomGraphNode);
-    }
+    }*/
  
-    std::cout << "Graph nodes size =  " << graphNodes.size() << std::endl;
+   
 
+    std::cout << "Graph nodes size =  " << wallsGraphNodes.size() << std::endl;
+    std::cout << "Graph nodes tip size =  " << tipGraphNodes.size() << std::endl;
+   
     world->addChild(root);
+    
 
     std::cout << "root children: " << root->getChildren().size() << std::endl;
     std::cout << "world children: " << world->getChildren().size() << std::endl;
 
-    unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
-
-    // create graph nodes transformations to position them in the scene
-// ----------------------------------------------------------------
-    
-    glm::mat4* transformStarGraphNode = new glm::mat4(1);
-    *transformStarGraphNode = glm::translate(*(transformStarGraphNode), glm::vec3(0.0f, -0.5f, 0.0f)); // translate it down so it's at the center of the scene
-    *transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+    unsigned int houseBuffer = generateInstanceVBO(amount, modelMatrices, houseModel);
+    unsigned int tipBuffer = generateInstanceVBO(amount, tipMatrices, tipModel);
+  
 
    
- 
+   
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
        // ------------------------------------------------------------------
@@ -327,11 +359,7 @@ int main()
     //unsigned int diffuseMap = loadTexture("res/textures/container2.png");
     //unsigned int specularMap = loadTexture("res/textures/container2_specular.png");
 
-    // shader configuration
-// --------------------
-    lightingShaderProgram.Use();
-    lightingShaderProgram.setInt("texture_diffuse1", 0);
-    lightingShaderProgram.setInt("texture_specular1", 1);
+ 
 
     int angle = 1;
     int angle2 = 1;
@@ -374,6 +402,11 @@ int main()
     std::cout << "Texturki: " << houseModel->textures_loaded[0]->getTextureID();
     std::cout << "Texturki: " << houseModel->textures_loaded[1]->getType();
     std::cout << "Texturki: " << houseModel->textures_loaded[1]->getTextureID();
+
+    std::cout << "Sciezka: " << houseModel->textures_loaded[0]->getPath();
+
+    lightingShaderProgram.setInt("texture_diffuse1", 0);
+    lightingShaderProgram.setInt("texture_specular1", 1);
 
     // render loop
     while (window.isOpen())
@@ -428,20 +461,20 @@ int main()
         }
 
         if (rotateRoot) {
-            glm::mat4 rootTranform = glm::mat4(1.0f);
+            glm::mat4 rootTransform = glm::mat4(1.0f);
             //rootTranform = glm::translate(rootTranform, glm::vec3(1.0f, 2.0f, 1.0f));
-            rootTranform = glm::rotate(rootTranform, glm::radians((float)1), glm::vec3(0.0, 1.0, 0.0));
-            root->setTransform(&rootTranform);
+            rootTransform = glm::rotate(rootTransform, glm::radians((float)1), glm::vec3(0.0, 1.0, 0.0));
+            root->setTransform(&rootTransform);
 
             world->Update();
 
 
-            for (int i = 0; i < graphNodes.size(); i++) {
-                houseMatrices[i] = *graphNodes[i]->getWorldTransform();
+            for (int i = 0; i < wallsGraphNodes.size(); i++) {
+                modelMatrices[i] = *wallsGraphNodes[i]->getWorldTransform();
             }
 
             glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
-            glBufferData(GL_ARRAY_BUFFER, (amount) * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
+            glBufferData(GL_ARRAY_BUFFER, (amount) * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
         }
 
 
@@ -451,6 +484,8 @@ int main()
 
 
 
+        // shader configuration
+// --------------------
        
 
 
@@ -561,20 +596,21 @@ int main()
 
 
         pointLightMovement.Update();
-        lightsPositions[0] = glm::vec3(pointLightMovement.y, 5, pointLightMovement.x);
+        lightsPositions[0] = glm::vec3(pointLightMovement.y/10.0f, 2, pointLightMovement.x/10.0f);
 
         lightingShaderProgram.Use();
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
-        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-       // houseModel->textures_loaded[0]->Use(0);
+      //  houseModel->textures_loaded[0]->Use(1);
+      //  houseModel->textures_loaded[1]->Use(2);
        
-        //glActiveTexture(GL_TEXTURE0);
-        //glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[0]->getTextureID());
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[0]->getTextureID());
 
-       // glActiveTexture(GL_TEXTURE1);
-       // glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
        
         for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
         {
@@ -584,7 +620,24 @@ int main()
             glBindVertexArray(0);
         }
 
-    
+
+        glBindBuffer(GL_ARRAY_BUFFER, tipBuffer);
+        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &tipMatrices[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+       // glActiveTexture(GL_TEXTURE0);
+       // glBindTexture(GL_TEXTURE_2D, tipModel->textures_loaded[0]->getTextureID());
+
+      //  glActiveTexture(GL_TEXTURE1);
+     //   glBindTexture(GL_TEXTURE_2D, tipModel->textures_loaded[1]->getTextureID());
+
+        for (unsigned int i = 0; i < tipModel->m_meshes.size(); i++)
+        {
+
+            glBindVertexArray(tipModel->m_meshes.at(i)->getVAO());
+            glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(tipModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, amount);
+            glBindVertexArray(0);
+        }
+
 
 
 

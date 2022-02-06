@@ -84,6 +84,71 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 	std::vector<GLuint> indices;
 	std::vector<Texture*> textures;
 
+	// walk through each of the mesh's vertices
+	for (unsigned int i = 0; i < mesh->mNumVertices; i++)
+	{
+		Vertex vertex;
+		glm::vec3 vector; // we declare a placeholder vector since assimp uses its own vector class that doesn't directly convert to glm's vec3 class so we transfer the data to this placeholder glm::vec3 first.
+		// positions
+		vector.x = mesh->mVertices[i].x;
+		vector.y = mesh->mVertices[i].y;
+		vector.z = mesh->mVertices[i].z;
+		vertex.Position = vector;
+		// normals
+		if (mesh->HasNormals())
+		{
+			vector.x = mesh->mNormals[i].x;
+			vector.y = mesh->mNormals[i].y;
+			vector.z = mesh->mNormals[i].z;
+			vertex.Normal = vector;
+		}
+		// texture coordinates
+		if (mesh->mTextureCoords[0]) // does the mesh contain texture coordinates?
+		{
+			glm::vec2 vec;
+			// a vertex can contain up to 8 different texture coordinates. We thus make the assumption that we won't 
+			// use models where a vertex can have multiple texture coordinates so we always take the first set (0).
+			vec.x = mesh->mTextureCoords[0][i].x;
+			vec.y = mesh->mTextureCoords[0][i].y;
+			vertex.TexCoords = vec;
+			
+		}
+		else
+			vertex.TexCoords = glm::vec2(0.0f, 0.0f);
+
+		vertices.push_back(vertex);
+	}
+	// now wak through each of the mesh's faces (a face is a mesh its triangle) and retrieve the corresponding vertex indices.
+	for (unsigned int i = 0; i < mesh->mNumFaces; i++)
+	{
+		aiFace face = mesh->mFaces[i];
+		// retrieve all indices of the face and store them in the indices vector
+		for (unsigned int j = 0; j < face.mNumIndices; j++)
+			indices.push_back(face.mIndices[j]);
+	}
+	// process materials
+	aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
+	// we assume a convention for sampler names in the shaders. Each diffuse texture should be named
+	// as 'texture_diffuseN' where N is a sequential number ranging from 1 to MAX_SAMPLER_NUMBER. 
+	// Same applies to other texture as the following list summarizes:
+	// diffuse: texture_diffuseN
+	// specular: texture_specularN
+	// normal: texture_normalN
+
+	// 1. diffuse maps
+	std::vector<Texture*> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
+	textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
+	// 2. specular maps
+	std::vector<Texture*> specularMaps = loadMaterialTextures(material, aiTextureType_SPECULAR, "texture_specular");
+	textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
+	// 3. normal maps
+	std::vector<Texture*> normalMaps = loadMaterialTextures(material, aiTextureType_HEIGHT, "texture_normal");
+	textures.insert(textures.end(), normalMaps.begin(), normalMaps.end());
+	// 4. height maps
+	std::vector<Texture*> heightMaps = loadMaterialTextures(material, aiTextureType_AMBIENT, "texture_height");
+	textures.insert(textures.end(), heightMaps.begin(), heightMaps.end());
+
+	/*
 	for (GLuint i = 0; i < mesh->mNumVertices; i++)
 	{
 		Vertex newVertex;		
@@ -128,7 +193,7 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 		 aiMaterial* mat = scene->mMaterials[mesh->mMaterialIndex];//pobieramy material o odpowiednim indeksie
 		 newMesh->loadMaterialTexture(mat, aiTextureType_DIFFUSE, "texture_diffuse");
 	 } */
-
+	/*
 	 // przetwórz materia³y
 	 if (mesh->mMaterialIndex >= 0)
 	 {
@@ -139,7 +204,7 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 
 		 std::vector<Texture*> specularMaps = loadMaterialTextures(material,aiTextureType_SPECULAR, "texture_specular");
 		 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
-	 }
+	 }*/
 
 	 return new Mesh(vertices, indices, textures);
 }
@@ -164,7 +229,15 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
 		}
 		if (!skip)
 		{   // jeœli tekstura nie zosta³a jeszcze za³adowana, za³aduj j¹
-			Texture* texture = TextureFromFile(name.C_Str(), m_directory, typeName);
+			//Texture* texture = TextureFromFile(name.C_Str(), m_directory, typeName);
+			std::string filename0 = std::string(name.C_Str());
+			filename0 = m_directory + '/' + filename0;
+			const char* filename = filename0.c_str();
+
+			std::cout << "Halooooooo " << filename << '\n';
+
+			Texture* texture = new Texture(filename, typeName.c_str());
+			
 			
 			textures.push_back(texture);
 			textures_loaded.push_back(texture); // dodaj do za³adowanych wektora textures_loaded
@@ -172,17 +245,6 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
 	}
 	return textures;
 }
-Texture* Model::TextureFromFile(const char* path, const std::string& directory, std::string typeName)
-{
-	std::string filename0 = std::string(path);
-	filename0 = directory + '/' + filename0;
-	const char* filename = filename0.c_str();
-	
-	std::cout << "Halooooooo " << filename << '\n';
 
-	Texture* tex = new Texture(filename, typeName.c_str());
-
-	return tex;
-}
 
 

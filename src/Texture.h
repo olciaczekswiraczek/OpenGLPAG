@@ -20,7 +20,7 @@ public:
 
 private:
 	bool Load(const char* filename);
-	GLuint textureID;
+	unsigned int textureID;
 
 	std::string type;
 	std::string path;

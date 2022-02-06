@@ -38,59 +38,45 @@ GLuint Mesh::getVAO()
 
 void Mesh::Draw(ShaderProgram* shaderProgram, glm::mat4* model, bool& isFromFile)
 {
-	shaderProgram->Use();
-	shaderProgram->setMat4("model" ,*model);
-	
-	GLuint diffuseNr = 1;
-	GLuint specularNr = 1;
-	GLuint normalNr = 1;
-	GLuint heightNr = 1;
-
-	for (GLuint i = 0; i < this->m_textures.size(); i++)
+	//shaderProgram->Use();
+	//shaderProgram->setMat4("model" ,*model);
+	// bind appropriate textures
+	unsigned int diffuseNr = 1;
+	unsigned int specularNr = 1;
+	unsigned int normalNr = 1;
+	unsigned int heightNr = 1;
+	for (unsigned int i = 0; i < m_textures.size(); i++)
 	{
-		glActiveTexture(GL_TEXTURE0 + i);
-
-		std::stringstream ss;
+		glActiveTexture(GL_TEXTURE0 + i); // active proper texture unit before binding
+		// retrieve texture number (the N in diffuse_textureN)
 		std::string number;
-		std::string name = this->m_textures[i]->getType();
-
+		std::string name = m_textures.at(i)->getType();
 		if (name == "texture_diffuse")
-			ss << diffuseNr++;
+			number = std::to_string(diffuseNr++);
 		else if (name == "texture_specular")
-			ss << specularNr++;
+			number = std::to_string(specularNr++); // transfer unsigned int to stream
 		else if (name == "texture_normal")
-			ss << normalNr++;
+			number = std::to_string(normalNr++); // transfer unsigned int to stream
 		else if (name == "texture_height")
-			ss << heightNr++;
-		number == ss.str();
-
+			number = std::to_string(heightNr++); // transfer unsigned int to stream
 
 		// now set the sampler to the correct texture unit
 		glUniform1i(glGetUniformLocation(shaderProgram->getProgramID(), (name + number).c_str()), i);
 		// and finally bind the texture
-		glBindTexture(GL_TEXTURE_2D, this->m_textures[i]->getTextureID());
+		glBindTexture(GL_TEXTURE_2D, m_textures.at(i)->getTextureID());
 	}
 
-
-	// draw cylinder
-		// -------------
+	// draw mesh
 	glBindVertexArray(VAO);
-	if (m_elementBuffer.size() != 0)
-	{
-		if (isFromFile) {
-			glDrawElements(GL_TRIANGLES, m_elementBuffer.size(), GL_UNSIGNED_INT, 0);
-			glActiveTexture(GL_TEXTURE0);
-		}
-		else
-			glDrawElements(GL_TRIANGLE_STRIP, m_elementBuffer.size(), GL_UNSIGNED_INT, 0);
-	}
-	else {
-		glDrawArrays(GL_POINTS, 0, vert.size());
-	}
+	glDrawElements(GL_TRIANGLES, m_elementBuffer.size(), GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
+
+	// always good practice to set everything back to defaults once configured.
+	glActiveTexture(GL_TEXTURE0);
+
 	
 }
-
+/*
 void Mesh::loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName)
 {
 
@@ -120,7 +106,7 @@ void Mesh::loadMaterialTexture(aiMaterial* material, aiTextureType textureType, 
 
 
 	}
-}
+}*/
 
 void Mesh::Init()
 {
