@@ -164,16 +164,19 @@ int main()
 
     // generate a large list of semi-random model transformation matrices
  // ------------------------------------------------------------------
-    unsigned int amount =100;
+     //macierz transformacji instancji
+    unsigned int sqrtAmount = 200;
+    unsigned int amount = sqrtAmount * sqrtAmount;
     glm::mat4* houseMatrices = new glm::mat4[amount];
     
 
     float x = 0;
+    float y = 0;
     float z = 0;
     
     srand(static_cast<unsigned int>(glfwGetTime()));
-    float offset = 120.0f;
-    float radius = 5.0f;
+    float offset = 50.0f;
+    //float radius = 1.0f;
 
     for (unsigned int i = 0; i < amount; i++)
     {
@@ -181,7 +184,7 @@ int main()
         float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
         float x = displacement;
         displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
-        float y = .6f;
+        
         displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
         float z = +displacement;
         model = glm::translate(model, glm::vec3(x, y, z));
@@ -284,9 +287,9 @@ int main()
     // positions of the point lights
     glm::vec3 lightsPositions[] = {
         glm::vec3(0.7f,  0.2f,  2.0f),
-        glm::vec3(2.3f, -3.3f, -4.0f),
+        glm::vec3(2.3f,  3.3f, -4.0f),
         glm::vec3(-4.0f,  2.0f, -12.0f),
-        glm::vec3(0.0f,  0.0f, -3.0f)
+        glm::vec3(0.0f,  10.0f, -3.0f)
     };
 
     // first, configure the cube's VAO (and VBO)
@@ -327,8 +330,8 @@ int main()
     // shader configuration
 // --------------------
     lightingShaderProgram.Use();
-    lightingShaderProgram.setInt("material.diffuse", 0);
-    lightingShaderProgram.setInt("material.specular", 1);
+    lightingShaderProgram.setInt("texture_diffuse1", 0);
+    lightingShaderProgram.setInt("texture_specular1", 1);
 
     int angle = 1;
     int angle2 = 1;
@@ -339,9 +342,9 @@ int main()
     bool spotLight1Flag = true;
     bool spotLight2Flag = true;
   
-    float dirLightDirX = -0.2f;
+    float dirLightDirX = -0.0f;
     float dirLightDirY = -1.0f;
-    float dirLightDirZ = -0.3f;
+    float dirLightDirZ = -0.0f;
     float dirLightAmbient[3] = { 0.7f, 0.7f, 0.7f };
     float dirLightSpecular[3] = { 0.7f, 0.7f, 0.7f };
     float dirLightDiffuse[3] = { 0.7f, 0.7f, 0.7f };
@@ -387,9 +390,7 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-        static float dirAmbient[3] = { 0.5f, 0.5f, 0.5f };
-        static float spotambient1[3] = { 0.7f, 0.7f, 0.7f };
-
+       
         // per-frame time logic
        // --------------------
         float currentFrame = glfwGetTime();
@@ -468,7 +469,7 @@ int main()
        // directional light
         lightingShaderProgram.setBool("dirLights[0].flag", dirLightFlag);
         lightingShaderProgram.setVec3("dirLights[0].direction", dirLightDirX, dirLightDirY, dirLightDirZ);
-        lightingShaderProgram.setVec3("dirLights[0].ambient", dirAmbient[0], dirAmbient[1], dirAmbient[2]); // , 0.01f, 0.01f, 0.01f);
+        lightingShaderProgram.setVec3("dirLights[0].ambient", dirLightAmbient[0], dirLightAmbient[1], dirLightAmbient[2]); // , 0.01f, 0.01f, 0.01f);
         lightingShaderProgram.setVec3("dirLights[0].diffuse", 0.3f, 0.3f, 0.3f);
         lightingShaderProgram.setVec3("dirLights[0].specular", 0.5f, 0.5f, 0.5f);
         // point light 1
@@ -498,7 +499,7 @@ int main()
         lightingShaderProgram.setBool("spotLights[1].flag", spotLight2Flag);
         lightingShaderProgram.setVec3("spotLights[1].position", lightsPositions[2].x, lightsPositions[2].y, lightsPositions[2].z);
         lightingShaderProgram.setVec3("spotLights[1].direction", glm::vec3(0.0f, -2.5f, -2.0f));
-        lightingShaderProgram.setVec3("spotLights[1].ambient", spotambient1[0], spotambient1[1], spotambient1[2]);
+        lightingShaderProgram.setVec3("spotLights[1].ambient", spotLightAmbient[0], spotLightAmbient[1], spotLightAmbient[2]);
         lightingShaderProgram.setVec3("spotLights[1].diffuse", spotLightDiffuse[0], spotLightDiffuse[1], spotLightDiffuse[2]);
         lightingShaderProgram.setVec3("spotLights[1].specular", spotLightSpecular[0], spotLightSpecular[1], spotLightSpecular[2]);
         lightingShaderProgram.setFloat("spotLights[1].constant", 1.0f);
@@ -514,13 +515,6 @@ int main()
         // world transformation
         glm::mat4 model = glm::mat4(1.0f);
         lightingShaderProgram.setMat4("model", model);
-
-      /*  // bind diffuse map
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, diffuseMap);
-        // bind specular map
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specularMap);*/
 
 
         // also draw the lamp object(s)
@@ -567,7 +561,7 @@ int main()
 
 
         pointLightMovement.Update();
-        lightsPositions[0] = glm::vec3(pointLightMovement.y, 30, pointLightMovement.x);
+        lightsPositions[0] = glm::vec3(pointLightMovement.y, 5, pointLightMovement.x);
 
         lightingShaderProgram.Use();
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
@@ -576,11 +570,11 @@ int main()
 
        // houseModel->textures_loaded[0]->Use(0);
        
-        glActiveTexture(GL_TEXTURE0);
-        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[0]->getTextureID());
+        //glActiveTexture(GL_TEXTURE0);
+        //glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[0]->getTextureID());
 
-        glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
+       // glActiveTexture(GL_TEXTURE1);
+       // glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
        
         for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
         {
