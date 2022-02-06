@@ -41,42 +41,82 @@ public:
 
 	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
 
-	void generateOrbit(int num_segments, int num_rings, float thickness, float R) {
-		std::vector<unsigned int> indexBuffer;
-		std::vector<float> vertBuffer;
-		int num_vertices = (num_rings + 1) * (num_segments + 1);
-
+	void generateOrbit(int num_stacks, float height, float radius) {
+		
 		const float pi = 3.1415926535f;
-		const float r1 = R;
-		const float r2 = thickness;
-		for (int i = 0, index = 0; i <= num_rings; ++i) {
-			for (int j = 0; j <= num_segments; ++j, ++index) {
-				float u = float(i) / num_rings;
-				float v = (float(j) + u) / num_segments;
+		
+		//std::vector<unsigned int> indices;
+		//std::vector<float> vertices;
+		if (num_stacks >= 3)
+		{
+			float angle = 2 * pi / num_stacks;
+			unsigned int num_vertices = num_stacks + 2;
+			unsigned int num_indices = num_stacks * 2 * 3;
 
-				// Compute angles
-				float u_angle = u * 2 * pi;
-				float v_angle = v * 2 * pi;
+			glm::vec3* vertices = new glm::vec3[num_vertices];
+			GLuint* indices = new GLuint[num_indices];
 
-				// Position
-				float x =  cos(u_angle) * (r1 + cos(v_angle) * r2);
-				float y = sin(u_angle) * (r1 + cos(v_angle) * r2);
-				float z = sin(v_angle) * r2;
-				
-				vertBuffer.push_back(x);
-				vertBuffer.push_back(y);
-				vertBuffer.push_back(z);
+			//CMeshVertex* vertices = new CMeshVertex[num_vertices];
+			//GLuint* indices = new GLuint[num_indices];
+
+			vertices[0] = glm::vec3{ 0,0,0 };
+			//vertices[0].color = { 1.0f,0.0f,0.0f,0.0f };
+			//vertices[1].color = { 0.0f,1.0f,0.0f,0.0f };
+
+			vertices[num_vertices - 1] = glm::vec3{ 0,0,height }; //tip
+
+			int num_angle = 1;
+			for (int i = 0; i < num_stacks; ++i) {
+				glm::vec3 vert = glm::vec3(cos(angle * i) * radius, -sin(angle * i) * radius, 0.0f);
+				vertices[i + 1].x = cos(angle * i) * radius;
+				vertices[i + 1].y = -sin(angle * i) * radius;
+				vertices[i + 1].z = 0;
+				//vertices[i + 1] = vert;
+
+
+				if (i > 0) {
+					indices[i] = 0;
+					indices[6 * i + 1] = i;
+					indices[6 * i + 2] = i + 1;
+					indices[6 * i + 3] = num_vertices - 1;
+					indices[6 * i + 4] = i;
+					indices[6 * i + 5] = i + 1;
+				}
+				else if (i == 0)
+				{
+					indices[0] = 0;
+					indices[1] = num_stacks;
+					indices[2] = 1;
+					indices[3] = num_vertices - 1;
+					indices[4] = num_stacks;
+					indices[5] = 1;
+				}
 			}
-		}
 
-		// Compute torus indices
-		for (int i = 0, index = 0; i <= num_vertices; ++i) {
-			indexBuffer.push_back(int(i % num_vertices));
-			indexBuffer.push_back(int((i + num_segments + 1) % num_vertices));
+			//CreateGLResources(vertices, indices);
+
+			std::vector<unsigned int> indexBuffer;
+			std::vector<float> vertBuffer;
+
+			for (int i = 0; i < num_vertices; i++)
+			{
+				vertBuffer.push_back(vertices[i].x);
+				vertBuffer.push_back(vertices[i].y);
+				vertBuffer.push_back(vertices[i].z);
+			}
+			for (int i = 0; i < num_indices; i++)
+			{
+				indexBuffer.push_back(indices[i]);
+			}
+
+			vert = vertBuffer;
+			m_elementBuffer = indexBuffer;
+			setupMesh2();
+
+			delete[] vertices;
+			delete[] indices;
 		}
-		vert = vertBuffer;
-		m_elementBuffer = indexBuffer;
-		setupMesh2();
+		
 	}
 
 private:

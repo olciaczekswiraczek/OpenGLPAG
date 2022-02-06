@@ -78,7 +78,7 @@ int main()
     //shaderProgram.setColor
 
     Mesh* coneMesh = new Mesh();
-    coneMesh->generateOrbit(30, 30, 4.0f, 10.0f);
+    coneMesh->generateOrbit(20, 10.0f, 5.0f);
     Model* coneModel = new Model(coneMesh);
     coneModel->setShaderProgram(&coneShaderProgram);
 

@@ -70,7 +70,7 @@ void GraphNode::addChild(GraphNode* node)
 void GraphNode::addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform)
 {
 	Mesh* orbitMesh = new Mesh();
-	orbitMesh->generateOrbit(50, 45, thickness, radius);
+	//orbitMesh->generateOrbit(50, 45, thickness, radius);
 	Model* orbitModel = new Model(orbitMesh);
 	orbitModel->setShaderProgram(shaderProgram);
 	GraphNode* pom = new GraphNode(orbitModel);
