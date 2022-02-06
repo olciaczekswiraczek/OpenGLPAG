@@ -22,6 +22,36 @@
 #include "Camera.h"
 #include "Light.h"
 
+class Movement
+{
+public:
+    float aPos;
+    float speed;
+    float distance;
+    float x;
+    float y;
+
+    Movement(float aPos, float speed, float distance)
+    {
+        this->aPos = aPos;
+        this->speed = speed;
+        this->distance = distance;
+    }
+
+    void Update()
+    {
+        if (aPos + speed > 360.0f)
+        {
+            aPos = 0;
+        }
+        else
+            aPos += speed;
+
+        this->x = distance * glm::cos(glm::radians(aPos));
+        this->y = distance * glm::sin(glm::radians(aPos));
+    }
+};
+
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
 void processInput(GLFWwindow* window);
@@ -125,6 +155,7 @@ int main()
 
     Model* houseModel = new Model("res/models/Cube/Cube.obj", &lightingShaderProgram);
 
+    Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
 
     std::vector<GraphNode*> graphNodes;
 
@@ -534,9 +565,9 @@ int main()
         }
 
 
-        instancedShaderProgram.Use();
-        instancedShaderProgram.setMat4("projection", projection);
-        instancedShaderProgram.setMat4("view", view);
+
+        pointLightMovement.Update();
+        lightsPositions[0] = glm::vec3(pointLightMovement.y, 30, pointLightMovement.x);
 
         lightingShaderProgram.Use();
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
@@ -551,8 +582,6 @@ int main()
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
        
-        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
-
         for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
         {
            
