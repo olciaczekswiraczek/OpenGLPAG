@@ -160,7 +160,7 @@ int main()
         x += 15;
         z = 0;
     }
-
+ 
     unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
 
     // create graph nodes transformations to position them in the scene
@@ -537,22 +537,13 @@ int main()
 
         for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
         {
+           
             glBindVertexArray(houseModel->m_meshes.at(i)->getVAO());
             glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(houseModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, amount);
             glBindVertexArray(0);
         }
-/*
-        // also draw the lamp object
-        lightCubeShaderProgram.Use();
-        lightCubeShaderProgram.setMat4("projection", projection);
-        lightCubeShaderProgram.setMat4("view", view);
-        model = glm::mat4(1.0f);
-        model = glm::translate(model, lightPos);
-        model = glm::scale(model, glm::vec3(0.2f)); // a smaller cube
-        lightCubeShaderProgram.setMat4("model", model);*/
 
-        glBindVertexArray(lightCubeVAO);
-        glDrawArrays(GL_TRIANGLES, 0, 36);
+    
 
 
 
