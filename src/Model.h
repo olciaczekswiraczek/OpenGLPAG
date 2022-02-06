@@ -22,6 +22,8 @@ public:
 
 	~Model();
 
+
+	std::vector<Mesh*> m_meshes;
 	glm::mat4* transform; 
 
 	void Draw();
@@ -30,7 +32,7 @@ public:
 
 private:
 
-	std::vector<Mesh*> m_meshes;
+	
 	std::vector<Texture*> textures_loaded;
 	std::string m_directory;
 

@@ -29,6 +29,37 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadTexture(const char* path);
 
+unsigned int generateInstanceVBO(unsigned int amount, glm::mat4* matrices, Model* loadedModel){
+    unsigned int buffer;
+    glGenBuffers(1, &buffer);
+    glBindBuffer(GL_ARRAY_BUFFER, buffer);
+    glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &matrices[0], GL_STATIC_DRAW);
+
+    for (unsigned int i = 0; i < loadedModel->m_meshes.size(); i++)
+    {
+        //instanced array
+        unsigned int VAO = loadedModel->m_meshes.at(i)->getVAO();
+        glBindVertexArray(VAO);
+
+
+        glEnableVertexAttribArray(3);
+        glVertexAttribPointer(3, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)0);
+        glEnableVertexAttribArray(4);
+        glVertexAttribPointer(4, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4)));
+        glEnableVertexAttribArray(5);
+        glVertexAttribPointer(5, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(2 * sizeof(glm::vec4)));
+        glEnableVertexAttribArray(6);
+        glVertexAttribPointer(6, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(3 * sizeof(glm::vec4)));
+
+        glVertexAttribDivisor(3, 1);
+        glVertexAttribDivisor(4, 1);
+        glVertexAttribDivisor(5, 1);
+        glVertexAttribDivisor(6, 1);
+
+        glBindVertexArray(0);
+    }
+    return buffer;
+}
 
 // settings
 const unsigned int SCR_WIDTH = 1200;
@@ -78,6 +109,9 @@ int main()
     std::shared_ptr<Shader> vertexShader(new Shader("shader.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> fragmentShader(new Shader("shader.frag", FRAGMENT_SHADER));
 
+    std::shared_ptr<Shader> instancedVertexShader(new Shader("drawInstanced.vert", VERTEX_SHADER));
+    std::shared_ptr<Shader> instancedFragmentShader(new Shader("drawInstanced.frag", FRAGMENT_SHADER));
+
     std::shared_ptr<Shader> lightingVertexShader(new Shader("light.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> lightingFragmentShader(new Shader("light.frag", FRAGMENT_SHADER));
 
@@ -85,10 +119,11 @@ int main()
     std::shared_ptr<Shader> lightCubeFragmentShader(new Shader("lightCube.frag", FRAGMENT_SHADER));
 
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
+    ShaderProgram instancedShaderProgram(instancedVertexShader, instancedFragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
-    Model* house = new Model("res/models/House/House.fbx", &shaderProgram);
+    Model* houseModel = new Model("res/models/House/House.fbx", &shaderProgram);
 
     
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
@@ -96,11 +131,37 @@ int main()
 
    
     GraphNode* solarSystem = new GraphNode();
-    GraphNode* starGraphNode = new GraphNode(house);
+    GraphNode* starGraphNode = new GraphNode(houseModel);
 
-   
+    // generate a large list of semi-random model transformation matrices
+ // ------------------------------------------------------------------
+    unsigned int amount = 500;
+    glm::mat4* houseMatrices = new glm::mat4[amount];
+    
 
+    float x = 0;
+    float z = 0;
 
+    srand(static_cast<unsigned int>(glfwGetTime()));
+
+    for (unsigned int i = 0; i < 50; i++)
+    {
+        for (unsigned int k = 0; k < 10; k++) {
+
+            glm::mat4 model = glm::mat4(1.0f);
+            model = glm::translate(model, glm::vec3(i + x, 0.0f, k + z));
+            float scale = 0.4f;
+            model = glm::scale(model, glm::vec3(scale));
+            houseMatrices[i * 10 + k] = model;
+            //std::cout << glm::to_string(houseMatrices[i * 10 + k]) << std::endl;
+
+            z += 15;
+        }
+        x += 15;
+        z = 0;
+    }
+
+    unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
 
     // create graph nodes transformations to position them in the scene
 // ----------------------------------------------------------------
@@ -464,6 +525,22 @@ int main()
             glDrawArrays(GL_TRIANGLES, 0, 36);
         }
 
+
+        instancedShaderProgram.Use();
+        instancedShaderProgram.setMat4("projection", projection);
+        instancedShaderProgram.setMat4("view", view);
+
+        lightingShaderProgram.Use();
+        glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
+        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
+        {
+            glBindVertexArray(houseModel->m_meshes.at(i)->getVAO());
+            glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(houseModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, amount);
+            glBindVertexArray(0);
+        }
 /*
         // also draw the lamp object
         lightCubeShaderProgram.Use();

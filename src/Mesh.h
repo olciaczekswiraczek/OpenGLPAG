@@ -36,6 +36,7 @@ public:
 	~Mesh();
 
 	GLuint getVAO();
+	std::vector<GLuint> m_elementBuffer;
 
 	void Draw(ShaderProgram * shaderProgram, glm::mat4* model, bool& isFromFile);
 
@@ -87,7 +88,7 @@ private:
 	std::vector<float> vert; //do stozka
 
 	std::vector<Vertex> m_vertexBuffer;
-	std::vector<GLuint> m_elementBuffer;
+	
 
 	std::vector <Texture*> m_textures;
 
