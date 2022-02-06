@@ -48,10 +48,10 @@ void GraphNode::Update()
 		*worldTransform = *transform;
 	}
 
-	//if (model) // if has a model
-	//{
-	//	model->setTransform(worldTransform);
-	//}
+	if (model) // if has a model
+	{
+		model->setTransform(worldTransform);
+	}
 	for (GraphNode* node : children)
 	{
 		node->Update();
@@ -62,7 +62,7 @@ void GraphNode::Update()
 void GraphNode::Draw()
 {
 	{
-		//if (model) { model->Draw(); }
+		if (model) { model->Draw(); }
 
 		for (GraphNode* node : children)
 		{

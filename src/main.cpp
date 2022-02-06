@@ -182,18 +182,7 @@ int main()
 
     for (unsigned int i = 0; i < dim; i++)
     {
-        /*
-        glm::mat4 model = glm::mat4(1.0f);
-        float displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
-        float x = displacement;
-        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
         
-        displacement = (rand() % (int)(2 * offset * 100)) / 100.0f - offset;
-        float z = +displacement;
-        model = glm::translate(model, glm::vec3(x, y, z));
-
-        float scale = 0.2;
-        model = glm::scale(model, glm::vec3(scale));*/
 
         for (unsigned int j = 0; j < dim; j++)
         {
@@ -215,9 +204,12 @@ int main()
             tipMatrices[i * dim + j] = modelTip;
             wallsGraphNode->setTransform(&modelMatrices[i * dim + j]);
             tipGraphNode->setTransform(&tipMatrices[i * dim + j]);
+
+            wallsGraphNode->addChild(tipGraphNode);
+
             wallsGraphNodes.push_back(wallsGraphNode);
             tipGraphNodes.push_back(tipGraphNode);
-            wallsGraphNode->addChild(tipGraphNode);
+            
             root->addChild(wallsGraphNode);
         }
 
@@ -225,18 +217,7 @@ int main()
        
     }
 
-    glm::mat4 model = glm::mat4(1.0f);
-    
-
-    /*
-    for (int i = 0; i < (amount); i++) {
-        GraphNode* pomGraphNode = new GraphNode();
-        pomGraphNode->setTransform(&modelMatrices[i]);
-        graphNodes.push_back(pomGraphNode);
-
-        root->addChild(pomGraphNode);
-    }*/
- 
+     
    
 
     std::cout << "Graph nodes size =  " << wallsGraphNodes.size() << std::endl;
@@ -244,7 +225,7 @@ int main()
    
     world->addChild(root);
     
-
+    std::cout << "House children: " << wallsGraphNodes.at(1)->getChildren().size() << std::endl;
     std::cout << "root children: " << root->getChildren().size() << std::endl;
     std::cout << "world children: " << world->getChildren().size() << std::endl;
 
@@ -467,14 +448,19 @@ int main()
             root->setTransform(&rootTransform);
 
             world->Update();
+            world->Draw();
 
-
+            
             for (int i = 0; i < wallsGraphNodes.size(); i++) {
                 modelMatrices[i] = *wallsGraphNodes[i]->getWorldTransform();
+               // tipMatrices[i] = *tipGraphNodes[i]->getWorldTransform();
             }
 
             glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
             glBufferData(GL_ARRAY_BUFFER, (amount) * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+            
+           // root->Rotate(0.9f, glm::vec3(0, 1, 0));
+           // world->Update();
         }
 
 
@@ -624,11 +610,11 @@ int main()
         glBindBuffer(GL_ARRAY_BUFFER, tipBuffer);
         glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &tipMatrices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
-       // glActiveTexture(GL_TEXTURE0);
-       // glBindTexture(GL_TEXTURE_2D, tipModel->textures_loaded[0]->getTextureID());
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, tipModel->textures_loaded[0]->getTextureID());
 
-      //  glActiveTexture(GL_TEXTURE1);
-     //   glBindTexture(GL_TEXTURE_2D, tipModel->textures_loaded[1]->getTextureID());
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, tipModel->textures_loaded[1]->getTextureID());
 
         for (unsigned int i = 0; i < tipModel->m_meshes.size(); i++)
         {
