@@ -95,7 +95,9 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 
 		currentAiVec = mesh -> mNormals[i];
 		vec = glm::vec3(currentAiVec.x, currentAiVec.y, currentAiVec.z);
-		newVertex.Normal = vec;
+
+		if (mesh->HasNormals())
+			newVertex.Normal = vec;
 
 		if (mesh->mTextureCoords[0])
 		{
@@ -131,11 +133,11 @@ Mesh* Model::processMesh(aiMesh* mesh, const aiScene* scene) //dodaje meshe
 	 if (mesh->mMaterialIndex >= 0)
 	 {
 		 aiMaterial* material = scene->mMaterials[mesh->mMaterialIndex];
-		 std::vector<Texture*> diffuseMaps = loadMaterialTextures(material,
-			 aiTextureType_DIFFUSE, "texture_diffuse");
+
+		 std::vector<Texture*> diffuseMaps = loadMaterialTextures(material, aiTextureType_DIFFUSE, "texture_diffuse");
 		 textures.insert(textures.end(), diffuseMaps.begin(), diffuseMaps.end());
-		 std::vector<Texture*> specularMaps = loadMaterialTextures(material,
-			 aiTextureType_SPECULAR, "texture_specular");
+
+		 std::vector<Texture*> specularMaps = loadMaterialTextures(material,aiTextureType_SPECULAR, "texture_specular");
 		 textures.insert(textures.end(), specularMaps.begin(), specularMaps.end());
 	 }
 
@@ -162,7 +164,7 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
 		}
 		if (!skip)
 		{   // jeœli tekstura nie zosta³a jeszcze za³adowana, za³aduj j¹
-			Texture* texture = TextureFromFile(name.C_Str(), m_directory);
+			Texture* texture = TextureFromFile(name.C_Str(), m_directory, typeName);
 			
 			textures.push_back(texture);
 			textures_loaded.push_back(texture); // dodaj do za³adowanych wektora textures_loaded
@@ -170,15 +172,15 @@ std::vector<Texture*> Model::loadMaterialTextures(aiMaterial* mat, aiTextureType
 	}
 	return textures;
 }
-Texture* Model::TextureFromFile(const char* path, const std::string& directory)
+Texture* Model::TextureFromFile(const char* path, const std::string& directory, std::string typeName)
 {
 	std::string filename0 = std::string(path);
 	filename0 = directory + '/' + filename0;
 	const char* filename = filename0.c_str();
-
+	
 	std::cout << "Halooooooo " << filename << '\n';
 
-	Texture* tex = new Texture(filename, "texture_diffuse");
+	Texture* tex = new Texture(filename, typeName.c_str());
 
 	return tex;
 }

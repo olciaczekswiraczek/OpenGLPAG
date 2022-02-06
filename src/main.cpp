@@ -123,7 +123,7 @@ int main()
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
 
-    Model* houseModel = new Model("res/models/House/House.fbx", &lightingShaderProgram);
+    Model* houseModel = new Model("res/models/Cube/Cube.obj", &lightingShaderProgram);
 
 
     std::vector<GraphNode*> graphNodes;
@@ -186,28 +186,6 @@ int main()
     *transformStarGraphNode = glm::translate(*(transformStarGraphNode), glm::vec3(0.0f, -0.5f, 0.0f)); // translate it down so it's at the center of the scene
     *transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
 
-    glm::mat4* transformPlanet1GraphNode = new glm::mat4(1);
-    *transformPlanet1GraphNode = glm::translate(*(transformPlanet1GraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
-    *transformPlanet1GraphNode = glm::scale(*transformPlanet1GraphNode, glm::vec3(0.1f, 0.1f, 0.1f));
-
-    glm::mat4* transformPlanet2GraphNode = new glm::mat4(1);
-	*transformPlanet2GraphNode = glm::translate(*(transformPlanet2GraphNode), glm::vec3(10.0f, 2.0f, 0.0f));
-	*transformPlanet2GraphNode = glm::scale(*transformPlanet2GraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
-
-    glm::mat4* transformMoon1GraphNode = new glm::mat4(1);
-    *transformMoon1GraphNode = glm::translate(*(transformMoon1GraphNode), glm::vec3(20.0f, -2.0f, 0.0f));
-    *transformMoon1GraphNode = glm::scale(*transformMoon1GraphNode, glm::vec3(2.0f, 2.0f, 2.0f));
-
-    glm::mat4* transformMoon2GraphNode = new glm::mat4(1);
-    *transformMoon2GraphNode = glm::translate(*(transformMoon2GraphNode), glm::vec3(30.0f, -5.0f, 0.0f));
-    *transformMoon2GraphNode = glm::scale(*transformMoon2GraphNode, glm::vec3(0.8f, 0.8f, 0.8f));
-
- 
-
-   
-
- 
-    // ----------------------------------------------------------------
    
  
 
@@ -312,8 +290,8 @@ int main()
    
      // load textures (we now use a utility function to keep the code more organized)
     // -----------------------------------------------------------------------------
-    unsigned int diffuseMap = loadTexture("res/textures/container2.png");
-    unsigned int specularMap = loadTexture("res/textures/container2_specular.png");
+    //unsigned int diffuseMap = loadTexture("res/textures/container2.png");
+    //unsigned int specularMap = loadTexture("res/textures/container2_specular.png");
 
     // shader configuration
 // --------------------
@@ -356,6 +334,12 @@ int main()
     bool* k = new bool(true);
 
     bool rotateRoot = false;
+
+    std::cout << "Texturki: " << houseModel->textures_loaded.size();
+    std::cout << "Texturki: " << houseModel->textures_loaded[0]->getType();
+    std::cout << "Texturki: " << houseModel->textures_loaded[0]->getTextureID();
+    std::cout << "Texturki: " << houseModel->textures_loaded[1]->getType();
+    std::cout << "Texturki: " << houseModel->textures_loaded[1]->getTextureID();
 
     // render loop
     while (window.isOpen())
@@ -500,12 +484,12 @@ int main()
         glm::mat4 model = glm::mat4(1.0f);
         lightingShaderProgram.setMat4("model", model);
 
-        // bind diffuse map
+      /*  // bind diffuse map
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, diffuseMap);
         // bind specular map
         glActiveTexture(GL_TEXTURE1);
-        glBindTexture(GL_TEXTURE_2D, specularMap);
+        glBindTexture(GL_TEXTURE_2D, specularMap);*/
 
 
         // also draw the lamp object(s)
@@ -557,7 +541,17 @@ int main()
         lightingShaderProgram.Use();
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
         glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
-        //glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+       // houseModel->textures_loaded[0]->Use(0);
+       
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[0]->getTextureID());
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
+       
+        glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
 
         for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
         {
@@ -578,6 +572,8 @@ int main()
         glfwSwapBuffers(window.getWindow());
         glfwPollEvents(); //poll IO events (keys pressed/released, mouse moved etc.)
     }
+
+    
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();

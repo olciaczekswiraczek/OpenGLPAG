@@ -22,7 +22,7 @@ public:
 
 	~Model();
 
-
+	std::vector<Texture*> textures_loaded;
 	std::vector<Mesh*> m_meshes;
 	glm::mat4* transform; 
 
@@ -30,19 +30,23 @@ public:
 	void setTransform(glm::mat4* matrix);
 	void setShaderProgram(ShaderProgram* s);
 
+	std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
+	
+
+
 private:
 
 	
-	std::vector<Texture*> textures_loaded;
+	
 	std::string m_directory;
 
 	ShaderProgram* shaderProgram;
+	Texture* TextureFromFile(const char* path, const std::string& directory, std::string typeName);
 
 	bool isFromFile;
 
 	void loadModel(std::string& dir);
-	std::vector<Texture*> loadMaterialTextures(aiMaterial* mat, aiTextureType type, std::string typeName);
-	Texture* TextureFromFile(const char* path, const std::string& directory);
+	
 
 	void processNode(aiNode* node, const aiScene* scene);
 	Mesh* processMesh(aiMesh* mesh, const aiScene* scene);
