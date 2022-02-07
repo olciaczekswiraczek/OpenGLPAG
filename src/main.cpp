@@ -196,9 +196,20 @@ int main()
             glm::mat4 model = glm::mat4(1.0f);
             glm::mat4 modelTip = glm::mat4(1.0f);
            
-                x = i * (2.0f);
+            if (j % 2 == 0)
+            {
                 z = j * (-2.0f);
-            
+            }
+            else 
+                z = j * (2.0f);
+
+            if (i % 2 == 0)
+            {
+                x = i * (-2.0f);
+            }
+            else
+                x = i * (2.0f);
+                
             
             model = glm::translate(model, glm::vec3(x, 0.0f, z));
             modelTip = glm::translate(modelTip, glm::vec3(x, 1.0f, z));
@@ -224,7 +235,7 @@ int main()
 
     glm::mat4 planeMat = glm::mat4(1.0f);
     planeMat = glm::translate(planeMat, glm::vec3(0.0f, -0.5f, 0.0f));
-    planeMat = glm::scale(planeMat, glm::vec3(1.6f));
+    planeMat = glm::scale(planeMat, glm::vec3(40.0f));
 
     unsigned int planeBuffer = generateInstanceVBO(1, &planeMat ,planeModel);
      
