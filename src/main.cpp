@@ -48,6 +48,8 @@ int main()
 
     Window window(SCR_WIDTH, SCR_HEIGHT, "Zadanie 2");
     glfwSetFramebufferSizeCallback(window.getWindow(), framebuffer_size_callback);
+    glfwSetCursorPosCallback(window.getWindow(), mouse_callback);
+    glfwSetScrollCallback(window.getWindow(), scroll_callback);
 
     // Setup Dear ImGui context
     IMGUI_CHECKVERSION();
@@ -71,14 +73,16 @@ int main()
     ShaderProgram coneShaderProgram(coneVertexShader, coneFragmentShader);
 
     Model* star = new Model("res/models/Sun/Sun.obj", &shaderProgram);
-    Model* planet1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
+    Model* planet1 = new Model("res/models/Neptune/Neptune.obj", &shaderProgram);
     Model* planet2 = new Model("res/models/Mars/Mars.obj", &shaderProgram);
+    Model* planet3 = new Model("res/models/Jupiter/Jupiter.obj", &shaderProgram);
+    Model* planet4 = new Model("res/models/Neptune/Neptune.obj", &shaderProgram);
     Model* moon1 = new Model("res/models/Moon/Moon.obj", &shaderProgram);
     Model* moon2 = new Model("res/models/Death_Star/Death_Star.obj", &shaderProgram);
     //shaderProgram.setColor
 
     Mesh* coneMesh = new Mesh();
-    coneMesh->generateOrbit(20, 10.0f, 5.0f);
+    coneMesh->generateCone(20, 10.0f, 5.0f);
     Model* coneModel = new Model(coneMesh);
     coneModel->setShaderProgram(&coneShaderProgram);
 
@@ -90,11 +94,27 @@ int main()
 
     GraphNode* planet1GraphNode = new GraphNode(planet1);
     GraphNode* planet2GraphNode = new GraphNode(planet2);
+    GraphNode* planet3GraphNode = new GraphNode(planet3);
+    GraphNode* planet4GraphNode = new GraphNode(planet4);
+    GraphNode* coneGraphNode = new GraphNode(coneModel);
+
+    GraphNode* handler1 = new GraphNode();
+    GraphNode* handler2 = new GraphNode();
+    GraphNode* handler3 = new GraphNode();
+    GraphNode* handler4 = new GraphNode();
+    GraphNode* handler5 = new GraphNode();
+    GraphNode* handler6 = new GraphNode();
+    GraphNode* handler7 = new GraphNode();
 
     GraphNode* moon1GraphNode = new GraphNode(moon1);
     GraphNode* moon2GraphNode = new GraphNode(moon2);
+    GraphNode* moon3GraphNode = new GraphNode(moon1);
+    GraphNode* moon4GraphNode = new GraphNode(moon2);
+    GraphNode* moon5GraphNode = new GraphNode(moon1);
+    GraphNode* moon6GraphNode = new GraphNode(moon2);
+    GraphNode* moon7GraphNode = new GraphNode(moon2);
 
-    GraphNode* coneGraphNode = new GraphNode(coneModel);
+    
 
 
     // create graph nodes transformations to position them in the scene
@@ -102,46 +122,76 @@ int main()
     
     glm::mat4* transformStarGraphNode = new glm::mat4(1);
     *transformStarGraphNode = glm::translate(*(transformStarGraphNode), glm::vec3(0.0f, -0.5f, 0.0f)); // translate it down so it's at the center of the scene
-    *transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.2f, 0.2f, 0.2f));	// it's a bit too big for our scene, so scale it down
+    *transformStarGraphNode = glm::scale(*transformStarGraphNode, glm::vec3(0.2f));	// it's a bit too big for our scene, so scale it down
 
     glm::mat4* transformPlanet1GraphNode = new glm::mat4(1);
-    *transformPlanet1GraphNode = glm::translate(*(transformPlanet1GraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
-    *transformPlanet1GraphNode = glm::scale(*transformPlanet1GraphNode, glm::vec3(0.1f, 0.1f, 0.1f));
+    *transformPlanet1GraphNode = glm::translate(*(transformPlanet1GraphNode), glm::vec3(10.0f, 0.0f, 0.0f));
+    *transformPlanet1GraphNode = glm::scale(*transformPlanet1GraphNode, glm::vec3(0.5f));
 
     glm::mat4* transformPlanet2GraphNode = new glm::mat4(1);
-	*transformPlanet2GraphNode = glm::translate(*(transformPlanet2GraphNode), glm::vec3(10.0f, 2.0f, 0.0f));
-	*transformPlanet2GraphNode = glm::scale(*transformPlanet2GraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
+	*transformPlanet2GraphNode = glm::translate(*(transformPlanet2GraphNode), glm::vec3(20.0f, 0.0f, 0.0f));
+	*transformPlanet2GraphNode = glm::scale(*transformPlanet2GraphNode, glm::vec3(0.01f));
 
-    glm::mat4* transformMoon1GraphNode = new glm::mat4(1);
-    *transformMoon1GraphNode = glm::translate(*(transformMoon1GraphNode), glm::vec3(20.0f, -2.0f, 0.0f));
-    *transformMoon1GraphNode = glm::scale(*transformMoon1GraphNode, glm::vec3(2.0f, 2.0f, 2.0f));
+    glm::mat4* transformPlanet3GraphNode = new glm::mat4(1);
+    *transformPlanet3GraphNode = glm::translate(*(transformPlanet3GraphNode), glm::vec3(30.0f, 0.0f, 0.0f));
+    *transformPlanet3GraphNode = glm::scale(*transformPlanet3GraphNode, glm::vec3(0.05f));
 
-    glm::mat4* transformMoon2GraphNode = new glm::mat4(1);
-    *transformMoon2GraphNode = glm::translate(*(transformMoon2GraphNode), glm::vec3(30.0f, -5.0f, 0.0f));
-    *transformMoon2GraphNode = glm::scale(*transformMoon2GraphNode, glm::vec3(0.8f, 0.8f, 0.8f));
+    glm::mat4* transformPlanet4GraphNode = new glm::mat4(1);
+    *transformPlanet4GraphNode = glm::translate(*(transformPlanet4GraphNode), glm::vec3(40.0f, 0.0f, 0.0f));
+    *transformPlanet4GraphNode = glm::scale(*transformPlanet4GraphNode, glm::vec3(0.5f));
 
     glm::mat4* transformConeGraphNode = new glm::mat4(1);
-    *transformConeGraphNode = glm::translate(*(transformConeGraphNode), glm::vec3(30.0f, 9.0f, 0.0f));
-    *transformConeGraphNode = glm::scale(*transformConeGraphNode, glm::vec3(0.3f, 0.3f, 0.3f));
+    *transformConeGraphNode = glm::translate(*(transformConeGraphNode), glm::vec3(50.0f, 0.0f, 0.0f));
+    *transformConeGraphNode = glm::scale(*transformConeGraphNode, glm::vec3(0.3f));
+
+    glm::mat4* transformMoon1GraphNode = new glm::mat4(1);
+    *transformMoon1GraphNode = glm::translate(*(transformMoon1GraphNode), glm::vec3(5.0f, 0.0f, 0.0f));
+    *transformMoon1GraphNode = glm::scale(*transformMoon1GraphNode, glm::vec3(0.1f));
+
+    glm::mat4* transformMoon2GraphNode = new glm::mat4(1);
+    *transformMoon2GraphNode = glm::translate(*(transformMoon2GraphNode), glm::vec3(7.0f, 0.0f, 0.0f));
+    *transformMoon2GraphNode = glm::scale(*transformMoon2GraphNode, glm::vec3(0.4));
+
+    glm::mat4* transformMoon3GraphNode = new glm::mat4(1);
+    *transformMoon3GraphNode = glm::translate(*(transformMoon3GraphNode), glm::vec3(12.0f, 0.0f, 0.0f));
+    *transformMoon3GraphNode = glm::scale(*transformMoon3GraphNode, glm::vec3(0.4f));
+
+    glm::mat4* transformMoon4GraphNode = new glm::mat4(1);
+    *transformMoon4GraphNode = glm::translate(*(transformMoon4GraphNode), glm::vec3(7.0f, 0.0f, 0.0f));
+    *transformMoon4GraphNode = glm::scale(*transformMoon4GraphNode, glm::vec3(0.2));
         
 
     starGraphNode->setTransform(transformStarGraphNode);
+
+    starGraphNode->addOrbit(10, &coneShaderProgram, 0.01f, 0.0f);
+    starGraphNode->addOrbit(20, &coneShaderProgram, 0.01f, 0.0f);
+    starGraphNode->addOrbit(30, &coneShaderProgram, 0.01f, 0.0f);
+    starGraphNode->addOrbit(40, &coneShaderProgram, 0.01f, 0.0f);
+    starGraphNode->addOrbit(50, &coneShaderProgram, 0.01f, 0.0f);
+
     planet1GraphNode->setTransform(transformPlanet1GraphNode);
     planet2GraphNode->setTransform(transformPlanet2GraphNode);
+    planet3GraphNode->setTransform(transformPlanet3GraphNode);
+    planet4GraphNode->setTransform(transformPlanet4GraphNode);
+
     moon1GraphNode->setTransform(transformMoon1GraphNode);
     moon2GraphNode->setTransform(transformMoon2GraphNode);
 
     coneGraphNode->setTransform(transformConeGraphNode);
-    coneGraphNode->addOrbit(20, &coneShaderProgram, 0.5f, 0.0f);
+  
+    handler1->addChild(moon1GraphNode);
+    handler2->addChild(moon2GraphNode);
 
-    // ----------------------------------------------------------------
-    planet1GraphNode->addChild(moon1GraphNode);
-    planet1GraphNode->addChild(moon2GraphNode);
+    planet1GraphNode->addChild(handler1);
+    planet1GraphNode->addChild(handler2);
+    planet1GraphNode->addOrbit(10, &coneShaderProgram, 0.01f, 0.0f);
 
     starGraphNode->addChild(planet1GraphNode);
     starGraphNode->addChild(planet2GraphNode);
-
+    starGraphNode->addChild(planet3GraphNode);
+    starGraphNode->addChild(planet4GraphNode);
     starGraphNode->addChild(coneGraphNode);
+
     solarSystem->addChild(starGraphNode);
 
     
@@ -187,10 +237,10 @@ int main()
             ImGui::SliderInt("   ", &angle3, 1, 360);
             ImGui::Text("Rotate root node:");
             ImGui::SliderInt("    ", &angle2, 1, 360);
-            if (ImGui::Button("Generate!"))
+          /*  if (ImGui::Button("Generate!"))
             {
-                //torusMesh->generateTorus(NUMBER_OF_SEGMENTS, NUMBER_OF_RINGS, 4, 10);
-            }
+                coneMesh->generateCone(NUMBER_OF_SEGMENTS, 8, 4);
+            }*/
             if (ImGui::Checkbox("Wireframe mode", &wireframeMode)) {
 
                 if (wireframeMode) {
@@ -239,7 +289,10 @@ int main()
         // ----------------------
         moon1GraphNode->Rotate(5.2f, glm::vec3(1, 1, 0));
         moon2GraphNode->Rotate(0.9f, glm::vec3(0, 1, 0));
-        //deathStarGraphNode->Rotate(2.3f, glm::vec3(0, 1, 0));
+
+        handler1->Rotate(1.3f, glm::vec3(0, -1, 0));
+        handler2->Rotate(1.0f, glm::vec3(0, -1, 0));
+        
 
 
         glm::mat4 model = glm::mat4(1.0f);
