@@ -20,7 +20,7 @@
 #include "Model.h"
 #include "GraphNode.h"
 #include "Camera.h"
-#include "Light.h"
+
 
 class Movement
 {
@@ -156,14 +156,19 @@ int main()
 
     Model* houseModel = new Model("res/models/Cube/Cube.obj", &lightingShaderProgram);
     Model* tipModel = new Model("res/models/Tip/tip.obj", &lightingShaderProgram);
+    Model* planeModel = new Model("res/models/plane/plane.obj", &lightingShaderProgram);
 
     Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
 
     std::vector<GraphNode*> wallsGraphNodes;
     std::vector<GraphNode*> tipGraphNodes;
 
+    
     GraphNode* world = new GraphNode();
     GraphNode* root = new GraphNode();
+    GraphNode* planeGraphNode = new GraphNode(planeModel);
+
+    root->addChild(planeGraphNode);
 
     // generate a large list of semi-random model transformation matrices
  // ------------------------------------------------------------------
@@ -217,13 +222,20 @@ int main()
        
     }
 
+    glm::mat4 planeMat = glm::mat4(1.0f);
+    planeMat = glm::translate(planeMat, glm::vec3(0.0f, -0.5f, 0.0f));
+    planeMat = glm::scale(planeMat, glm::vec3(1.6f));
+
+    unsigned int planeBuffer = generateInstanceVBO(1, &planeMat ,planeModel);
      
    
 
     std::cout << "Graph nodes size =  " << wallsGraphNodes.size() << std::endl;
     std::cout << "Graph nodes tip size =  " << tipGraphNodes.size() << std::endl;
    
+    
     world->addChild(root);
+
     
     std::cout << "House children: " << wallsGraphNodes.at(1)->getChildren().size() << std::endl;
     std::cout << "root children: " << root->getChildren().size() << std::endl;
@@ -474,7 +486,6 @@ int main()
 // --------------------
        
 
-
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShaderProgram.Use();
         lightingShaderProgram.setVec3("viewPos", camera.Position);
@@ -624,6 +635,22 @@ int main()
             glBindVertexArray(0);
         }
 
+        glBindBuffer(GL_ARRAY_BUFFER, planeBuffer);
+        glBufferData(GL_ARRAY_BUFFER, 1 * sizeof(glm::mat4), &planeMat[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, planeModel->textures_loaded[0]->getTextureID());
+
+        glActiveTexture(GL_TEXTURE1);
+        glBindTexture(GL_TEXTURE_2D, planeModel->textures_loaded[1]->getTextureID());
+
+        for (unsigned int i = 0; i < planeModel->m_meshes.size(); i++)
+        {
+
+            glBindVertexArray(planeModel->m_meshes.at(i)->getVAO());
+            glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(planeModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, 1);
+            glBindVertexArray(0);
+        }
 
 
 
