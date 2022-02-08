@@ -8,7 +8,7 @@
 class ShaderProgram
 {
 public:
-	ShaderProgram(std::shared_ptr<Shader> vs, std::shared_ptr<Shader> fs);
+	ShaderProgram(std::shared_ptr<Shader> vs, std::shared_ptr<Shader> fs, std::shared_ptr<Shader> gs = nullptr);
 	~ShaderProgram();
 
 	static ShaderProgram* currentProgram;
@@ -83,6 +83,7 @@ private:
 	GLint programID;
 	std::shared_ptr<Shader> vertexShader;
 	std::shared_ptr<Shader> fragmentShader;
+    std::shared_ptr<Shader> geometryShader;
 
 	void Init(bool mustCreate = true);
 

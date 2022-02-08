@@ -9,7 +9,7 @@
 #include "ShaderProgram.h"
 
 
-
+#define PI 3.14159265358979324
 
 template <typename T>
 void glBufferDataV(GLuint target, const std::vector<T>& buffer, GLenum type)
@@ -41,17 +41,16 @@ public:
 
 	void loadMaterialTexture(aiMaterial* material, aiTextureType textureType, const char* typeName);
 
-	void generateCone(int num_stacks, float height, float radius) {
+	void generateCone(int num_segments, float height, float radius) {
 		
-		const float pi = 3.1415926535f;
-		
+			
 		//std::vector<unsigned int> indices;
 		//std::vector<float> vertices;
-		if (num_stacks >= 3)
+		if (num_segments >= 3)
 		{
-			float angle = 2 * pi / num_stacks;
-			unsigned int num_vertices = num_stacks + 2;
-			unsigned int num_indices = num_stacks * 2 * 3;
+			float angle = 2 * PI / num_segments;
+			unsigned int num_vertices = num_segments + 2;
+			unsigned int num_indices = num_segments * 2 * 3;
 
 			glm::vec3* vertices = new glm::vec3[num_vertices];
 			GLuint* indices = new GLuint[num_indices];
@@ -66,7 +65,7 @@ public:
 			vertices[num_vertices - 1] = glm::vec3{ 0,0,height }; //tip
 
 			int num_angle = 1;
-			for (int i = 0; i < num_stacks; ++i) {
+			for (int i = 0; i < num_segments; ++i) {
 				glm::vec3 vert = glm::vec3(cos(angle * i) * radius, -sin(angle * i) * radius, 0.0f);
 				vertices[i + 1].x = cos(angle * i) * radius;
 				vertices[i + 1].y = -sin(angle * i) * radius;
@@ -85,10 +84,10 @@ public:
 				else if (i == 0)
 				{
 					indices[0] = 0;
-					indices[1] = num_stacks;
+					indices[1] = num_segments;
 					indices[2] = 1;
 					indices[3] = num_vertices - 1;
-					indices[4] = num_stacks;
+					indices[4] = num_segments;
 					indices[5] = 1;
 				}
 			}
@@ -120,49 +119,36 @@ public:
 	}
 
 
-	void generateOrbit(int num_segments, int num_rings, float thickness, float R) {
+	void generateOrbit(int num_divisions, float origin[3], float radius) {
 		std::vector<unsigned int> indexBuffer;
 		std::vector<float> vertBuffer;
-		int num_vertices = (num_rings + 1) * (num_segments + 1);
+		
 
-		const float pi = 3.1415926535f;
-		const float r1 = R;
-		const float r2 = thickness;
-		for (int i = 0, index = 0; i <= num_rings; ++i) {
-			for (int j = 0; j <= num_segments; ++j, ++index) {
-				float u = float(i) / num_rings;
-				float v = (float(j) + u) / num_segments;
+		for (int j = 0; j <= num_divisions; j ++)
+		{
 
-				// Compute angles
-				float u_angle = u * 2 * pi;
-				float v_angle = v * 2 * pi;
+			// Position
+			float x = origin[0] + radius * cos((float)j / num_divisions * 2 * PI);
+			float y = origin[1] + radius * sin((float)j / num_divisions * 2 * PI);
+			float z = origin[2] + 0;
 
-				// Position
-				float x = cos(u_angle) * (r1 + cos(v_angle) * r2);
-				float y = sin(u_angle) * (r1 + cos(v_angle) * r2);
-				float z = sin(v_angle) * r2;
-				vertBuffer.push_back(x);
-				vertBuffer.push_back(y);
-				vertBuffer.push_back(z);
-			}
+			vertBuffer.push_back(x);
+			vertBuffer.push_back(y);
+			vertBuffer.push_back(z);
 		}
-
-		// Compute torus indices
-		for (int i = 0, index = 0; i <= num_vertices; ++i) {
-			indexBuffer.push_back(int(i % num_vertices));
-			indexBuffer.push_back(int((i + num_segments + 1) % num_vertices));
-		}
-		vert = vertBuffer;
-		m_elementBuffer = indexBuffer;
+		
+		vert = vertBuffer; 
 		setupMesh2();
 	}
+
+
 
 private:
 	GLuint VAO;
 	GLuint VBO;
 	GLuint EBO;
 
-	std::vector<float> vert; //do stozka
+	std::vector<float> vert; //do stozka i orbit
 
 	std::vector<Vertex> m_vertexBuffer;
 	std::vector<GLuint> m_elementBuffer;
@@ -177,16 +163,20 @@ private:
 		// create buffers/arrays
 		glGenVertexArrays(1, &VAO);
 		glGenBuffers(1, &VBO);
-		glGenBuffers(1, &EBO);
+
+		if (m_elementBuffer.size() != 0)
+			glGenBuffers(1, &EBO);
 
 		glBindVertexArray(VAO);
 		// load data into vertex buffers
 		glBindBuffer(GL_ARRAY_BUFFER, VBO);
 		glBufferData(GL_ARRAY_BUFFER, vert.size() * sizeof(float), &vert[0], GL_STATIC_DRAW);
 
-		glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
-		glBufferDataV(GL_ELEMENT_ARRAY_BUFFER, m_elementBuffer, GL_STATIC_DRAW);
-
+		if (m_elementBuffer.size() != 0) {
+			glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, EBO);
+			glBufferDataV(GL_ELEMENT_ARRAY_BUFFER, m_elementBuffer, GL_STATIC_DRAW);
+		}
+		
 		glEnableVertexAttribArray(0);
 		glVertexAttribPointer(0, 3, GL_FLOAT, GL_FALSE, 3 * sizeof(float), (void*)0);
 

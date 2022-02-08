@@ -4,7 +4,8 @@
 
 ShaderProgram* ShaderProgram::currentProgram = nullptr;
 
-ShaderProgram::ShaderProgram(std::shared_ptr<Shader> vs, std::shared_ptr<Shader> fs) :vertexShader(vs), fragmentShader(fs)
+ShaderProgram::ShaderProgram(std::shared_ptr<Shader> vs, std::shared_ptr<Shader> fs, std::shared_ptr<Shader> gs) :
+	vertexShader(vs), fragmentShader(fs), geometryShader(gs)
 {
 	Init();
 }
@@ -40,6 +41,8 @@ void ShaderProgram::Init(bool mustCreate)
 	}
 	glAttachShader(programID, vertexShader->getShaderID());
 	glAttachShader(programID, fragmentShader->getShaderID());
+	if (geometryShader != nullptr)
+		glAttachShader(programID, fragmentShader->getShaderID());
 	glLinkProgram(programID);
 
 	GLint success;

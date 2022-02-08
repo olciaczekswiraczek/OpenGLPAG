@@ -67,10 +67,12 @@ void GraphNode::addChild(GraphNode* node)
 	node->parent = this;
 }
 
-void GraphNode::addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform)
+void GraphNode::addOrbit(float radius, ShaderProgram* shaderProgram, int num_divisions, float upTransform)
 {
 	Mesh* orbitMesh = new Mesh();
-	orbitMesh->generateOrbit(50, 45, thickness, radius);
+	float origin[3] = { 0.0f, 0.0f, 0.0f };
+	//orbitMesh->generateOrbit(50, 45, thickness, radius);
+	orbitMesh->generateOrbit(num_divisions, origin, radius);
 	Model* orbitModel = new Model(orbitMesh);
 	orbitModel->setShaderProgram(shaderProgram);
 	GraphNode* pom = new GraphNode(orbitModel);

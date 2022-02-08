@@ -5,11 +5,6 @@
 #include <glm/gtc/type_ptr.hpp>
 #include <vector>
 
-class Transform
-{
-
-};
-
 
 class GraphNode
 {
@@ -30,7 +25,7 @@ public:
 	
 
 	void addChild(GraphNode* node);
-	void addOrbit(float radius, ShaderProgram* shaderProgram, float thickness, float upTransform);
+	void addOrbit(float radius, ShaderProgram* shaderProgram, int num_divisions, float upTransform);
 
 	void Translate(glm::vec3 translation);
 	void Rotate(float angle, glm::vec3 axis);
