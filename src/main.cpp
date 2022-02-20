@@ -59,7 +59,7 @@ void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadTexture(const char* path);
 
-unsigned int generateInstanceVBO(unsigned int amount, glm::mat4* matrices, Model* loadedModel){
+unsigned int generateInstanceVBO(unsigned int amount, glm::mat4* matrices, Model* loadedModel) {
     unsigned int buffer;
     glGenBuffers(1, &buffer);
     glBindBuffer(GL_ARRAY_BUFFER, buffer);
@@ -115,7 +115,7 @@ glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
 
 int main()
 {
-   
+
 
     Window window(SCR_WIDTH, SCR_HEIGHT, "Zadanie 3");
     glfwSetFramebufferSizeCallback(window.getWindow(), framebuffer_size_callback);
@@ -160,104 +160,116 @@ int main()
 
     Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
 
-    std::vector<GraphNode*> wallsGraphNodes;
-    std::vector<GraphNode*> tipGraphNodes;
+    std::vector<GraphNode*> houseGraphNodes;
+    std::vector<GraphNode*> roofGraphNodes;
 
-    
+    //macierz transformacji instancji
+    unsigned int dim = 200;
+    unsigned int amount = dim * dim;
+    glm::mat4* houseMatrices = new glm::mat4[amount];
+    glm::mat4* roofMatrices = new glm::mat4[amount];
+    glm::mat4* planeMatrix = new glm::mat4(1);
+
     GraphNode* world = new GraphNode();
-    GraphNode* root = new GraphNode();
-    GraphNode* planeGraphNode = new GraphNode(planeModel);
+    //graf sceny
+    GraphNode* root = new GraphNode(NULL, NULL, glm::mat4(1));
 
-    root->addChild(planeGraphNode);
+    GraphNode* planeGraphNode = new GraphNode(root, planeMatrix, glm::mat4(1));
+
+    //root->addChild(planeGraphNode);
 
     // generate a large list of semi-random model transformation matrices
  // ------------------------------------------------------------------
-     //macierz transformacji instancji
-    unsigned int dim = 200;
-    unsigned int amount = dim * dim;
-    glm::mat4* modelMatrices = new glm::mat4[amount];
-    glm::mat4* tipMatrices = new glm::mat4[amount];
-    
+
+
 
     float x = 0;
     float y = 0;
     float z = 0;
-    
+
     srand(static_cast<unsigned int>(glfwGetTime()));
 
     for (unsigned int i = 0; i < dim; i++)
     {
-        
+
 
         for (unsigned int j = 0; j < dim; j++)
         {
-            GraphNode* wallsGraphNode = new GraphNode();
-            GraphNode* tipGraphNode = new GraphNode();
-            glm::mat4 model = glm::mat4(1.0f);
-            glm::mat4 modelTip = glm::mat4(1.0f);
-           
-            if (j % 2 == 0)
-            {
-                z = j * (-2.0f);
-            }
-            else 
-                z = j * (2.0f);
-
-            if (i % 2 == 0)
-            {
-                x = i * (-2.0f);
-            }
-            else
-                x = i * (2.0f);
-                
             
-            model = glm::translate(model, glm::vec3(x, 0.0f, z));
-            modelTip = glm::translate(modelTip, glm::vec3(x, 1.0f, z));
-            float scale = 0.2;
-            //model = glm::scale(model, glm::vec3(scale));
 
-            modelMatrices[i * dim + j] = model;
-            tipMatrices[i * dim + j] = modelTip;
-            wallsGraphNode->setTransform(&modelMatrices[i * dim + j]);
-            tipGraphNode->setTransform(&tipMatrices[i * dim + j]);
+            /* GraphNode* wallsGraphNode = new GraphNode();
+             GraphNode* roofGraphNode = new GraphNode();
+             glm::mat4 model = glm::mat4(1.0f);
+             glm::mat4 modelRoof = glm::mat4(1.0f);*/
 
-            wallsGraphNode->addChild(tipGraphNode);
+             if (j % 2 == 0)
+             {
+                 z = j * (-2.0f);
+             }
+             else
+                 z = j * (2.0f);
 
-            wallsGraphNodes.push_back(wallsGraphNode);
-            tipGraphNodes.push_back(tipGraphNode);
-            
-            root->addChild(wallsGraphNode);
+             if (i % 2 == 0)
+             {
+                 x = i * (-2.0f);
+             }
+             else
+                 x = i * (2.0f);
+
+             GraphNode* houseNode = new GraphNode(root, &houseMatrices[i * dim + j], glm::mat4(1));
+             //houseNode->Translate((i - (float)dim / 2) * 5, 1, (j - (float)dim / 2) * 5);
+             houseNode->Translate(x, 0.0f, z);
+             GraphNode* roofNode = new GraphNode(houseNode, &roofMatrices[i * dim + j], glm::mat4(1));
+             roofNode->Translate(0, 1.0, 0);
+             roofNode->Scale(glm::vec3(1.2, 1.0, 1.2));
+
+                 /*  model = glm::translate(model, glm::vec3(x, 0.0f, z));
+                   modelRoof = glm::translate(modelRoof, glm::vec3(x, 1.0f, z));
+                   float scale = 0.2;
+                   //model = glm::scale(model, glm::vec3(scale));
+
+                   modelMatrices[i * dim + j] = model;
+                   roofMatrices[i * dim + j] = modelRoof;
+                   wallsGraphNode->setTransform(&modelMatrices[i * dim + j]);
+                   roofGraphNode->setTransform(&roofMatrices[i * dim + j]);
+
+                   wallsGraphNode->addChild(roofGraphNode);
+
+                   wallsGraphNodes.push_back(wallsGraphNode);
+                   roofGraphNodes.push_back(roofGraphNode);
+
+                   root->addChild(wallsGraphNode);*/
         }
 
-        
-       
+
+
     }
 
     glm::mat4 planeMat = glm::mat4(1.0f);
     planeMat = glm::translate(planeMat, glm::vec3(0.0f, -0.5f, 0.0f));
     planeMat = glm::scale(planeMat, glm::vec3(40.0f));
 
-    unsigned int planeBuffer = generateInstanceVBO(1, &planeMat ,planeModel);
-     
-   
+    unsigned int planeBuffer = generateInstanceVBO(1, &planeMat, planeModel);
 
-    std::cout << "Graph nodes size =  " << wallsGraphNodes.size() << std::endl;
-    std::cout << "Graph nodes tip size =  " << tipGraphNodes.size() << std::endl;
-   
-    
+
+
+    std::cout << "Graph nodes size =  " << houseGraphNodes.size() << std::endl;
+    std::cout << "Graph nodes tip size =  " << roofGraphNodes.size() << std::endl;
+
+
     world->addChild(root);
 
-    
-    std::cout << "House children: " << wallsGraphNodes.at(1)->getChildren().size() << std::endl;
+
+    //std::cout << "House children: " << houseGraphNodes.at(1)->getChildren().size() << std::endl;
     std::cout << "root children: " << root->getChildren().size() << std::endl;
-    std::cout << "world children: " << world->getChildren().size() << std::endl;
+    //std::cout << "world children: " << world->getChildren().size() << std::endl;
 
-    unsigned int houseBuffer = generateInstanceVBO(amount, modelMatrices, houseModel);
-    unsigned int tipBuffer = generateInstanceVBO(amount, tipMatrices, tipModel);
-  
+    unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
+    unsigned int tipBuffer = generateInstanceVBO(amount, roofMatrices, tipModel);
 
-   
-   
+
+
+
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
        // ------------------------------------------------------------------
@@ -356,14 +368,14 @@ int main()
     glEnableVertexAttribArray(0);
 
 
-    
-   
-     // load textures (we now use a utility function to keep the code more organized)
-    // -----------------------------------------------------------------------------
-    //unsigned int diffuseMap = loadTexture("res/textures/container2.png");
-    //unsigned int specularMap = loadTexture("res/textures/container2_specular.png");
 
- 
+
+    // load textures (we now use a utility function to keep the code more organized)
+   // -----------------------------------------------------------------------------
+   //unsigned int diffuseMap = loadTexture("res/textures/container2.png");
+   //unsigned int specularMap = loadTexture("res/textures/container2_specular.png");
+
+
 
     int angle = 1;
     int angle2 = 1;
@@ -373,7 +385,7 @@ int main()
     bool pointLightFlag = true;
     bool spotLight1Flag = true;
     bool spotLight2Flag = true;
-  
+
     float dirLightDirX = -0.0f;
     float dirLightDirY = -1.0f;
     float dirLightDirZ = -0.0f;
@@ -427,7 +439,7 @@ int main()
         glClearColor(0.1f, 0.1f, 0.1f, 1.0f);
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
-       
+
         // per-frame time logic
        // --------------------
         float currentFrame = glfwGetTime();
@@ -441,7 +453,7 @@ int main()
             ImGui::SetWindowPos(ImVec2(60, 60));
             ImGui::SetWindowSize(ImVec2(250, 100));
             ImGui::Begin("Change lights");
-           
+
             ImGui::Checkbox("Directional Light", &dirLightFlag);
             ImGui::SliderFloat("Directional Light X", &dirLightDirX, -1, 1);
             ImGui::SliderFloat("Directional Light Y", &dirLightDirY, -1, 1);
@@ -452,38 +464,23 @@ int main()
             ImGui::ColorEdit3("Pointlight Color", pointLightAmbient);
 
             ImGui::Checkbox("Spotlight 1", &spotLight1Flag);
-            ImGui::Checkbox("Spotlight 2", &spotLight2Flag);       
+            ImGui::Checkbox("Spotlight 2", &spotLight2Flag);
             ImGui::ColorEdit3("Spotlight 1 Color", spotLightAmbient);
 
-           // ImGui::ColorEdit3("Spotlight 2 Color", spotambient1);
-            //
+            // ImGui::ColorEdit3("Spotlight 2 Color", spotambient1);
+             //
 
             ImGui::Checkbox("Rotate root", &rotateRoot);
 
             ImGui::End();
-          
+
         }
 
-        if (rotateRoot) {
-            glm::mat4 rootTransform = glm::mat4(1.0f);
-            //rootTranform = glm::translate(rootTranform, glm::vec3(1.0f, 2.0f, 1.0f));
-            rootTransform = glm::rotate(rootTransform, glm::radians((float)1), glm::vec3(0.0, 1.0, 0.0));
-            root->setTransform(&rootTransform);
-
-            world->Update();
-            world->Draw();
-
+         if (rotateRoot) {
+           
+            root->Rotate(glm::vec3(0.0f, 0.02f, 0.0f));
+            //world->Update();
             
-            for (int i = 0; i < wallsGraphNodes.size(); i++) {
-                modelMatrices[i] = *wallsGraphNodes[i]->getWorldTransform();
-               // tipMatrices[i] = *tipGraphNodes[i]->getWorldTransform();
-            }
-
-            glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
-            glBufferData(GL_ARRAY_BUFFER, (amount) * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
-            
-           // root->Rotate(0.9f, glm::vec3(0, 1, 0));
-           // world->Update();
         }
 
 
@@ -491,18 +488,19 @@ int main()
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
-
+        //aktualizacja transformacji w?z?ów grafu sceny
+        root->Update();
 
         // shader configuration
 // --------------------
-       
+
 
         // be sure to activate shader when setting uniforms/drawing objects
         lightingShaderProgram.Use();
         lightingShaderProgram.setVec3("viewPos", camera.Position);
         lightingShaderProgram.setFloat("material.shininess", 32.0f);
 
-        
+
         /*
           Here we set all the uniforms for the 5/6 types of lights we have. We have to set them manually and index
           the proper PointLight struct in the array to set each uniform variable. This can be done more code-friendly
@@ -537,7 +535,7 @@ int main()
         lightingShaderProgram.setFloat("spotLights[0].quadratic", 0.02);
         lightingShaderProgram.setFloat("spotLights[0].cutOff", glm::cos(glm::radians(12.5f)));
         lightingShaderProgram.setFloat("spotLights[0].outerCutOff", glm::cos(glm::radians(15.0f)));
-        
+
         //spotlight 2
         lightingShaderProgram.setBool("spotLights[1].flag", spotLight2Flag);
         lightingShaderProgram.setVec3("spotLights[1].position", lightsPositions[2].x, lightsPositions[2].y, lightsPositions[2].z);
@@ -604,25 +602,25 @@ int main()
 
 
         pointLightMovement.Update();
-        lightsPositions[0] = glm::vec3(pointLightMovement.y/10.0f, 2, pointLightMovement.x/10.0f);
+        lightsPositions[0] = glm::vec3(pointLightMovement.y / 10.0f, 2, pointLightMovement.x / 10.0f);
 
         lightingShaderProgram.Use();
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
-        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &modelMatrices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
 
-      //  houseModel->textures_loaded[0]->Use(1);
-      //  houseModel->textures_loaded[1]->Use(2);
-       
+        //  houseModel->textures_loaded[0]->Use(1);
+        //  houseModel->textures_loaded[1]->Use(2);
+
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[0]->getTextureID());
 
         glActiveTexture(GL_TEXTURE1);
         glBindTexture(GL_TEXTURE_2D, houseModel->textures_loaded[1]->getTextureID());
-       
+
         for (unsigned int i = 0; i < houseModel->m_meshes.size(); i++)
         {
-           
+
             glBindVertexArray(houseModel->m_meshes.at(i)->getVAO());
             glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(houseModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, amount);
             glBindVertexArray(0);
@@ -630,7 +628,7 @@ int main()
 
 
         glBindBuffer(GL_ARRAY_BUFFER, tipBuffer);
-        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &tipMatrices[0], GL_STATIC_DRAW);
+        glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &roofMatrices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, tipModel->textures_loaded[0]->getTextureID());
@@ -673,7 +671,7 @@ int main()
         glfwPollEvents(); //poll IO events (keys pressed/released, mouse moved etc.)
     }
 
-    
+
 
     ImGui_ImplOpenGL3_Shutdown();
     ImGui_ImplGlfw_Shutdown();
