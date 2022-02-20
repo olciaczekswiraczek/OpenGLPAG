@@ -17,7 +17,6 @@
 #include "Model.h"
 #include "GraphNode.h"
 #include "Camera.h"
-#include "Orbit.h"
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
