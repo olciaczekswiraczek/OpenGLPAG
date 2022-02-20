@@ -334,10 +334,10 @@ int main()
 
     // positions of the point lights
     glm::vec3 lightsPositions[] = {
-        glm::vec3(0.7f,  0.2f,  2.0f),
-        glm::vec3(2.3f,  3.3f, -4.0f),
-        glm::vec3(-4.0f,  2.0f, -12.0f),
-        glm::vec3(0.0f,  10.0f, -3.0f)
+        glm::vec3(10.0f,  7.0f,  -5.0f), //point
+        glm::vec3(10.0f,  8.0f, -7.0f),    //spot1
+        glm::vec3(-4.0f,  10.0f, -12.0f),  //spot2
+        //glm::vec3(0.0f,  10.0f, -3.0f)    //spot2
     };
 
     // first, configure the cube's VAO (and VBO)
@@ -483,13 +483,14 @@ int main()
             
         }
 
+         root->Update();
 
         // view/projection transformations
         glm::mat4 projection = glm::perspective(glm::radians(camera.Zoom), (float)SCR_WIDTH / (float)SCR_HEIGHT, 0.1f, 100.0f);
         glm::mat4 view = camera.GetViewMatrix();
 
         //aktualizacja transformacji w?z?ów grafu sceny
-        root->Update();
+        
 
         // shader configuration
 // --------------------
@@ -602,7 +603,8 @@ int main()
 
 
         pointLightMovement.Update();
-        lightsPositions[0] = glm::vec3(pointLightMovement.y / 10.0f, 2, pointLightMovement.x / 10.0f);
+        lightsPositions[0].x = pointLightMovement.x / 5.0f; 
+        lightsPositions[0].z = pointLightMovement.y / 5.0f;
 
         lightingShaderProgram.Use();
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
