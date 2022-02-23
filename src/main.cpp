@@ -196,6 +196,9 @@ int main()
     GraphNode* airplaneNode = new GraphNode(root, airplaneMatrix, glm::mat4(1));
     airplaneNode->Rotate(glm::vec3(0.8f, 3.14f, 8.0f));
 
+   // airplaneNode->setTransform(glm::mat4(1));
+    airplaneNode->Scale(glm::vec3(0.5));
+
     // generate a large list of semi-random model transformation matrices
     // ------------------------------------------------------------------
 
@@ -640,26 +643,38 @@ int main()
         }
 
 
-        airplaneNode->setTransform(glm::mat4(1));
-        airplaneNode->Scale(glm::vec3(0.5));
-
+      
         pointLightMovement.Update();
         lightsPositions[0].x = pointLightMovement.x / 5.0f; 
         lightsPositions[0].z = pointLightMovement.y / 5.0f;
 
+        //-------------------PILOTING MODE------------------
+        //
+
         
-        
+
         if (!airplanePilotingFlag)
         {
+            airplaneNode->setTransform(glm::mat4(1));
             airplaneMovement.Update();
             airplaneNode->Rotate(0.0f, 0.0f, 0.5f);
             airplaneNode->Translate(airplaneMovement.x / 5.0f, 20.0f, airplaneMovement.y / 5.0f);
         }
         else
         {
+            airplaneNode->setTransform(glm::mat4(1));
+            airplaneNode->Translate(camera.Position);
+            //glm::vec3 pos = camera.Position;
+           // airplaneNode->Translate(2*pos.x, 2*pos.y,2*pos.z);
+            airplaneNode->Rotate(0.0, (-camera.Yaw / 90.0 + 1.0) * 3.14 * 0.5, 0.0);
+            airplaneNode->Rotate((-camera.Pitch / 90.0 - 0.2) * 3.14 * 0.5, 0.0, 0.0);
+            airplaneNode->Translate(glm::vec3(0.0, 0.1, 5.0));
+
+
+            /*airplaneNode->setTransform(glm::mat4(1));
             airplaneNode->Rotate(glm::vec3(0.0f, 3.14f, 0.0f));
             airplaneNode->Translate(camera.Position);
-            //airplaneNode->Translate(glm::vec3(0.0, -0.35, 1.0));
+            airplaneNode->Translate(glm::vec3(0.0, -0.35, 1.0));*/
         }
         
         
@@ -838,12 +853,24 @@ void processInput(GLFWwindow* window, GraphNode* airplaneNode)
     }
     else
     {
+        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+            camera.ProcessKeyboard(FORWARD, deltaTime);
+            //airplaneNode->Translate(glm::vec3(0.0, 0.0, -deltaTime * 30));
+           
+        }
+        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+            camera.ProcessKeyboard(BACKWARD, deltaTime);
+           // airplaneNode->Translate(glm::vec3(0.0, 0.0, -deltaTime * 30));
+            
+        }
 
         if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
             airplaneNode->Rotate(glm::vec3(0.0f, deltaTime * 30, 0.0f));
+            camera.ProcessKeyboard(LEFT, deltaTime);
         }
         if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
             airplaneNode->Rotate(glm::vec3(0.0f, -deltaTime * 30, 0.0f));
+            camera.ProcessKeyboard(RIGHT, deltaTime);
         }
 
         if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
