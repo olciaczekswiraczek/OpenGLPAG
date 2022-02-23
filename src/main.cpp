@@ -159,6 +159,8 @@ int main()
     Model* tipModel = new Model("res/models/Tip/tip.obj", &lightingShaderProgram);
     Model* planeModel = new Model("res/models/plane/plane.obj", &lightingShaderProgram);
 
+    Model* airplaneModel = new Model("res/models/airplane/plane.obj", &lightingShaderProgram);
+
     Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
 
     std::vector<GraphNode*> houseGraphNodes;
@@ -170,6 +172,7 @@ int main()
     glm::mat4* houseMatrices = new glm::mat4[amount];
     glm::mat4* roofMatrices = new glm::mat4[amount];
     glm::mat4* planeMatrix = new glm::mat4(1);
+    glm::mat4* airplaneMatrix = new glm::mat4(1);
 
     GraphNode* world = new GraphNode();
     //graf sceny
