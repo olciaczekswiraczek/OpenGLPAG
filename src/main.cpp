@@ -156,17 +156,22 @@ int main()
     std::shared_ptr<Shader> reflectVertexShader(new Shader("cubemaps.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> reflectFragmentShader(new Shader("reflect.frag", FRAGMENT_SHADER));
 
+    std::shared_ptr<Shader> refractVertexShader(new Shader("cubemaps.vert", VERTEX_SHADER));
+    std::shared_ptr<Shader> refractFragmentShader(new Shader("refract.frag", FRAGMENT_SHADER));
+
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
     ShaderProgram skyboxShaderProgram(skyboxVertexShader, skyboxFragmentShader);
     ShaderProgram reflectShaderProgram(reflectVertexShader, reflectFragmentShader);
+    ShaderProgram refractShaderProgram(refractVertexShader, refractFragmentShader);
 
     Model* houseModel = new Model("res/models/Cube/Cube.obj", &lightingShaderProgram);
     Model* tipModel = new Model("res/models/Tip/tip.obj", &lightingShaderProgram);
     Model* planeModel = new Model("res/models/plane/plane.obj", &lightingShaderProgram);
     Model* airplaneModel = new Model("res/models/airplane/plane.obj", &lightingShaderProgram);
     Model* reflectModel = new Model("res/models/Moon/Moon.obj", &reflectShaderProgram);
+    Model* refractModel = new Model("res/models/Moon/Moon.obj", &refractShaderProgram);
 
     Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
     Movement airplaneMovement = Movement(100.0f, 1.5f, 25.0f);
@@ -194,15 +199,21 @@ int main()
     unsigned int tipBuffer = generateInstanceVBO(amount, roofMatrices, tipModel);
     unsigned int airplaneBuffer = generateInstanceVBO(1, airplaneMatrix, airplaneModel);
     unsigned int reflectModelBuffer = generateInstanceVBO(1, reflectModelMatrix, reflectModel);
+    unsigned int refractModelBuffer = generateInstanceVBO(1, refractModelMatrix, refractModel);
 
     //graf sceny
     GraphNode* world = new GraphNode();
     GraphNode* root = new GraphNode(NULL, NULL, glm::mat4(1));
     GraphNode* planeGraphNode = new GraphNode(root, planeMatrix, glm::mat4(1));
     GraphNode* airplaneNode = new GraphNode(root, airplaneMatrix, glm::mat4(1));
-    airplaneNode->Rotate(glm::vec3(0.8f, 3.14f, 8.0f));
-    airplaneNode->Scale(glm::vec3(0.5));
+   
     GraphNode* reflectModelNode = new GraphNode(root, reflectModelMatrix, glm::mat4(1));
+    reflectModelNode->Translate(glm::vec3(-4.0f, 3.0f, 0.0f));
+    reflectModelNode->Scale(glm::vec3(0.1f));
+    GraphNode* refractModelNode = new GraphNode(root, refractModelMatrix, glm::mat4(1));
+    refractModelNode->Translate(glm::vec3(4.0f, 3.0f, 0.0f));
+    refractModelNode->Scale(glm::vec3(0.1f));
+    
 
 
     // generate a large list of semi-random model transformation matrices
@@ -461,6 +472,8 @@ int main()
     skyboxShaderProgram.Use();
     skyboxShaderProgram.setInt("skybox", 0);
 
+   
+
     // render loop
     while (window.isOpen())
     {
@@ -610,6 +623,10 @@ int main()
         lightsPositions[0].x = pointLightMovement.x / 5.0f; 
         lightsPositions[0].z = pointLightMovement.y / 5.0f;
 
+        //refractModelNode->setTransform(glm::mat4(1));
+       // reflectModelNode->Rotate(glm::vec3(0.0f, 3.14f, 0.0f));
+       //refractModelNode->Scale(glm::vec3(3.14f));
+
         //-------------------PILOTING MODE------------------
         //
 
@@ -631,6 +648,7 @@ int main()
             airplaneNode->Rotate(0.0, (-camera.Yaw / 90.0 + 1.0) * 3.14 * 0.5, 0.0);
             airplaneNode->Rotate((-camera.Pitch / 90.0 - 0.2) * 3.14 * 0.5, 0.0, 0.0);
             airplaneNode->Translate(glm::vec3(0.0, -4.0, 5.0));
+            
 
 
             /*airplaneNode->setTransform(glm::mat4(1));
@@ -724,11 +742,11 @@ int main()
             glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(planeModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, 1);
             glBindVertexArray(0);
         }
-
+        
         //-------------------REFLECT OBJECT------------------
         //
         reflectShaderProgram.Use();
-        reflectShaderProgram.setMat4("model", model);
+       // reflectShaderProgram.setMat4("model", model);
         reflectShaderProgram.setMat4("view", view);
         reflectShaderProgram.setMat4("projection", projection);
         reflectShaderProgram.setVec3("cameraPos", camera.Position);
@@ -738,7 +756,7 @@ int main()
         glBindBuffer(GL_ARRAY_BUFFER, 0);
         glActiveTexture(GL_TEXTURE0);
         glBindTexture(GL_TEXTURE_2D, reflectModel->textures_loaded[0]->getTextureID());
-
+        
 
         for (unsigned int i = 0; i < reflectModel->m_meshes.size(); i++)
         {
@@ -747,7 +765,36 @@ int main()
             glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(reflectModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, 1);
             glBindVertexArray(0);
         }
+        
+        //-------------------REFRACT OBJECT------------------
+        //
+      //  refractModelNode->setTransform(glm::mat4(1));
+      //  refractModelNode->Translate(glm::vec3(30.0f, 2.0f, 0.0f));
+       // refractModelNode->Scale(glm::vec3(50.5));
 
+        refractShaderProgram.Use();
+       // refractShaderProgram.setMat4("model", model);
+        refractShaderProgram.setMat4("view", view);
+        refractShaderProgram.setMat4("projection", projection);
+        refractShaderProgram.setVec3("cameraPos", camera.Position);
+
+        glBindBuffer(GL_ARRAY_BUFFER, refractModelBuffer);
+        glBufferData(GL_ARRAY_BUFFER, 1 * sizeof(glm::mat4), refractModelMatrix, GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, refractModel->textures_loaded[0]->getTextureID());
+
+
+        for (unsigned int i = 0; i < refractModel->m_meshes.size(); i++)
+        {
+
+            glBindVertexArray(refractModel->m_meshes.at(i)->getVAO());
+            glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(refractModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, 1);
+            glBindVertexArray(0);
+        }
+
+        //-------------------SKY BOX------------------
+        //
         // draw skybox as last
         glDepthFunc(GL_LEQUAL);  // change depth function so depth test passes when values are equal to depth buffer's content
         skyboxShaderProgram.Use();
@@ -780,6 +827,7 @@ int main()
     // ------------------------------------------------------------------------
     glDeleteVertexArrays(1, &cubeVAO);
     glDeleteVertexArrays(1, &lightCubeVAO);
+    glDeleteVertexArrays(1, &skyboxVAO);
     glDeleteBuffers(1, &VBO);
 
     return 0;
