@@ -102,7 +102,7 @@ public:
     }
 
     void Rotate(float x, float y, float z) {
-        this->local = glm::rotate(local, x, glm::vec3(1.0, 0.0, 0.0));
+        this->local = glm::rotate(local, x, glm::vec3(1.0, 0.0, 0.0)); //radians
         this->local = glm::rotate(local, y, glm::vec3(0.0, 1.0, 0.0));
         this->local = glm::rotate(local, z, glm::vec3(0.0, 0.0, 1.0));
         dirty = true;

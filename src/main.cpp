@@ -98,7 +98,8 @@ const unsigned int SCR_HEIGHT = 800;
 const char* glsl_version = "#version 430";
 
 // camera
-Camera camera(glm::vec3(0.0f, 0.0f, 3.0f));
+Camera camera(glm::vec3(0.0f, 1.0f, 3.0f));
+Camera airplaneCamera(glm::vec3(0.0f, 0.0f, 3.0f));
 float lastX = SCR_WIDTH / 2.0f;
 float lastY = SCR_HEIGHT / 2.0f;
 bool firstMouse = true;
@@ -162,11 +163,12 @@ int main()
     Model* airplaneModel = new Model("res/models/airplane/plane.obj", &lightingShaderProgram);
 
     Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
+    Movement airplaneMovement = Movement(100.0f, 1.5f, 25.0f);
 
     std::vector<GraphNode*> houseGraphNodes;
     std::vector<GraphNode*> roofGraphNodes;
 
-    //macierz transformacji instancji
+    //macierze transformacji instancji
     unsigned int dim = 200;
     unsigned int amount = dim * dim;
     glm::mat4* houseMatrices = new glm::mat4[amount];
@@ -174,18 +176,26 @@ int main()
     glm::mat4* planeMatrix = new glm::mat4(1);
     glm::mat4* airplaneMatrix = new glm::mat4(1);
 
-    GraphNode* world = new GraphNode();
+   
+
+    glm::mat4 planeMat = glm::mat4(1.0f);
+    planeMat = glm::translate(planeMat, glm::vec3(0.0f, -0.5f, 0.0f));
+    planeMat = glm::scale(planeMat, glm::vec3(40.0f));
+
+    unsigned int planeBuffer = generateInstanceVBO(1, &planeMat, planeModel);
+    unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
+    unsigned int tipBuffer = generateInstanceVBO(amount, roofMatrices, tipModel);
+    unsigned int airplaneBuffer = generateInstanceVBO(1, airplaneMatrix, airplaneModel);
+
     //graf sceny
+    GraphNode* world = new GraphNode();
     GraphNode* root = new GraphNode(NULL, NULL, glm::mat4(1));
-
     GraphNode* planeGraphNode = new GraphNode(root, planeMatrix, glm::mat4(1));
-
-    //root->addChild(planeGraphNode);
+    GraphNode* airplaneNode = new GraphNode(root, airplaneMatrix, glm::mat4(1));
+    airplaneNode->Rotate(glm::vec3(0.8f, 3.14f, 8.0f));
 
     // generate a large list of semi-random model transformation matrices
- // ------------------------------------------------------------------
-
-
+    // ------------------------------------------------------------------
 
     float x = 0;
     float y = 0;
@@ -200,11 +210,6 @@ int main()
         for (unsigned int j = 0; j < dim; j++)
         {
             
-
-            /* GraphNode* wallsGraphNode = new GraphNode();
-             GraphNode* roofGraphNode = new GraphNode();
-             glm::mat4 model = glm::mat4(1.0f);
-             glm::mat4 modelRoof = glm::mat4(1.0f);*/
 
              if (j % 2 == 0)
              {
@@ -221,7 +226,6 @@ int main()
                  x = i * (2.0f);
 
              GraphNode* houseNode = new GraphNode(root, &houseMatrices[i * dim + j], glm::mat4(1));
-             //houseNode->Translate((i - (float)dim / 2) * 5, 1, (j - (float)dim / 2) * 5);
              houseNode->Translate(x, 0.0f, z);
              GraphNode* roofNode = new GraphNode(houseNode, &roofMatrices[i * dim + j], glm::mat4(1));
              roofNode->Translate(0, 1.0, 0);
@@ -233,17 +237,10 @@ int main()
 
     }
 
-    glm::mat4 planeMat = glm::mat4(1.0f);
-    planeMat = glm::translate(planeMat, glm::vec3(0.0f, -0.5f, 0.0f));
-    planeMat = glm::scale(planeMat, glm::vec3(40.0f));
-
-    unsigned int planeBuffer = generateInstanceVBO(1, &planeMat, planeModel);
-    unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
-    unsigned int tipBuffer = generateInstanceVBO(amount, roofMatrices, tipModel);
-    unsigned int airplaneBuffer = generateInstanceVBO(1, airplaneMatrix, airplaneModel);
-
-    GraphNode* airplaneNode = new GraphNode(root, airplaneMatrix, glm::mat4(1));
-
+    
+    
+    
+    
     std::cout << "Graph nodes size =  " << houseGraphNodes.size() << std::endl;
     std::cout << "Graph nodes tip size =  " << roofGraphNodes.size() << std::endl;
 
@@ -251,9 +248,8 @@ int main()
     world->addChild(root);
 
 
-    //std::cout << "House children: " << houseGraphNodes.at(1)->getChildren().size() << std::endl;
     std::cout << "root children: " << root->getChildren().size() << std::endl;
-    //std::cout << "world children: " << world->getChildren().size() << std::endl;
+    
 
    
 
@@ -641,13 +637,27 @@ int main()
         }
 
 
+        airplaneNode->setTransform(glm::mat4(1));
+        airplaneNode->Scale(glm::vec3(0.5));
 
         pointLightMovement.Update();
         lightsPositions[0].x = pointLightMovement.x / 5.0f; 
         lightsPositions[0].z = pointLightMovement.y / 5.0f;
 
+        airplaneMovement.Update();
+        airplaneNode->Translate(airplaneMovement.x / 5.0f, 10.0f, airplaneMovement.y / 5.0f);
+        
+
+        
+        
+        
+        //airplaneNode->Rotate(glm::vec3(0.0f, 3.14f, 0.0f));
+       // airplaneNode->Translate(camera.Position);
+       // airplaneNode->Translate(glm::vec3(0.0, -0.35, 1.0));
+        
         lightingShaderProgram.Use();
-        //pistolLoadedModel->setTextures();
+
+
 
         //-------------------AIRPLANE------------------
         //
