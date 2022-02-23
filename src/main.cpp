@@ -238,8 +238,11 @@ int main()
     planeMat = glm::scale(planeMat, glm::vec3(40.0f));
 
     unsigned int planeBuffer = generateInstanceVBO(1, &planeMat, planeModel);
+    unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
+    unsigned int tipBuffer = generateInstanceVBO(amount, roofMatrices, tipModel);
+    unsigned int airplaneBuffer = generateInstanceVBO(1, airplaneMatrix, airplaneModel);
 
-
+    GraphNode* airplaneNode = new GraphNode(root, airplaneMatrix, glm::mat4(1));
 
     std::cout << "Graph nodes size =  " << houseGraphNodes.size() << std::endl;
     std::cout << "Graph nodes tip size =  " << roofGraphNodes.size() << std::endl;
@@ -252,8 +255,7 @@ int main()
     std::cout << "root children: " << root->getChildren().size() << std::endl;
     //std::cout << "world children: " << world->getChildren().size() << std::endl;
 
-    unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
-    unsigned int tipBuffer = generateInstanceVBO(amount, roofMatrices, tipModel);
+   
 
 
 
@@ -645,6 +647,26 @@ int main()
         lightsPositions[0].z = pointLightMovement.y / 5.0f;
 
         lightingShaderProgram.Use();
+        //pistolLoadedModel->setTextures();
+
+        //-------------------AIRPLANE------------------
+        //
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, airplaneModel->textures_loaded[0]->getTextureID());
+        glBindBuffer(GL_ARRAY_BUFFER, airplaneBuffer);
+        glBufferData(GL_ARRAY_BUFFER, 1 * sizeof(glm::mat4), &airplaneMatrix[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+
+        for (unsigned int i = 0; i < airplaneModel->m_meshes.size(); i++)
+        {
+            glBindVertexArray(airplaneModel->m_meshes.at(i)->getVAO());
+            glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(airplaneModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, amount);
+            glBindVertexArray(0);
+        }
+
+
+        //-------------------HOUSES------------------
+        //
         glBindBuffer(GL_ARRAY_BUFFER, houseBuffer);
         glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &houseMatrices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -666,7 +688,8 @@ int main()
             glBindVertexArray(0);
         }
 
-
+        //-------------------ROOFS------------------
+        //
         glBindBuffer(GL_ARRAY_BUFFER, tipBuffer);
         glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &roofMatrices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -684,6 +707,8 @@ int main()
             glBindVertexArray(0);
         }
 
+        //-------------------PLANE------------------
+        //
         glBindBuffer(GL_ARRAY_BUFFER, planeBuffer);
         glBufferData(GL_ARRAY_BUFFER, 1 * sizeof(glm::mat4), &planeMat[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
