@@ -144,31 +144,34 @@ int main()
     std::shared_ptr<Shader> vertexShader(new Shader("shader.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> fragmentShader(new Shader("shader.frag", FRAGMENT_SHADER));
 
-    std::shared_ptr<Shader> skyboxVertexShader(new Shader("skybox.vert", VERTEX_SHADER));
-    std::shared_ptr<Shader> skyboxFragmentShader(new Shader("skybox.frag", FRAGMENT_SHADER));
-
     std::shared_ptr<Shader> lightingVertexShader(new Shader("light.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> lightingFragmentShader(new Shader("light.frag", FRAGMENT_SHADER));
 
     std::shared_ptr<Shader> lightCubeVertexShader(new Shader("lightCube.vert", VERTEX_SHADER));
     std::shared_ptr<Shader> lightCubeFragmentShader(new Shader("lightCube.frag", FRAGMENT_SHADER));
 
+    std::shared_ptr<Shader> skyboxVertexShader(new Shader("skybox.vert", VERTEX_SHADER));
+    std::shared_ptr<Shader> skyboxFragmentShader(new Shader("skybox.frag", FRAGMENT_SHADER));
+
+    std::shared_ptr<Shader> reflectVertexShader(new Shader("cubemaps.vert", VERTEX_SHADER));
+    std::shared_ptr<Shader> reflectFragmentShader(new Shader("reflect.frag", FRAGMENT_SHADER));
+
     ShaderProgram shaderProgram(vertexShader, fragmentShader);
-    ShaderProgram skyboxShaderProgram(skyboxVertexShader, skyboxFragmentShader);
     ShaderProgram lightingShaderProgram(lightingVertexShader, lightingFragmentShader);
     ShaderProgram lightCubeShaderProgram(lightCubeVertexShader, lightCubeFragmentShader);
+    ShaderProgram skyboxShaderProgram(skyboxVertexShader, skyboxFragmentShader);
+    ShaderProgram reflectShaderProgram(reflectVertexShader, reflectFragmentShader);
 
     Model* houseModel = new Model("res/models/Cube/Cube.obj", &lightingShaderProgram);
     Model* tipModel = new Model("res/models/Tip/tip.obj", &lightingShaderProgram);
     Model* planeModel = new Model("res/models/plane/plane.obj", &lightingShaderProgram);
-
     Model* airplaneModel = new Model("res/models/airplane/plane.obj", &lightingShaderProgram);
+    Model* reflectModel = new Model("res/models/Moon/Moon.obj", &reflectShaderProgram);
 
     Movement pointLightMovement = Movement(40.0f, 1.5f, 25.0f);
     Movement airplaneMovement = Movement(100.0f, 1.5f, 25.0f);
 
-    std::vector<GraphNode*> houseGraphNodes;
-    std::vector<GraphNode*> roofGraphNodes;
+
 
     //macierze transformacji instancji
     unsigned int dim = 200;
@@ -177,6 +180,8 @@ int main()
     glm::mat4* roofMatrices = new glm::mat4[amount];
     glm::mat4* planeMatrix = new glm::mat4(1);
     glm::mat4* airplaneMatrix = new glm::mat4(1);
+    glm::mat4* reflectModelMatrix = new glm::mat4(1);
+    glm::mat4* refractModelMatrix = new glm::mat4(1);
 
    
 
@@ -188,6 +193,7 @@ int main()
     unsigned int houseBuffer = generateInstanceVBO(amount, houseMatrices, houseModel);
     unsigned int tipBuffer = generateInstanceVBO(amount, roofMatrices, tipModel);
     unsigned int airplaneBuffer = generateInstanceVBO(1, airplaneMatrix, airplaneModel);
+    unsigned int reflectModelBuffer = generateInstanceVBO(1, reflectModelMatrix, reflectModel);
 
     //graf sceny
     GraphNode* world = new GraphNode();
@@ -195,9 +201,9 @@ int main()
     GraphNode* planeGraphNode = new GraphNode(root, planeMatrix, glm::mat4(1));
     GraphNode* airplaneNode = new GraphNode(root, airplaneMatrix, glm::mat4(1));
     airplaneNode->Rotate(glm::vec3(0.8f, 3.14f, 8.0f));
-
-   // airplaneNode->setTransform(glm::mat4(1));
     airplaneNode->Scale(glm::vec3(0.5));
+    GraphNode* reflectModelNode = new GraphNode(root, reflectModelMatrix, glm::mat4(1));
+
 
     // generate a large list of semi-random model transformation matrices
     // ------------------------------------------------------------------
@@ -243,23 +249,12 @@ int main()
     }
 
     
-    
-    
-    
-    std::cout << "Graph nodes size =  " << houseGraphNodes.size() << std::endl;
-    std::cout << "Graph nodes tip size =  " << roofGraphNodes.size() << std::endl;
-
 
     world->addChild(root);
 
 
     std::cout << "root children: " << root->getChildren().size() << std::endl;
     
-
-   
-
-
-
 
 
     // set up vertex data (and buffer(s)) and configure vertex attributes
@@ -491,40 +486,7 @@ int main()
         ImGui_ImplOpenGL3_NewFrame();
         ImGui_ImplGlfw_NewFrame();
         ImGui::NewFrame();
-        {
-            ImGui::SetWindowPos(ImVec2(60, 60));
-            ImGui::SetWindowSize(ImVec2(250, 100));
-            ImGui::Begin("Change lights");
-
-            ImGui::Checkbox("Directional Light", &dirLightFlag);
-            ImGui::SliderFloat("Directional Light X", &dirLightDirX, -1, 1);
-            ImGui::SliderFloat("Directional Light Y", &dirLightDirY, -1, 1);
-            ImGui::SliderFloat("Directional Light Z", &dirLightDirZ, -1, 1);
-            ImGui::ColorEdit3("Directional Light Color", dirLightAmbient);
-
-            ImGui::Checkbox("Pointlight", &pointLightFlag);
-            ImGui::ColorEdit3("Pointlight Color", pointLightAmbient);
-
-            ImGui::Checkbox("Spotlight 1", &spotLight1Flag);
-            ImGui::Checkbox("Spotlight 2", &spotLight2Flag);
-            ImGui::ColorEdit3("Spotlight 1 Color", spotLightAmbient);
-
-            // ImGui::ColorEdit3("Spotlight 2 Color", spotambient1);
-             //
-
-            ImGui::Checkbox("Rotate root", &rotateRoot);
-
-            ImGui::End();
-
-        }
-
-         if (rotateRoot) {
-           
-            root->Rotate(glm::vec3(0.0f, 0.02f, 0.0f));
-            //world->Update();
-            
-        }
-
+     
          root->Update();
 
         // view/projection transformations
@@ -668,7 +630,7 @@ int main()
            // airplaneNode->Translate(2*pos.x, 2*pos.y,2*pos.z);
             airplaneNode->Rotate(0.0, (-camera.Yaw / 90.0 + 1.0) * 3.14 * 0.5, 0.0);
             airplaneNode->Rotate((-camera.Pitch / 90.0 - 0.2) * 3.14 * 0.5, 0.0, 0.0);
-            airplaneNode->Translate(glm::vec3(0.0, 0.1, 5.0));
+            airplaneNode->Translate(glm::vec3(0.0, -4.0, 5.0));
 
 
             /*airplaneNode->setTransform(glm::mat4(1));
@@ -726,6 +688,7 @@ int main()
 
         //-------------------ROOFS------------------
         //
+
         glBindBuffer(GL_ARRAY_BUFFER, tipBuffer);
         glBufferData(GL_ARRAY_BUFFER, amount * sizeof(glm::mat4), &roofMatrices[0], GL_STATIC_DRAW);
         glBindBuffer(GL_ARRAY_BUFFER, 0);
@@ -759,6 +722,29 @@ int main()
 
             glBindVertexArray(planeModel->m_meshes.at(i)->getVAO());
             glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(planeModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, 1);
+            glBindVertexArray(0);
+        }
+
+        //-------------------REFLECT OBJECT------------------
+        //
+        reflectShaderProgram.Use();
+        reflectShaderProgram.setMat4("model", model);
+        reflectShaderProgram.setMat4("view", view);
+        reflectShaderProgram.setMat4("projection", projection);
+        reflectShaderProgram.setVec3("cameraPos", camera.Position);
+
+        glBindBuffer(GL_ARRAY_BUFFER, reflectModelBuffer);
+        glBufferData(GL_ARRAY_BUFFER, 1 * sizeof(glm::mat4), &reflectModelMatrix[0], GL_STATIC_DRAW);
+        glBindBuffer(GL_ARRAY_BUFFER, 0);
+        glActiveTexture(GL_TEXTURE0);
+        glBindTexture(GL_TEXTURE_2D, reflectModel->textures_loaded[0]->getTextureID());
+
+
+        for (unsigned int i = 0; i < reflectModel->m_meshes.size(); i++)
+        {
+
+            glBindVertexArray(reflectModel->m_meshes.at(i)->getVAO());
+            glDrawElementsInstanced(GL_TRIANGLES, static_cast<unsigned int>(reflectModel->m_meshes.at(i)->m_elementBuffer.size()), GL_UNSIGNED_INT, 0, 1);
             glBindVertexArray(0);
         }
 
@@ -853,23 +839,23 @@ void processInput(GLFWwindow* window, GraphNode* airplaneNode)
     }
     else
     {
-        if (glfwGetKey(window, GLFW_KEY_UP) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS) {
             camera.ProcessKeyboard(FORWARD, deltaTime);
             //airplaneNode->Translate(glm::vec3(0.0, 0.0, -deltaTime * 30));
            
         }
-        if (glfwGetKey(window, GLFW_KEY_DOWN) == GLFW_PRESS) {
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS) {
             camera.ProcessKeyboard(BACKWARD, deltaTime);
            // airplaneNode->Translate(glm::vec3(0.0, 0.0, -deltaTime * 30));
             
         }
 
-        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
-            airplaneNode->Rotate(glm::vec3(0.0f, deltaTime * 30, 0.0f));
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS) {
+            airplaneNode->Rotate(glm::vec3(0.0f, 0.2f, -deltaTime * 2));
             camera.ProcessKeyboard(LEFT, deltaTime);
         }
-        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
-            airplaneNode->Rotate(glm::vec3(0.0f, -deltaTime * 30, 0.0f));
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS) {
+            airplaneNode->Rotate(glm::vec3(0.0f, -0.2f, deltaTime * 2));
             camera.ProcessKeyboard(RIGHT, deltaTime);
         }
 
