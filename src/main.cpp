@@ -54,7 +54,7 @@ public:
 
 
 void framebuffer_size_callback(GLFWwindow* window, int width, int height);
-void processInput(GLFWwindow* window);
+void processInput(GLFWwindow* window, GraphNode* airplaneMode);
 void mouse_callback(GLFWwindow* window, double xpos, double ypos);
 void scroll_callback(GLFWwindow* window, double xoffset, double yoffset);
 unsigned int loadTexture(const char* path);
@@ -110,6 +110,8 @@ bool wireframeMode = false;
 float deltaTime = 0.0f;
 float lastFrame = 0.0f;
 
+//piloting mode
+bool airplanePilotingFlag = false;
 
 // lighting
 glm::vec3 lightPos(1.2f, 1.0f, 2.0f);
@@ -409,6 +411,7 @@ int main()
 
     unsigned int cubemapTexture = loadCubeMap(faces);
 
+    
 
     int angle = 1;
     int angle2 = 1;
@@ -466,7 +469,7 @@ int main()
 
         // input
         // -----
-        processInput(window.getWindow());
+        processInput(window.getWindow(), airplaneNode);
 
 
 
@@ -563,7 +566,7 @@ int main()
         // spotLight 1
         lightingShaderProgram.setBool("spotLights[0].flag", spotLight1Flag);
         lightingShaderProgram.setVec3("spotLights[0].position", lightsPositions[1].x, lightsPositions[1].y, lightsPositions[1].z);
-        lightingShaderProgram.setVec3("spotLights[0].direction", glm::vec3(0.0f, -2.5f, -1.0f));// glm::vec3(camera.Front.x, camera.Front.y, camera.Front.z));
+        lightingShaderProgram.setVec3("spotLights[0].direction", glm::vec3(0.0f, -2.5f, -1.0f));
         lightingShaderProgram.setVec3("spotLights[0].ambient", spotLightAmbient[0], spotLightAmbient[1], spotLightAmbient[2]);
         lightingShaderProgram.setVec3("spotLights[0].diffuse", spotLightDiffuse[0], spotLightDiffuse[1], spotLightDiffuse[2]);
         lightingShaderProgram.setVec3("spotLights[0].specular", spotLightSpecular[0], spotLightSpecular[1], spotLightSpecular[2]);
@@ -644,16 +647,24 @@ int main()
         lightsPositions[0].x = pointLightMovement.x / 5.0f; 
         lightsPositions[0].z = pointLightMovement.y / 5.0f;
 
-        airplaneMovement.Update();
-        airplaneNode->Translate(airplaneMovement.x / 5.0f, 10.0f, airplaneMovement.y / 5.0f);
-        
-
         
         
+        if (!airplanePilotingFlag)
+        {
+            airplaneMovement.Update();
+            airplaneNode->Rotate(0.0f, 0.0f, 0.5f);
+            airplaneNode->Translate(airplaneMovement.x / 5.0f, 20.0f, airplaneMovement.y / 5.0f);
+        }
+        else
+        {
+            airplaneNode->Rotate(glm::vec3(0.0f, 3.14f, 0.0f));
+            airplaneNode->Translate(camera.Position);
+            //airplaneNode->Translate(glm::vec3(0.0, -0.35, 1.0));
+        }
         
-        //airplaneNode->Rotate(glm::vec3(0.0f, 3.14f, 0.0f));
-       // airplaneNode->Translate(camera.Position);
-       // airplaneNode->Translate(glm::vec3(0.0, -0.35, 1.0));
+        
+        
+        
         
         lightingShaderProgram.Use();
 
@@ -809,19 +820,42 @@ void framebuffer_size_callback(GLFWwindow* window, int width, int height)
     // height will be significantly larger than specified on retina displays.
     glViewport(0, 0, width, height);
 }
-void processInput(GLFWwindow* window)
+void processInput(GLFWwindow* window, GraphNode* airplaneNode)
 {
+    if (!airplanePilotingFlag)
+    {
+        if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
+            camera.ProcessKeyboard(FORWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
+            camera.ProcessKeyboard(BACKWARD, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
+            camera.ProcessKeyboard(LEFT, deltaTime);
+        if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
+            camera.ProcessKeyboard(RIGHT, deltaTime);
+
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+            airplanePilotingFlag = true;
+    }
+    else
+    {
+
+        if (glfwGetKey(window, GLFW_KEY_LEFT) == GLFW_PRESS) {
+            airplaneNode->Rotate(glm::vec3(0.0f, deltaTime * 30, 0.0f));
+        }
+        if (glfwGetKey(window, GLFW_KEY_RIGHT) == GLFW_PRESS) {
+            airplaneNode->Rotate(glm::vec3(0.0f, -deltaTime * 30, 0.0f));
+        }
+
+        if (glfwGetKey(window, GLFW_KEY_P) == GLFW_PRESS)
+            airplanePilotingFlag = false;
+    }
+
     if (glfwGetKey(window, GLFW_KEY_ESCAPE) == GLFW_PRESS)
         glfwSetWindowShouldClose(window, true);
 
-    if (glfwGetKey(window, GLFW_KEY_W) == GLFW_PRESS)
-        camera.ProcessKeyboard(FORWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_S) == GLFW_PRESS)
-        camera.ProcessKeyboard(BACKWARD, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_A) == GLFW_PRESS)
-        camera.ProcessKeyboard(LEFT, deltaTime);
-    if (glfwGetKey(window, GLFW_KEY_D) == GLFW_PRESS)
-        camera.ProcessKeyboard(RIGHT, deltaTime);
+    
+
+    
 }
 void mouse_callback(GLFWwindow* window, double xpos, double ypos)
 {
