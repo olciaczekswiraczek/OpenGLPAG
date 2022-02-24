@@ -131,17 +131,17 @@ int main()
 
     glm::mat4* transformPlanet2GraphNode = new glm::mat4(1);
 	*transformPlanet2GraphNode = glm::translate(*(transformPlanet2GraphNode), glm::vec3(-20.0f, 0.0f, 0.0f));
-    *transformPlanet2GraphNode = glm::rotate(*(transformPlanet1GraphNode), -5.2f, glm::vec3(1, 0, 0));
+    *transformPlanet2GraphNode = glm::rotate(*(transformPlanet2GraphNode), -5.2f, glm::vec3(1, 0, 0));
 	*transformPlanet2GraphNode = glm::scale(*transformPlanet2GraphNode, glm::vec3(0.8f));
 
     glm::mat4* transformPlanet3GraphNode = new glm::mat4(1);
     *transformPlanet3GraphNode = glm::translate(*(transformPlanet3GraphNode), glm::vec3(32.0f, 0.0f, 0.0f));
-    *transformPlanet2GraphNode = glm::rotate(*(transformPlanet1GraphNode), 7.5f, glm::vec3(1, 0, 0));
+    *transformPlanet3GraphNode = glm::rotate(*(transformPlanet3GraphNode), 7.5f, glm::vec3(1, 0, 0));
     *transformPlanet3GraphNode = glm::scale(*transformPlanet3GraphNode, glm::vec3(0.6f));
 
     glm::mat4* transformPlanet4GraphNode = new glm::mat4(1);
     *transformPlanet4GraphNode = glm::translate(*(transformPlanet4GraphNode), glm::vec3(0.0f, 0.0f, -45.0f));
-    *transformPlanet2GraphNode = glm::rotate(*(transformPlanet1GraphNode), -8.7f, glm::vec3(1, 0, 0));
+    *transformPlanet4GraphNode = glm::rotate(*(transformPlanet4GraphNode), -8.7f, glm::vec3(1, 0, 0));
     *transformPlanet4GraphNode = glm::scale(*transformPlanet4GraphNode, glm::vec3(0.5f));
 
     glm::mat4* transformConeGraphNode = new glm::mat4(1);
